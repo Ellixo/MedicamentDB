@@ -1,0 +1,7 @@
+61266250	A 313 200 000 UI POUR CENT, pommade	pommade	cutanée	Autorisation active	Procédure nationale	Commercialisée	12/03/1998			 PHARMA DEVELOPPEMENT	Non
+62869109	A 313 50 000 U.I., capsule molle	capsule molle	orale	Autorisation active	Procédure nationale	Commercialisée	07/07/1997			 PHARMA DEVELOPPEMENT	Non
+66207341	ABELCET 5 mg/ml, suspension à diluer pour perfusion	suspension à diluer pour perfusion	intraveineuse	Autorisation active	Procédure nationale	Commercialisée	10/06/1997			 ACINO FRANCE	Non
+60538772	ABIES CANADENSIS BOIRON, degré de dilution compris entre 2CH et 30CH ou entre 4DH et 60DH	 poudre et pommade et comprimé et granules et solution(s)	cutanée;orale;sublinguale	Autorisation active	Enreg homéo (Proc. Nat.)	Commercialisée	20/09/2013			 BOIRON	Non
+60008845	GLUCOSE BIOSEDRA 15 POUR CENT, solution pour perfusion	solution pour perfusion	intraveineuse	Autorisation active	Procédure nationale	Commercialisée	05/03/1998			 FRESENIUS KABI FRANCE	Non
+61872344	CIMETIDINE TEVA 200 mg, comprimé	comprimé	orale	Autorisation active	Procédure nationale	Commercialisée	09/07/1997			 TEVA SANTE	Non
+67535309	CIMETIDINE MYLAN 200 mg, comprimé pelliculé	comprimé pelliculé	orale	Autorisation active	Procédure nationale	Commercialisée	08/11/1995			 MYLAN SAS	Non

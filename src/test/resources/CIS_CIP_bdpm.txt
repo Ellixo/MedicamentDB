@@ -1,0 +1,5 @@
+61266250	3000147	1 tube(s) aluminium verni de 50 g	Présentation active	Déclaration de commercialisation	19/01/1965	3400930001479	non	30 %	1,58
+62869109	3000064	1 flacon(s) polystyrène de 30 capsule(s)	Présentation active	Déclaration de commercialisation	19/07/1971	3400930000649	oui	65 %	2,66
+66207341	5605446	10 flacon(s) en verre de 20 ml	Présentation active	Déclaration de commercialisation	09/07/2015	3400956054466	oui
+60008845	3236370	1 flacon(s) en verre de 500 ml	Présentation active	Déclaration de commercialisation	19/05/1964	3400932363704	oui	65 %	1,67
+60008845	3236387	1 flacon(s) en verre de 1000 ml	Présentation active	Déclaration de commercialisation	19/05/1964	3400932363872	oui	65 %	2,76
