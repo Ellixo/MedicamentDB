@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.ellixo.healthcare.*;
+
 @Service
 public class MedicamentService {
 
@@ -73,7 +75,7 @@ public class MedicamentService {
     private List<Medicament> initMedicaments(File dir) throws IOException {
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(MedicamentCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
-        MappingIterator<MedicamentCSV> it = csvMapper.readerFor(MedicamentCSV.class).with(schema).readValues(new File(dir, "CIS_bdpm.txt"));
+        MappingIterator<MedicamentCSV> it = csvMapper.readerFor(MedicamentCSV.class).with(schema).readValues(new File(dir, Constants.CIS_BDPM_FILE));
 
         return mapper.toMedicamentES(it.readAll());
     }
@@ -81,7 +83,7 @@ public class MedicamentService {
     private void linkPresentations(File dir, List<Medicament> medicaments) throws IOException {
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(PresentationCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
-        MappingIterator<PresentationCSV> it = csvMapper.readerFor(PresentationCSV.class).with(schema).readValues(new File(dir, "CIS_CIP_bdpm.txt"));
+        MappingIterator<PresentationCSV> it = csvMapper.readerFor(PresentationCSV.class).with(schema).readValues(new File(dir, Constants.CIS_CIP_BDPM_FILE));
 
         Medicament medicament;
         while (it.hasNext()) {
@@ -100,7 +102,7 @@ public class MedicamentService {
     private void linkCompositions(File dir, List<Medicament> medicaments) throws IOException {
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(CompositionCSV.class).withColumnSeparator('\t');
-        MappingIterator<CompositionCSV> it = csvMapper.readerFor(CompositionCSV.class).with(schema).readValues(new File(dir, "CIS_COMPO_bdpm.txt"));
+        MappingIterator<CompositionCSV> it = csvMapper.readerFor(CompositionCSV.class).with(schema).readValues(new File(dir, Constants.CIS_COMPO_BDPM_FILE));
 
         String previousCodeCIS = null;
         CompositionCSV composition = null;
@@ -144,7 +146,7 @@ public class MedicamentService {
     private void linkAvisSMR(File dir, List<Medicament> medicaments, Map<String, String> urlsHAS) throws IOException {
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(AvisSMRCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
-        MappingIterator<AvisSMRCSV> it = csvMapper.readerFor(AvisSMRCSV.class).with(schema).readValues(new File(dir, "CIS_HAS_SMR_bdpm.txt"));
+        MappingIterator<AvisSMRCSV> it = csvMapper.readerFor(AvisSMRCSV.class).with(schema).readValues(new File(dir, Constants.CIS_HAS_SMR_BDPM_FILE));
 
         Medicament medicament;
         AvisSMR avisSMR;
@@ -166,7 +168,7 @@ public class MedicamentService {
     private void linkAvisASMR(File dir, List<Medicament> medicaments, Map<String, String> urlsHAS) throws IOException {
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(AvisASMRCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
-        MappingIterator<AvisASMRCSV> it = csvMapper.readerFor(AvisASMRCSV.class).with(schema).readValues(new File(dir, "CIS_HAS_ASMR_bdpm.txt"));
+        MappingIterator<AvisASMRCSV> it = csvMapper.readerFor(AvisASMRCSV.class).with(schema).readValues(new File(dir, Constants.CIS_HAS_ASMR_BDPM_FILE));
 
         Medicament medicament;
         AvisASMR avisASMR;
@@ -190,7 +192,7 @@ public class MedicamentService {
 
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(LienCTHASCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
-        MappingIterator<LienCTHASCSV> it = csvMapper.readerFor(LienCTHASCSV.class).with(schema).readValues(new File(dir, "HAS_LiensPageCT_bdpm.txt"));
+        MappingIterator<LienCTHASCSV> it = csvMapper.readerFor(LienCTHASCSV.class).with(schema).readValues(new File(dir, Constants.HAS_LIENS_PAGE_CT_BDPM_FILE));
 
         while (it.hasNext()) {
             LienCTHASCSV lien = it.next();
@@ -203,7 +205,7 @@ public class MedicamentService {
     private void linkConditionsPrescriptionDelivrance(File dir, List<Medicament> medicaments) throws IOException {
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(ConditionPrescriptionDelivranceCSV.class).withColumnSeparator('\t');
-        MappingIterator<ConditionPrescriptionDelivranceCSV> it = csvMapper.readerFor(ConditionPrescriptionDelivranceCSV.class).with(schema).readValues(new File(dir, "CIS_CPD_bdpm.txt"));
+        MappingIterator<ConditionPrescriptionDelivranceCSV> it = csvMapper.readerFor(ConditionPrescriptionDelivranceCSV.class).with(schema).readValues(new File(dir, Constants.CIS_CPD_BDPM_FILE));
 
         Medicament medicament;
         while (it.hasNext()) {
@@ -224,7 +226,7 @@ public class MedicamentService {
 
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(GroupeGeneriqueCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
-        MappingIterator<GroupeGeneriqueCSV> it = csvMapper.readerFor(GroupeGeneriqueCSV.class).with(schema).readValues(new File(dir, "CIS_GENER_bdpm.txt"));
+        MappingIterator<GroupeGeneriqueCSV> it = csvMapper.readerFor(GroupeGeneriqueCSV.class).with(schema).readValues(new File(dir, Constants.CIS_GENER_BDPM_FILE));
 
         GroupeGeneriqueCSV csv;
         String previousCode = null;
@@ -301,7 +303,7 @@ public class MedicamentService {
 
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(InfoImportanteCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
-        MappingIterator<InfoImportanteCSV> it = csvMapper.readerFor(InfoImportanteCSV.class).with(schema).readValues(new File(dir, "CIS_InfoImportantes_bdpm.txt"));
+        MappingIterator<InfoImportanteCSV> it = csvMapper.readerFor(InfoImportanteCSV.class).with(schema).readValues(new File(dir, Constants.CIS_INFO_IMPORTANTES_FILE));
 
         InfoImportanteCSV csv;
         String previousCodeCIS = null;
@@ -351,6 +353,9 @@ public class MedicamentService {
             infoImportante.setCodeCIS(info.getCodeCIS());
             infoImportante.setDateDebut(info.getDateDebut());
             infoImportante.setDateFin(info.getDateFin());
+            if (Jsoup.parse(info.getInfo()).getElementsByTag("a").size() == 0) {
+                System.out.println(info);
+            }
             link = Jsoup.parse(info.getInfo()).getElementsByTag("a").get(0);
             infoImportante.setInfoURL(link.attributes().get("href"));
             infoImportante.setInfoLibelle(link.text());
