@@ -1,4 +1,4 @@
-package com.ellixo.healthcare.rest;
+package com.ellixo.healthcare.api;
 
 import com.ellixo.healthcare.domain.Medicament;
 import com.ellixo.healthcare.exception.UnknownObjectException;
@@ -19,7 +19,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/v1/medicaments")
+@RequestMapping("/api/v1/medicaments")
 @Api(value = "medicaments", description = "Medicaments", produces = "application/json", consumes = "application/json")
 public class MedicamentController {
 

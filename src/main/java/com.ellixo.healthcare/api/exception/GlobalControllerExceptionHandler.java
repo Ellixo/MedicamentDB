@@ -1,4 +1,4 @@
-package com.ellixo.healthcare.rest.exception;
+package com.ellixo.healthcare.api.exception;
 
 import com.ellixo.healthcare.exception.UnknownObjectException;
 import org.slf4j.Logger;
