@@ -2,7 +2,7 @@
 
 var medicamentDBControllers = angular.module('MedicamentDBControllers', []);
 
-medicamentDBControllers.controller('SearchController', ['$scope', '$http', function($scope, $http) {
+medicamentDBControllers.controller('SearchController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
     $scope.getFormePharmaceutiqueImage = function(forme) {
         if (forme === "gélule") {
@@ -18,8 +18,22 @@ medicamentDBControllers.controller('SearchController', ['$scope', '$http', funct
         });
     }
 
-    $scope.display = function(codeCIS,$location) {
-        $location.path("/display");
+    $scope.display = function(codeCIS) {
+        $location.path("/display/" + codeCIS);
+    }
+
+}]);
+
+medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+
+    console.log(JSON.stringify($routeParams))
+
+    if ($routeParams.codeCIS) {
+        $http.get('http://localhost:8080/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
+            $scope.medicament = resp.data;
+        });
+    } else {
+        $scope.medicament = {};
     }
 
 }]);

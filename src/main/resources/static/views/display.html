@@ -1,3 +1,137 @@
 <div class="container">
-    DISPLAY
+
+<!-- FICHE -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Médicament</h3>
+    </div>
+    <div class="panel-body">
+        Code CIS : {{medicament.codeCIS}}<br/>
+        Nom : {{medicament.denomination}}<br/>
+        Formes : {{medicament.formePharmaceutique}}<br/>
+        Voies administration : {{medicament.voiesAdministration}}<br/>
+        Statut administratif : {{medicament.statutAdministratifAMM}}<br/>
+        Type procédure AMM : {{medicament.typeProcedureAMM}}<br/>
+        Etat commercialisation : {{medicament.etatCommercialisation}}<br/>
+        Date AMM : {{medicament.dateAMM}}<br/>
+        Statut : {{medicament.statutBDM}}<br/>
+        Numéro autorisation européenne : {{medicament.numeroAutorisationEuropeenne}}<br/>
+        Titulaires : {{medicament.titulaires}}<br/>
+        Surveillance renforcée : {{medicament.surveillanceRenforcee}}<br/>
+        Conditions de prescription/délivrance : {{medicament.conditionsPrescriptionDelivranceCSV}}<br/>
+    </div>
+</div>
+
+<!-- COMPOSITION -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Composition</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="substanceActive in medicament.composition">
+            Désignation : {{substanceActive.designationElementPharmaceutique}}<br/>
+            Code : {{substanceActive.codeSubstance}}<br/>
+            Nom : {{substanceActive.denominationSubstance}}<br/>
+            Dosage : {{substanceActive.dosageSubstance}}<br/>
+            Référence dosage : {{substanceActive.referenceDosage}}<br/>
+            <div ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
+                ------<br/>
+                FRACTION THERAPEUTIQUE<br/>
+                ------<br/>
+                Désignation : {{fractionTherapeutique.designationElementPharmaceutique}}<br/>
+                Code : {{fractionTherapeutique.codeSubstance}}<br/>
+                Nom : {{fractionTherapeutique.denominationSubstance}}<br/>
+                Dosage : {{fractionTherapeutique.dosageSubstance}}<br/>
+                Référence dosage : {{fractionTherapeutique.referenceDosage}}<br/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GENERIQUES -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Génériques</h3>
+    </div>
+    <div class="panel-body">
+        Type : {{medicament.infosGenerique.type}}<br/>
+        Groupe : {{medicament.infosGenerique.libelleGroupe}}<br/>
+        <div ng-repeat="generique in medicament.infosGenerique.autresMedicamentsGroupe">
+            Code CIS : {{generique.codeCIS}}<br/>
+            Nom : {{generique.denomination}}<br/>
+            Type : {{presentation.type}}<br/>
+        </div>
+    </div>
+</div>
+
+<!-- PRESENTATIONS -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Présentations</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="presentation in medicament.presentations">
+            Code CIP7 : {{presentation.codeCIP7}}<br/>
+            Code CIP13 : {{presentation.codeCIP13}}<br/>
+            Libellé : {{presentation.libelle}}<br/>
+            Statut administratif : {{presentation.statutAdministratif}}<br/>
+            Etat commercialisation : {{presentation.etatCommercialisationAMM}}<br/>
+            Date déclaration commercialisation : {{presentation.dateDeclarationCommercialisation}}<br/>
+            Agrément collectivités : {{presentation.agrementCollectivites}}<br/>
+            Taux remboursement : {{presentation.tauxRemboursement}}<br/>
+            Prix : {{presentation.prix}}<br/>
+            Indication remboursement : {{presentation.indicationsRemboursement}}<br/>
+        </div>
+    </div>
+</div>
+
+<!-- AVIS SMR -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Service médical rendu (SMR)</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="avis in medicament.avisSMR">
+            Code dossier HAS : {{avis.codeDossierHAS}}<br/>
+            Motif évaluation : {{avis.motifEvaluation}}<br/>
+            Date avis commission transparence : {{avis.dateAvisCommissionTransparence}}<br/>
+            Valeur SMR : {{avis.valeurSMR}}<br/>
+            Libelle SMR : {{avis.libelleSMR}}<br/>
+            URL : {{avis.urlHAS}}<br/>
+        </div>
+    </div>
+</div>
+
+<!-- AVIS ASMR -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Amélioration du service médical rendu (ASMR)</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="avis in medicament.avisASMR">
+            Code dossier HAS : {{avis.codeDossierHAS}}<br/>
+            Motif évaluation : {{avis.motifEvaluation}}<br/>
+            Date avis commission transparence : {{avis.dateAvisCommissionTransparence}}<br/>
+            Valeur SMR : {{avis.valeurSMR}}<br/>
+            Libellé SMR : {{avis.libelleSMR}}<br/>
+            URL : {{avis.urlHAS}}<br/>
+        </div>
+    </div>
+</div>
+
+<!-- INFOS IMPORTANTES -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Informations importantes</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="info in medicament.infosImportantes">
+            Date début : {{info.dateDebut}}<br/>
+            Date fin: {{info.dateFin}}<br/>
+            Libellé : {{info.infoLibelle}}<br/>
+            URL : {{info.infoURL}}<br/>
+        </div>
+    </div>
+</div>
+
 </div>
