@@ -25,12 +25,17 @@ medicamentDBControllers.controller('SearchController', ['$scope', '$http', '$loc
 }]);
 
 medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-
-    console.log(JSON.stringify($routeParams))
-
     if ($routeParams.codeCIS) {
         $http.get('http://localhost:8080/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
             $scope.medicament = resp.data;
+
+            // nom medicament
+            $scope.nomMedicament = resp.data.denomination;
+            var index = $scope.nomMedicament.lastIndexOf(",");
+            console.log(index);
+            if (index != -1) {
+                $scope.nomMedicament = $scope.nomMedicament.substring(0,index).trim() + " [" + $scope.nomMedicament.substring(index + 1).trim() + "]";
+            }
         });
     } else {
         $scope.medicament = {};
