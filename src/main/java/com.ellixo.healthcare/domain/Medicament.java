@@ -23,7 +23,7 @@ public class Medicament {
     private List<String> voiesAdministration = new ArrayList<>();
     private String statutAdministratifAMM;
     private String typeProcedureAMM;
-    private String etatCommercialisation;
+    private Boolean etatCommercialisation;
     @Field(
             type = Date,
             index = FieldIndex.not_analyzed,
@@ -94,11 +94,11 @@ public class Medicament {
         this.typeProcedureAMM = typeProcedureAMM;
     }
 
-    public String getEtatCommercialisation() {
+    public Boolean getEtatCommercialisation() {
         return etatCommercialisation;
     }
 
-    public void setEtatCommercialisation(String etatCommercialisation) {
+    public void setEtatCommercialisation(Boolean etatCommercialisation) {
         this.etatCommercialisation = etatCommercialisation;
     }
 

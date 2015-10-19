@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Component
-@Profile("prod")
+@Profile({"prod","docker"})
 public class SchedulerService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerService.class);
@@ -92,7 +92,6 @@ public class SchedulerService {
                             line = tmp;
                         } else {
                             line = line + tmp;
-                            System.out.println(line);
                         }
                     }
 

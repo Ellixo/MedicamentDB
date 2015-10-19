@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 
 @Service
-@Profile("dev")
+@Profile({"dev"})
 public class DataSet {
 
     @Autowired

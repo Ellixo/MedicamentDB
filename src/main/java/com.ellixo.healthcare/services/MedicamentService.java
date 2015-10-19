@@ -353,9 +353,6 @@ public class MedicamentService {
             infoImportante.setCodeCIS(info.getCodeCIS());
             infoImportante.setDateDebut(info.getDateDebut());
             infoImportante.setDateFin(info.getDateFin());
-            if (Jsoup.parse(info.getInfo()).getElementsByTag("a").size() == 0) {
-                System.out.println(info);
-            }
             link = Jsoup.parse(info.getInfo()).getElementsByTag("a").get(0);
             infoImportante.setInfoURL(link.attributes().get("href"));
             infoImportante.setInfoLibelle(link.text());
