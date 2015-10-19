@@ -28,7 +28,7 @@ public class Medicament {
             type = Date,
             index = FieldIndex.not_analyzed,
             store = true,
-            format = DateFormat.custom, pattern = "yyyy/MM/dd"
+            format = DateFormat.custom, pattern = "yyyy-MM-dd"
     )
     @JsonSerialize(using = DateSerializer.class)
     @JsonDeserialize(using = DateESDeserializer.class)
@@ -369,7 +369,7 @@ public class Medicament {
                 type = FieldType.Date,
                 index = FieldIndex.not_analyzed,
                 store = true,
-                format = DateFormat.custom, pattern = "yyyy/MM/dd"
+                format = DateFormat.custom, pattern = "yyyy-MM-dd"
         )
         @JsonSerialize(using = DateSerializer.class)
         @JsonDeserialize(using = DateESDeserializer.class)
@@ -378,7 +378,7 @@ public class Medicament {
                 type = FieldType.Date,
                 index = FieldIndex.not_analyzed,
                 store = true,
-                format = DateFormat.custom, pattern = "yyyy/MM/dd"
+                format = DateFormat.custom, pattern = "yyyy-MM-dd"
         )
         @JsonSerialize(using = DateSerializer.class)
         @JsonDeserialize(using = DateESDeserializer.class)

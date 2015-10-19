@@ -1,7 +1,5 @@
 package com.ellixo.healthcare.domain.csv;
 
-import com.ellixo.healthcare.domain.util.DateDeserializer;
-import com.ellixo.healthcare.domain.util.DateHASDeserializer;
 import com.ellixo.healthcare.domain.util.DateIIDeserializer;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

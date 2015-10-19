@@ -21,7 +21,7 @@ public class DateESDeserializer extends JsonDeserializer<Date> {
             return null;
         }
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(string, dtf);
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }

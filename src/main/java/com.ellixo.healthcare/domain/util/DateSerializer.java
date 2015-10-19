@@ -18,7 +18,7 @@ public class DateSerializer extends JsonSerializer<Date> {
             return;
         }
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         jsonGenerator.writeString(dtf.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
     }
 }

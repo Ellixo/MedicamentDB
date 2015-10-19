@@ -12,20 +12,12 @@ import java.util.List;
 @Component
 public class ESMapperDecorator implements ESMapper {
 
-    public static final String PREFIX_AUTORISATION = "Autorisation ";
-
     @Autowired
     @Qualifier("delegate")
     private ESMapper delegate;
 
     public Medicament toMedicamentES(MedicamentCSV csv) {
         Medicament medicament = delegate.toMedicamentES(csv);
-        // statut
-        String statut = csv.getStatutAdministratifAMM();
-        if (statut.startsWith(PREFIX_AUTORISATION)) {
-            statut = statut.substring(PREFIX_AUTORISATION.length());
-        }
-        medicament.setStatutAdministratifAMM(statut);
         // etat
         String etat = csv.getEtatCommercialisation();
         medicament.setEtatCommercialisation(etat != null && etat.equals("Commercialisée"));
