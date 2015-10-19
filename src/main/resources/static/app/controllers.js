@@ -27,10 +27,12 @@ medicamentDBControllers.controller('SearchController', ['$scope', '$http', '$loc
 medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     if ($routeParams.codeCIS) {
         $http.get('http://localhost:8080/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
-            $scope.medicament = resp.data;
+            var medicament = resp.data;
+
+            $scope.medicament = medicament;
 
             // nom medicament
-            $scope.nomMedicament = resp.data.denomination;
+            $scope.nomMedicament = medicament.denomination;
             var index = $scope.nomMedicament.lastIndexOf(",");
             console.log(index);
             if (index != -1) {
@@ -38,8 +40,19 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
             }
 
             // alerte/warning
-            $scope.alerte = $scope.medicament.statutBDM === "ALERTE";
-            $scope.warning = $scope.medicament.statutBDM === "WARNING_DISPONIBILITE";
+            $scope.alerte = medicament.statutBDM === "ALERTE";
+            $scope.warning = medicament.statutBDM === "WARNING_DISPONIBILITE";
+
+            // infos importantes
+            $scope.infosImportantesCourantes = [];
+            var today = new Date();
+            var info;
+            for (var i = 0; i < medicament.infosImportantes.length; i++) {
+                info = medicament.infosImportantes[i];
+                if (new Date(info.dateDebut) <= today && new Date(info.dateFin) >= today) {
+                    $scope.infosImportantesCourantes.push(info);
+                }
+            }
         });
     } else {
         $scope.medicament = {};

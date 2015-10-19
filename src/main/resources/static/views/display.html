@@ -6,13 +6,28 @@
         </div>
     </div>
 
-    <div ng-if="alerte" class="alert alert-danger" role="alert">Attention ce médicament fait l'objet d'un retrait ou d'une suspension
+    <div ng-if="infosImportantesCourantes.length != 0" class="panel panel-info">
+        <div class="panel-heading">Informations importantes</div>
+        <div class="panel-body">
+            <ul>
+                <li data-ng-repeat="info in infosImportantesCourantes">
+                    <a href="{{info.infoURL}}"><p class="list-group-item-text">{{info.infoLibelle}} (en date du
+                        {{info.dateDebut}})</p></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-if="alerte" class="alert alert-danger" role="alert">Attention ce médicament fait l'objet d'un retrait ou
+        d'une suspension
         d'autorisation ou d'utilisation pour des raisons de santé publique.<br>Si vous prenez ce médicament, il vous est
         recommandé de prendre contact, dans les meilleurs délais, avec votre médecin ou avec votre pharmacien qui vous
         indiquera la conduite à tenir. Pour plus d'information, vous pouvez consulter les informations importantes
         ci-dessous.
     </div>
-    <div ng-if="warning" class="alert alert-warning" role="alert">Ce médicament n'est ou ne sera bientôt plus disponible sur le
+
+    <div ng-if="warning" class="alert alert-warning" role="alert">Ce médicament n'est ou ne sera bientôt plus disponible
+        sur le
         marché.<br>Si
         vous prenez actuellement ce médicament, il vous est recommandé d'en parler avec votre médecin ou avec votre
         pharmacien qui pourra vous orienter vers un autre traitement.
@@ -77,7 +92,7 @@
             <div ng-repeat="generique in medicament.infosGenerique.autresMedicamentsGroupe">
                 Code CIS : {{generique.codeCIS}}<br/>
                 Nom : {{generique.denomination}}<br/>
-                Type : {{presentation.type}}<br/>
+                Type : {{generique.type}}<br/>
             </div>
         </div>
     </div>
@@ -133,21 +148,6 @@
                 Valeur SMR : {{avis.valeurSMR}}<br/>
                 Libellé SMR : {{avis.libelleSMR}}<br/>
                 URL : {{avis.urlHAS}}<br/>
-            </div>
-        </div>
-    </div>
-
-    <!-- INFOS IMPORTANTES -->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Informations importantes</h3>
-        </div>
-        <div class="panel-body">
-            <div ng-repeat="info in medicament.infosImportantes">
-                Date début : {{info.dateDebut}}<br/>
-                Date fin: {{info.dateFin}}<br/>
-                Libellé : {{info.infoLibelle}}<br/>
-                URL : {{info.infoURL}}<br/>
             </div>
         </div>
     </div>

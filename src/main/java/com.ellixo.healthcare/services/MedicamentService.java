@@ -342,7 +342,7 @@ public class MedicamentService {
             return infosImportantes;
         }
 
-        infos.sort((o1, o2) -> o1.getDateDebut().compareTo(o2.getDateFin()));
+        infos.sort((o1, o2) -> o2.getDateDebut().compareTo(o1.getDateDebut()));
 
 
         InfoImportante infoImportante;
