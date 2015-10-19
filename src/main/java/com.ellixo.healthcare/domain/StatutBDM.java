@@ -1,7 +1,9 @@
 package com.ellixo.healthcare.domain;
 
+import com.google.common.base.Strings;
+
 public enum StatutBDM {
-    RAS(null), ALERTE("Alerte"), WARNING_DISPONIBILITE("Warning disponibilité");
+    RAS(""), ALERTE("Alerte"), WARNING_DISPONIBILITE("Warning disponibilité");
 
     private String libelle;
 
@@ -14,6 +16,10 @@ public enum StatutBDM {
     }
 
     public static StatutBDM fromCode(String libelle) {
+        if (Strings.isNullOrEmpty(libelle)) {
+            return RAS;
+        }
+
         for (StatutBDM type : values()) {
             if (type.libelle.equalsIgnoreCase(libelle)) {
                 return type;

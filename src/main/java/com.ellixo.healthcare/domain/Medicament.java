@@ -33,7 +33,7 @@ public class Medicament {
     @JsonSerialize(using = DateSerializer.class)
     @JsonDeserialize(using = DateESDeserializer.class)
     private Date dateAMM;
-    private String statutBDM;
+    private StatutBDM statutBDM;
     private String numeroAutorisationEuropeenne;
     private List<String> titulaires = new ArrayList<>();
     private Boolean surveillanceRenforcee;
@@ -110,11 +110,11 @@ public class Medicament {
         this.dateAMM = dateAMM;
     }
 
-    public String getStatutBDM() {
+    public StatutBDM getStatutBDM() {
         return statutBDM;
     }
 
-    public void setStatutBDM(String statutBDM) {
+    public void setStatutBDM(StatutBDM statutBDM) {
         this.statutBDM = statutBDM;
     }
 

@@ -6,13 +6,13 @@
         </div>
     </div>
 
-    <div class="alert alert-danger" role="alert">Attention ce médicament fait l'objet d'un retrait ou d'une suspension
+    <div ng-if="alerte" class="alert alert-danger" role="alert">Attention ce médicament fait l'objet d'un retrait ou d'une suspension
         d'autorisation ou d'utilisation pour des raisons de santé publique.<br>Si vous prenez ce médicament, il vous est
         recommandé de prendre contact, dans les meilleurs délais, avec votre médecin ou avec votre pharmacien qui vous
         indiquera la conduite à tenir. Pour plus d'information, vous pouvez consulter les informations importantes
         ci-dessous.
     </div>
-    <div class="alert alert-warning" role="alert">Ce médicament n'est ou ne sera bientôt plus disponible sur le
+    <div ng-if="warning" class="alert alert-warning" role="alert">Ce médicament n'est ou ne sera bientôt plus disponible sur le
         marché.<br>Si
         vous prenez actuellement ce médicament, il vous est recommandé d'en parler avec votre médecin ou avec votre
         pharmacien qui pourra vous orienter vers un autre traitement.

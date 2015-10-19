@@ -36,6 +36,10 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
             if (index != -1) {
                 $scope.nomMedicament = $scope.nomMedicament.substring(0,index).trim() + " [" + $scope.nomMedicament.substring(index + 1).trim() + "]";
             }
+
+            // alerte/warning
+            $scope.alerte = $scope.medicament.statutBDM === "ALERTE";
+            $scope.warning = $scope.medicament.statutBDM === "WARNING_DISPONIBILITE";
         });
     } else {
         $scope.medicament = {};
