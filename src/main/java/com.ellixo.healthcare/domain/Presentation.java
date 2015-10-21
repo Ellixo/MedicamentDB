@@ -18,7 +18,7 @@ public class Presentation {
 
     private String codeCIP7;
     private String libelle;
-    private String statutAdministratif;
+    private StatutAdministratifPresentation statutAdministratif;
     private String etatCommercialisationAMM;
     @Field(
             type = Date,
@@ -51,11 +51,11 @@ public class Presentation {
         this.libelle = libelle;
     }
 
-    public String getStatutAdministratif() {
+    public StatutAdministratifPresentation getStatutAdministratif() {
         return statutAdministratif;
     }
 
-    public void setStatutAdministratif(String statutAdministratif) {
+    public void setStatutAdministratif(StatutAdministratifPresentation statutAdministratif) {
         this.statutAdministratif = statutAdministratif;
     }
 

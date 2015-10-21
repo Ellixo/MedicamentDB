@@ -2,6 +2,10 @@ body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
 
+p {
+    margin: 0 0 0px;
+}
+
 .spacer {
     margin-top: 50px;
 }
@@ -26,4 +30,33 @@ footer {
     z-index: 1030;
     padding-top: 15px;
     padding-bottom: 20px;
+}
+
+.row-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.presentationOK {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid transparent;
+    border-color: #ddd;
+    background-color: #F5FFF5;
+}
+
+.presentationKO {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid transparent;
+    border-color: #ddd;
+    background-color: #F9DBDB;
+}
+
+.presentationTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 5px;
 }

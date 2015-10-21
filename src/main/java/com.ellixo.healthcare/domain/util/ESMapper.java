@@ -9,7 +9,7 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {BooleanMapper.class, StatutBDMMapper.class})
+@Mapper(componentModel = "spring", uses = {BooleanMapper.class, StatutBDMMapper.class, StatutAdministratifPresentationMapper.class})
 @DecoratedWith(ESMapperDecorator.class)
 public interface ESMapper {
 
