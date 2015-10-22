@@ -61,14 +61,29 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                 presentation = {};
                 presentationTmp = medicament.presentations[i];
 
-                presentation.libelle = presentationTmp.libelle;
+                presentation.libelle = presentationTmp.libelle.replace("-","‑").trim();
                 presentation.codeCIP7 = presentationTmp.codeCIP7;
                 presentation.codeCIP13 = presentationTmp.codeCIP13;
-                presentation.libelle = presentationTmp.libelle.trim();
                 presentation.etatCommercialisationAMM = presentationTmp.etatCommercialisationAMM;
+                presentation.statut = (presentation.etatCommercialisationAMM === "Déclaration de commercialisation");
                 presentation.dateDeclarationCommercialisation = presentationTmp.dateDeclarationCommercialisation;
                 presentation.agrementCollectivites = presentationTmp.agrementCollectivites;
-                presentation.remboursement = presentationTmp.prix.length != 0;
+                presentation.remboursement = presentationTmp.prix && presentationTmp.prix.length != 0;
+
+                if (!presentation.statut) {
+                    switch (presentation.etatCommercialisationAMM) {
+                        case "Déclaration d'arrêt de commercialisation":
+                            presentation.warning = "Déclaration arrêt commercialisation";
+                            break;
+                        case "Arrêt de commercialisation (le médicament n'a plus d'autorisation)":
+                            presentation.warning = "Arrêt commercialisation";
+                            break;
+                        case "Déclaration de suspension de commercialisation":
+                            presentation.warning = "Suspension commercialisation";
+                            break;
+                    }
+                }
+
                 if (presentation.remboursement) {
                     presentation.prix = presentationTmp.prix;
                     presentation.tauxRemboursement = "";
@@ -82,24 +97,76 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                         presentation.indicationsRemboursement = $sce.trustAsHtml("<br>" + presentationTmp.indicationsRemboursement);
                     }
                 }
-                presentation.abrogation = false;
-                presentation.statut = true;
+
                 if (presentationTmp.statutAdministratif === "ABROGEE") {
                     index = presentationTmp.libelle.lastIndexOf("(");
                     presentation.libelle = presentationTmp.libelle.substring(0,index).trim();
-                    presentation.abrogation = true;
-                    presentation.statut = false;
                     index = presentationTmp.libelle.lastIndexOf("/");
                     presentation.dateAbrogation = presentationTmp.libelle.substring(index - 5,index + 5);
+                    presentation.warning = "Abrogée";
                 }
 
                 $scope.presentations.push(presentation);
             }
-            console.log($scope.presentations);
+
+            // asmr
+            $scope.avisSMR = [];
+            var avisTmp;
+            var avis;
+            for (var i = 0; i < medicament.avisSMR.length; i++) {
+                avis = {};
+                avisTmp = medicament.avisSMR[i];
+
+                avis.valeurSMR = avisTmp.valeurSMR;
+                avis.dateAvisCommissionTransparence = avisTmp.dateAvisCommissionTransparence;
+                avis.motifEvaluation = avisTmp.motifEvaluation;
+                avis.libelleSMR = $sce.trustAsHtml(avisTmp.libelleSMR);
+
+                $scope.avisSMR.push(avis);
+            }
+
+            // asmr
+            $scope.avisASMR = [];
+            for (var i = 0; i < medicament.avisASMR.length; i++) {
+                avis = {};
+                avisTmp = medicament.avisASMR[i];
+
+                switch (avisTmp.valeurSMR) {
+                    case "I" :
+                        avis.valeurSMR = "Majeure (I)";
+                        break;
+                    case "II" :
+                        avis.valeurSMR = "Importante (II)";
+                        break;
+                    case "III" :
+                        avis.valeurSMR = "Modérée (III)";
+                        break;
+                    case "IV" :
+                        avis.valeurSMR = "Mineure (IV)";
+                        break;
+                    case "V" :
+                        avis.valeurSMR = "Inexistante (V - Absence de progrès thérapeutique)";
+                        break;
+                }
+
+                avis.dateAvisCommissionTransparence = avisTmp.dateAvisCommissionTransparence;
+                avis.motifEvaluation = avisTmp.motifEvaluation;
+                avis.libelleSMR = $sce.trustAsHtml(avisTmp.libelleSMR);
+
+                $scope.avisASMR.push(avis);
+            }
 
         });
     } else {
         $scope.medicament = {};
     }
 
+    $scope.go = function(path) {
+        var win = window.open(path, '_blank');
+        if(win){
+            win.focus();
+        }else{
+            alert('Please allow popups for this site');
+        }
+    }
 }]);

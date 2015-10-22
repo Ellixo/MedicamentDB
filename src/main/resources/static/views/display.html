@@ -6,6 +6,22 @@
         </div>
     </div>
 
+    <!-- ALERTES -->
+    <div class="row">
+        <div ng-if="alerte" class="alert alert-danger" role="alert">
+            <p>Attention ce médicament fait l'objet d'un retrait ou d'une suspension d'autorisation ou d'utilisation pour des raisons de santé publique.</p>
+            <p>Si vous prenez ce médicament, il vous est recommandé de prendre contact, dans les meilleurs délais, avec votre médecin ou avec votre pharmacien qui vous indiquera la conduite à tenir. Pour plus d'information, vous pouvez consulter les informations importantes ci-dessous.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div ng-if="warning" class="alert alert-warning" role="alert">
+            <p>Ce médicament n'est ou ne sera bientôt plusdisponible sur le marché.</p>
+            <p>Si vous prenez actuellement ce médicament, il vous est recommandé d'en parler avec votre médecin ou avec votre pharmacien qui pourra vous orienter vers un autre traitement.</p>
+        </div>
+    </div>
+
+    <!-- INFOS IMPORTANTES -->
     <div class="row">
         <div ng-if="infosImportantesCourantes.length != 0" class="panel panel-info">
             <div class="panel-heading">Informations importantes</div>
@@ -21,17 +37,31 @@
         </div>
     </div>
 
+    <!-- PRESENTATIONS -->
     <div class="row">
-        <div ng-if="alerte" class="alert alert-danger" role="alert">
-            <p>Attention ce médicament fait l'objet d'un retrait ou d'une suspension d'autorisation ou d'utilisation pour des raisons de santé publique.</p>
-            <p>Si vous prenez ce médicament, il vous est recommandé de prendre contact, dans les meilleurs délais, avec votre médecin ou avec votre pharmacien qui vous indiquera la conduite à tenir. Pour plus d'information, vous pouvez consulter les informations importantes ci-dessous.</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div ng-if="warning" class="alert alert-warning" role="alert">
-            <p>Ce médicament n'est ou ne sera bientôt plusdisponible sur le marché.</p>
-            <p>Si vous prenez actuellement ce médicament, il vous est recommandé d'en parler avec votre médecin ou avec votre pharmacien qui pourra vous orienter vers un autre traitement.</p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Présentations</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row row-height">
+                    <div class="col-lg-6 col-md-6 col-sm-12 set-item" ng-repeat="presentation in presentations">
+                        <div ng-class="presentation.statut ? 'presentationOK' : 'presentationKO'" >
+                            <p><span class="presentationTitle">{{presentation.libelle}}</span><span ng-if="!presentation.statut" class="label label-warning">{{presentation.warning}}</span>
+                            </p>
+                            <br>
+                            <p>Code CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}</p>
+                            <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}}</p>
+                            <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
+                            <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
+                            <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>
+                            <p ng-if="presentation.remboursement">Prix : {{presentation.prix}}€ (taux de remboursement : {{presentation.tauxRemboursement}})</p>
+                            <p ng-bind-html="presentation.indicationsRemboursement"></p>
+                            <p ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -64,24 +94,26 @@
                 <h3 class="panel-title">Composition</h3>
             </div>
             <div class="panel-body">
-                <div ng-repeat="substanceActive in medicament.composition">
-                    Désignation : {{substanceActive.designationElementPharmaceutique}}<br/>
-                    Code : {{substanceActive.codeSubstance}}<br/>
-                    Nom : {{substanceActive.denominationSubstance}}<br/>
-                    Dosage : {{substanceActive.dosageSubstance}}<br/>
-                    Référence dosage : {{substanceActive.referenceDosage}}<br/>
+                <ul class="list-group" ng-repeat="substanceActive in medicament.composition">
+                    <li class="list-group-item">
+                        Désignation : {{substanceActive.designationElementPharmaceutique}}<br/>
+                        Code : {{substanceActive.codeSubstance}}<br/>
+                        Nom : {{substanceActive.denominationSubstance}}<br/>
+                        Dosage : {{substanceActive.dosageSubstance}}<br/>
+                        Référence dosage : {{substanceActive.referenceDosage}}<br/>
 
-                    <div ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
-                        ------<br/>
-                        FRACTION THERAPEUTIQUE<br/>
-                        ------<br/>
-                        Désignation : {{fractionTherapeutique.designationElementPharmaceutique}}<br/>
-                        Code : {{fractionTherapeutique.codeSubstance}}<br/>
-                        Nom : {{fractionTherapeutique.denominationSubstance}}<br/>
-                        Dosage : {{fractionTherapeutique.dosageSubstance}}<br/>
-                        Référence dosage : {{fractionTherapeutique.referenceDosage}}<br/>
-                    </div>
-                </div>
+                        <div ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
+                            ------<br/>
+                            FRACTION THERAPEUTIQUE<br/>
+                            ------<br/>
+                            Désignation : {{fractionTherapeutique.designationElementPharmaceutique}}<br/>
+                            Code : {{fractionTherapeutique.codeSubstance}}<br/>
+                            Nom : {{fractionTherapeutique.denominationSubstance}}<br/>
+                            Dosage : {{fractionTherapeutique.dosageSubstance}}<br/>
+                            Référence dosage : {{fractionTherapeutique.referenceDosage}}<br/>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -105,31 +137,6 @@
         </div>
     </div>
 
-    <!-- PRESENTATIONS -->
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Présentations</h3>
-            </div>
-            <div class="panel-body">
-                <div class="row row-height">
-                    <div class="col-md-6 col-sm-12 set-item" ng-class="presentation.statut ? 'presentationOK' : 'presentationKO'" ng-repeat="presentation in presentations">
-                        <p><span class="presentationTitle">{{presentation.libelle}}</span><span ng-if="!presentation.statut" class="label label-warning">Abrogée</span></p>
-                        <br>
-                        <p>Code CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}</p>
-                        <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}}</p>
-                        <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
-                        <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
-                        <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>
-                        <p ng-if="presentation.remboursement">Prix : {{presentation.prix}}€ (taux de remboursement : {{presentation.tauxRemboursement}})</p>
-                        <p ng-bind-html="presentation.indicationsRemboursement"></p>
-                        <p ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- AVIS SMR -->
     <div class="row">
         <div class="panel panel-default">
@@ -137,14 +144,26 @@
                 <h3 class="panel-title">Service médical rendu (SMR)</h3>
             </div>
             <div class="panel-body">
-                <div ng-repeat="avis in medicament.avisSMR">
-                    Code dossier HAS : {{avis.codeDossierHAS}}<br/>
-                    Motif évaluation : {{avis.motifEvaluation}}<br/>
-                    Date avis commission transparence : {{avis.dateAvisCommissionTransparence}}<br/>
-                    Valeur SMR : {{avis.valeurSMR}}<br/>
-                    Libelle SMR : {{avis.libelleSMR}}<br/>
-                    URL : {{avis.urlHAS}}<br/>
-                </div>
+                <p>Les libellés affichés ci-dessous ne sont que des résumés ou extraits issus des avis rendus par la Commission de la Transparence. Seul l'avis complet de la Commission de la Transparence fait référence. </p>
+                <table class="table" ng-if="avisSMR.length != 0">
+                    <thead>
+                    <tr>
+                        <th>Valeur du SMR</th>
+                        <th>Date</th>
+                        <th>Motif de l'évaluation</th>
+                        <th>Résumé de l'avis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="avis in avisSMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
+                        <td>{{avis.valeurSMR}}</td>
+                        <td>{{avis.dateAvisCommissionTransparence}}</td>
+                        <td>{{avis.motifEvaluation}}</td>
+                        <td ng-bind-html="avis.libelleSMR"/>
+                    </tr>
+                    </tbody>
+                </table>
+                <p ng-if="avisSMR.length == 0">Pas de SMR disponible pour ce médicament</p>
             </div>
         </div>
     </div>
@@ -156,14 +175,26 @@
                 <h3 class="panel-title">Amélioration du service médical rendu (ASMR)</h3>
             </div>
             <div class="panel-body">
-                <div ng-repeat="avis in medicament.avisASMR">
-                    Code dossier HAS : {{avis.codeDossierHAS}}<br/>
-                    Motif évaluation : {{avis.motifEvaluation}}<br/>
-                    Date avis commission transparence : {{avis.dateAvisCommissionTransparence}}<br/>
-                    Valeur SMR : {{avis.valeurSMR}}<br/>
-                    Libellé SMR : {{avis.libelleSMR}}<br/>
-                    URL : {{avis.urlHAS}}<br/>
-                </div>
+                <p>Les libellés affichés ci-dessous ne sont que des résumés ou extraits issus des avis rendus par la Commission de la Transparence. Seul l'avis complet de la Commission de la Transparence fait référence. </p>
+                <table class="table" ng-if="avisASMR.length != 0">
+                    <thead>
+                    <tr>
+                        <th>Valeur de l'ASMR</th>
+                        <th>Date</th>
+                        <th>Motif de l'évaluation</th>
+                        <th>Résumé de l'avis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="avis in avisASMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
+                        <td>{{avis.valeurSMR}}</td>
+                        <td>{{avis.dateAvisCommissionTransparence}}</td>
+                        <td>{{avis.motifEvaluation}}</td>
+                        <td ng-bind-html="avis.libelleSMR"/>
+                    </tr>
+                    </tbody>
+                </table>
+                <p ng-if="avisASMR.length == 0">Pas d'ASMR disponible pour ce médicament</p>
             </div>
         </div>
     </div>

@@ -32,27 +32,24 @@ footer {
     padding-bottom: 20px;
 }
 
-.row-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+.set-item {
+    padding: 5px;
 }
 
 .presentationOK {
-    margin: 5px;
     padding: 5px;
     border: 1px solid transparent;
     border-color: #ddd;
     background-color: #F5FFF5;
+    margin-bottom: 10px;
 }
 
 .presentationKO {
-    margin: 5px;
     padding: 5px;
     border: 1px solid transparent;
     border-color: #ddd;
     background-color: #F9DBDB;
+    margin-bottom: 10px;
 }
 
 .presentationTitle {
