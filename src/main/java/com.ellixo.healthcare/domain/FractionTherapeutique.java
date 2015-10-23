@@ -4,21 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class FractionTherapeutique {
 
-    private String designationElementPharmaceutique;
     private String codeSubstance;
     private String denominationSubstance;
     private String dosageSubstance;
-    private String referenceDosage;
     @JsonIgnore
     private Integer numero;
-
-    public String getDesignationElementPharmaceutique() {
-        return designationElementPharmaceutique;
-    }
-
-    public void setDesignationElementPharmaceutique(String designationElementPharmaceutique) {
-        this.designationElementPharmaceutique = designationElementPharmaceutique;
-    }
 
     public String getCodeSubstance() {
         return codeSubstance;
@@ -42,14 +32,6 @@ public class FractionTherapeutique {
 
     public void setDosageSubstance(String dosageSubstance) {
         this.dosageSubstance = dosageSubstance;
-    }
-
-    public String getReferenceDosage() {
-        return referenceDosage;
-    }
-
-    public void setReferenceDosage(String referenceDosage) {
-        this.referenceDosage = referenceDosage;
     }
 
     public Integer getNumero() {
@@ -79,11 +61,9 @@ public class FractionTherapeutique {
     @Override
     public String toString() {
         return "FractionTherapeutique{" +
-                "designationElementPharmaceutique='" + designationElementPharmaceutique + '\'' +
-                ", codeSubstance='" + codeSubstance + '\'' +
+                "codeSubstance='" + codeSubstance + '\'' +
                 ", denominationSubstance='" + denominationSubstance + '\'' +
                 ", dosageSubstance='" + dosageSubstance + '\'' +
-                ", referenceDosage='" + referenceDosage + '\'' +
                 ", numero=" + numero +
                 '}';
     }

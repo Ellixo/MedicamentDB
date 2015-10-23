@@ -94,23 +94,24 @@
                 <h3 class="panel-title">Composition</h3>
             </div>
             <div class="panel-body">
-                <ul class="list-group" ng-repeat="substanceActive in medicament.composition">
+                <ul class="list-group" ng-repeat="composition in medicament.compositions">
                     <li class="list-group-item">
+                        <div ng-repeat="substanceActive in composition.substancesActives">
                         Désignation : {{substanceActive.designationElementPharmaceutique}}<br/>
                         Code : {{substanceActive.codeSubstance}}<br/>
                         Nom : {{substanceActive.denominationSubstance}}<br/>
                         Dosage : {{substanceActive.dosageSubstance}}<br/>
                         Référence dosage : {{substanceActive.referenceDosage}}<br/>
-
-                        <div ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
-                            ------<br/>
-                            FRACTION THERAPEUTIQUE<br/>
-                            ------<br/>
-                            Désignation : {{fractionTherapeutique.designationElementPharmaceutique}}<br/>
-                            Code : {{fractionTherapeutique.codeSubstance}}<br/>
-                            Nom : {{fractionTherapeutique.denominationSubstance}}<br/>
-                            Dosage : {{fractionTherapeutique.dosageSubstance}}<br/>
-                            Référence dosage : {{fractionTherapeutique.referenceDosage}}<br/>
+                            <div ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
+                                ------<br/>
+                                FRACTION THERAPEUTIQUE<br/>
+                                ------<br/>
+                                Désignation : {{fractionTherapeutique.designationElementPharmaceutique}}<br/>
+                                Code : {{fractionTherapeutique.codeSubstance}}<br/>
+                                Nom : {{fractionTherapeutique.denominationSubstance}}<br/>
+                                Dosage : {{fractionTherapeutique.dosageSubstance}}<br/>
+                                Référence dosage : {{fractionTherapeutique.referenceDosage}}<br/>
+                            </div>
                         </div>
                     </li>
                 </ul>

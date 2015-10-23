@@ -6,23 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubstanceActive {
-
-    private String designationElementPharmaceutique;
+    ;
     private String codeSubstance;
     private String denominationSubstance;
     private String dosageSubstance;
-    private String referenceDosage;
     @JsonIgnore
     private Integer numero;
     private List<FractionTherapeutique> fractionsTherapeutiques = new ArrayList<>();
-
-    public String getDesignationElementPharmaceutique() {
-        return designationElementPharmaceutique;
-    }
-
-    public void setDesignationElementPharmaceutique(String designationElementPharmaceutique) {
-        this.designationElementPharmaceutique = designationElementPharmaceutique;
-    }
 
     public String getCodeSubstance() {
         return codeSubstance;
@@ -46,14 +36,6 @@ public class SubstanceActive {
 
     public void setDosageSubstance(String dosageSubstance) {
         this.dosageSubstance = dosageSubstance;
-    }
-
-    public String getReferenceDosage() {
-        return referenceDosage;
-    }
-
-    public void setReferenceDosage(String referenceDosage) {
-        this.referenceDosage = referenceDosage;
     }
 
     public Integer getNumero() {
@@ -91,11 +73,9 @@ public class SubstanceActive {
     @Override
     public String toString() {
         return "SubstanceActive{" +
-                "designationElementPharmaceutique='" + designationElementPharmaceutique + '\'' +
-                ", codeSubstance='" + codeSubstance + '\'' +
+                "codeSubstance='" + codeSubstance + '\'' +
                 ", denominationSubstance='" + denominationSubstance + '\'' +
                 ", dosageSubstance='" + dosageSubstance + '\'' +
-                ", referenceDosage='" + referenceDosage + '\'' +
                 ", numero=" + numero +
                 ", fractionsTherapeutiques=" + fractionsTherapeutiques +
                 '}';

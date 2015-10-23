@@ -36,8 +36,8 @@ public class MedicamentTest {
 
         Medicament medicament = medicaments.stream().filter(x -> x.getCodeCIS().equals("60008845")).findFirst().get();
 
-        assertEquals(medicament.getComposition().get(0).getFractionsTherapeutiques().size(), 1);
-        assertEquals(medicament.getComposition().get(0).getFractionsTherapeutiques().size(), 1);
+        assertEquals(medicament.getCompositions().get(0).getSubstancesActives().size(), 1);
+        assertEquals(medicament.getCompositions().get(0).getSubstancesActives().get(0).getFractionsTherapeutiques().size(), 1);
 
         medicament = medicaments.stream().filter(x -> x.getCodeCIS().equals("62869109")).findFirst().get();
 

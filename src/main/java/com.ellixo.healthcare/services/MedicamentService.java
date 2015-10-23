@@ -1,5 +1,6 @@
 package com.ellixo.healthcare.services;
 
+import com.ellixo.healthcare.Constants;
 import com.ellixo.healthcare.domain.*;
 import com.ellixo.healthcare.domain.csv.*;
 import com.ellixo.healthcare.domain.util.ESMapper;
@@ -9,6 +10,7 @@ import com.ellixo.healthcare.repository.MedicamentRepository;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.google.common.base.Strings;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.Jsoup;
@@ -24,8 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.ellixo.healthcare.*;
 
 @Service
 public class MedicamentService {
@@ -105,41 +105,69 @@ public class MedicamentService {
         MappingIterator<CompositionCSV> it = csvMapper.readerFor(CompositionCSV.class).with(schema).readValues(new File(dir, Constants.CIS_COMPO_BDPM_FILE));
 
         String previousCodeCIS = null;
-        CompositionCSV composition = null;
-        List<SubstanceActive> currentSAs = new ArrayList<>();
-        List<FractionTherapeutique> currentFTs = new ArrayList<>();
+        CompositionCSV composition;
+        List<CompositionCSV> compositions = new ArrayList<>();
         while (it.hasNext()) {
             composition = it.next();
 
             if (previousCodeCIS != null && !composition.getCodeCIS().equals(previousCodeCIS)) {
-                linkCompositions(previousCodeCIS, currentSAs, currentFTs, medicaments);
+                linkCompositions(previousCodeCIS, compositions, medicaments);
 
-                currentSAs = new ArrayList<>();
-                currentFTs = new ArrayList<>();
+                compositions = new ArrayList<>();
             }
 
-            if (composition.getNatureComposant().equals("SA")) {
-                currentSAs.add(mapper.toSubstanceActiveES(composition));
-            } else {
-                currentFTs.add(mapper.toFractionTherapeutiqueES(composition));
-            }
+            compositions.add(composition);
 
             previousCodeCIS = composition.getCodeCIS();
         }
 
         if (previousCodeCIS != null) {
-            linkCompositions(previousCodeCIS, currentSAs, currentFTs, medicaments);
+            linkCompositions(previousCodeCIS, compositions, medicaments);
         }
     }
 
-    private void linkCompositions(String codeCIS, List<SubstanceActive> currentSAs, List<FractionTherapeutique> currentFTs, List<Medicament> medicaments) {
+    private void linkCompositions(String codeCIS, List<CompositionCSV> compositions, List<Medicament> medicaments) {
         Medicament medicament = medicaments.stream()
                 .filter(x -> x.getCodeCIS().equals(codeCIS))
                 .findFirst().orElse(null);
 
         if (medicament != null) {
-            currentFTs.forEach(ft -> currentSAs.stream().filter(sa -> sa.getNumero().equals(ft.getNumero())).findFirst().get().getFractionsTherapeutiques().add(ft));
-            medicament.setComposition(currentSAs);
+            Map<String, List<CompositionCSV>> map = compositions.stream().collect(
+                    Collectors.groupingBy(CompositionCSV::getDesignationElementPharmaceutique)
+            );
+
+            Composition composition;
+            List<CompositionCSV> csv;
+            for (Map.Entry<String, List<CompositionCSV>> element : map.entrySet()) {
+                composition = new Composition();
+                composition.setDesignationElementPharmaceutique(element.getKey());
+
+                csv = element.getValue();
+                csv.sort((o1, o2) -> {
+                    int sort = -(o1.getNatureComposant().compareTo(o2.getNatureComposant()));
+                    if (sort != 0) {
+                        return sort;
+                    } else {
+                        return Integer.compare(o1.getNumero(), o2.getNumero());
+                    }
+                });
+
+                for (CompositionCSV valeur : csv) {
+                    if (Strings.isNullOrEmpty(composition.getReferenceDosage())) {
+                        composition.setReferenceDosage(valeur.getReferenceDosage());
+                    }
+
+                    if (valeur.getNatureComposant().equals("SA")) {
+                        composition.getSubstancesActives().add(mapper.toSubstanceActiveES(valeur));
+                    } else {
+                        FractionTherapeutique ft = mapper.toFractionTherapeutiqueES(valeur);
+                        composition.getSubstancesActives().stream()
+                                .filter(sa -> sa.getNumero().equals(ft.getNumero())).findFirst().get().getFractionsTherapeutiques().add(ft);
+                    }
+                }
+
+                medicament.getCompositions().add(composition);
+            }
         }
     }
 
@@ -368,4 +396,5 @@ public class MedicamentService {
 
         return infosImportantes;
     }
+
 }

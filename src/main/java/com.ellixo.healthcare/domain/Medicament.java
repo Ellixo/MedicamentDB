@@ -39,7 +39,7 @@ public class Medicament {
     private Boolean surveillanceRenforcee;
 
     private List<Presentation> presentations = new ArrayList<>();
-    private List<SubstanceActive> composition = new ArrayList<>();
+    private List<Composition> compositions = new ArrayList<>();
     private List<AvisSMR> avisSMR = new ArrayList<>();
     private List<AvisASMR> avisASMR = new ArrayList<>();
     private List<String> conditionsPrescriptionDelivranceCSV = new ArrayList<>();
@@ -150,12 +150,12 @@ public class Medicament {
         this.presentations = presentations;
     }
 
-    public List<SubstanceActive> getComposition() {
-        return composition;
+    public List<Composition> getCompositions() {
+        return compositions;
     }
 
-    public void setComposition(List<SubstanceActive> composition) {
-        this.composition = composition;
+    public void setCompositions(List<Composition> compositions) {
+        this.compositions = compositions;
     }
 
     public List<AvisSMR> getAvisSMR() {
@@ -230,7 +230,7 @@ public class Medicament {
                 ", titulaires=" + titulaires +
                 ", surveillanceRenforcee='" + surveillanceRenforcee + '\'' +
                 ", presentations=" + presentations +
-                ", composition=" + composition +
+                ", compositions=" + compositions +
                 ", avisSMR=" + avisSMR +
                 ", avisASMR=" + avisASMR +
                 ", conditionsPrescriptionDelivranceCSV=" + conditionsPrescriptionDelivranceCSV +
