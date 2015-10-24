@@ -7,23 +7,29 @@
     </div>
 
     <!-- ALERTES -->
-    <div class="row">
-        <div ng-if="alerte" class="alert alert-danger" role="alert">
+    <div class="row" ng-if="medicament.surveillanceRenforcee" >
+        <div class="alert alert-danger" role="alert">
+                <a target="_blank" href="http://ansm.sante.fr/Activites/Surveillance-des-medicaments/Surveillance-des-medicaments" title="Lien vers le site de l'ANSM sur les médicaments sous surveillance - nouvelle fenêtre"><img class="imgMiddle" height="35px" src="img/triangle_noir.png" alt="Médicament sous surveillance renforcée"></a>&nbsp;Ce médicament fait l’objet d’une surveillance renforcée. Pour plus d'informations, <a target="_blank" href="http://ansm.sante.fr/Activites/Surveillance-des-medicaments/Surveillance-des-medicaments" title="Lien vers le site de l'ANSM sur les médicaments sous surveillance - nouvelle fenêtre">cliquez ici</a>
+        </div>
+    </div>
+
+    <div class="row" ng-if="alerte" >
+        <div class="alert alert-danger" role="alert">
             <p>Attention ce médicament fait l'objet d'un retrait ou d'une suspension d'autorisation ou d'utilisation pour des raisons de santé publique.</p>
             <p>Si vous prenez ce médicament, il vous est recommandé de prendre contact, dans les meilleurs délais, avec votre médecin ou avec votre pharmacien qui vous indiquera la conduite à tenir. Pour plus d'information, vous pouvez consulter les informations importantes ci-dessous.</p>
         </div>
     </div>
 
-    <div class="row">
-        <div ng-if="warning" class="alert alert-warning" role="alert">
-            <p>Ce médicament n'est ou ne sera bientôt plusdisponible sur le marché.</p>
+    <div class="row" ng-if="warning" >
+        <div class="alert alert-warning" role="alert">
+            <p>Ce médicament n'est ou ne sera bientôt plus disponible sur le marché.</p>
             <p>Si vous prenez actuellement ce médicament, il vous est recommandé d'en parler avec votre médecin ou avec votre pharmacien qui pourra vous orienter vers un autre traitement.</p>
         </div>
     </div>
 
     <!-- INFOS IMPORTANTES -->
-    <div class="row">
-        <div ng-if="infosImportantesCourantes.length != 0" class="panel panel-info">
+    <div class="row" ng-if="infosImportantesCourantes.length != 0">
+        <div class="panel panel-info">
             <div class="panel-heading">Informations importantes</div>
             <div class="panel-body">
                 <ul>
@@ -37,6 +43,73 @@
         </div>
     </div>
 
+    <!-- PRESCRIPTION -->
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Conditions de prescriptions</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li data-ng-repeat="condition in medicament.conditionsPrescriptionDelivrance">
+                        {{condition}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERIQUES -->
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Groupe Générique [{{medicament.infosGenerique.libelleGroupe}}]</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <a href class="list-group-item active">
+                        <span class="badge">{{medicament.infosGenerique.type}}</span>
+                        {{nomMedicament}}
+                    </a>
+                </ul>
+                <ul class="list-group" ng-repeat="generique in medicament.infosGenerique.autresMedicamentsGroupe">
+                    <a href ng-click="display(generique.codeCIS)" class="list-group-item">
+                        <span class="badge">{{generique.type}}</span>
+                        {{generique.denomination}}
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPOSITION -->
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Composition</h3>
+            </div>
+            <div class="panel-body">
+                <div class="tree">
+                    <ul>
+                        <li ng-repeat="composition in medicament.compositions">
+                            <a href="#">{{composition.designationElementPharmaceutique}} (composition pour {{composition.referenceDosage}})</a>
+                            <ul>
+                                <li ng-repeat="substanceActive in composition.substancesActives">
+                                    <a href="#">{{substanceActive.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                    <ul>
+                                        <li ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
+                                            <a href="#">{{fractionTherapeutique.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- PRESENTATIONS -->
     <div class="row">
         <div class="panel panel-default">
@@ -44,23 +117,21 @@
                 <h3 class="panel-title">Présentations</h3>
             </div>
             <div class="panel-body">
-                <div class="row row-height">
-                    <div class="col-lg-6 col-md-6 col-sm-12 set-item" ng-repeat="presentation in presentations">
-                        <div ng-class="presentation.statut ? 'presentationOK' : 'presentationKO'" >
-                            <p><span class="presentationTitle">{{presentation.libelle}}</span><span ng-if="!presentation.statut" class="label label-warning">{{presentation.warning}}</span>
-                            </p>
-                            <br>
-                            <p>Code CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}</p>
-                            <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}}</p>
-                            <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
-                            <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
-                            <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>
-                            <p ng-if="presentation.remboursement">Prix : {{presentation.prix}}€ (taux de remboursement : {{presentation.tauxRemboursement}})</p>
-                            <p ng-bind-html="presentation.indicationsRemboursement"></p>
-                            <p ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
-                        </div>
-                    </div>
-                </div>
+                <ul class="list-group" ng-repeat="presentation in presentations">
+                    <li class="list-group-item" ng-class="presentation.statut ? 'presentationOK' : 'presentationKO'" >
+                        <p><span class="presentationTitle">{{presentation.libelle}}</span><span ng-if="!presentation.statut" class="label label-warning">{{presentation.warning}}</span>
+                        </p>
+                        <br>
+                        <p>Code CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}</p>
+                        <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}}</p>
+                        <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
+                        <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
+                        <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>
+                        <p ng-if="presentation.remboursement">Prix : {{presentation.prix}}€ (taux de remboursement : {{presentation.tauxRemboursement}})</p>
+                        <p ng-bind-html="presentation.indicationsRemboursement"></p>
+                        <p ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -76,64 +147,9 @@
                 Voies administration : {{medicament.voiesAdministration}}<br/>
                 Statut administratif : {{medicament.statutAdministratifAMM}}<br/>
                 Type procédure AMM : {{medicament.typeProcedureAMM}}<br/>
-                Etat commercialisation : {{medicament.etatCommercialisation}}<br/>
                 Date AMM : {{medicament.dateAMM}}<br/>
-                Statut : {{medicament.statutBDM}}<br/>
                 Numéro autorisation européenne : {{medicament.numeroAutorisationEuropeenne}}<br/>
                 Titulaires : {{medicament.titulaires}}<br/>
-                Surveillance renforcée : {{medicament.surveillanceRenforcee}}<br/>
-                Conditions de prescription/délivrance : {{medicament.conditionsPrescriptionDelivranceCSV}}<br/>
-            </div>
-        </div>
-    </div>
-
-    <!-- COMPOSITION -->
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Composition</h3>
-            </div>
-            <div class="panel-body">
-                <ul class="list-group" ng-repeat="composition in medicament.compositions">
-                    <li class="list-group-item">
-                        <div ng-repeat="substanceActive in composition.substancesActives">
-                        Désignation : {{substanceActive.designationElementPharmaceutique}}<br/>
-                        Code : {{substanceActive.codeSubstance}}<br/>
-                        Nom : {{substanceActive.denominationSubstance}}<br/>
-                        Dosage : {{substanceActive.dosageSubstance}}<br/>
-                        Référence dosage : {{substanceActive.referenceDosage}}<br/>
-                            <div ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
-                                ------<br/>
-                                FRACTION THERAPEUTIQUE<br/>
-                                ------<br/>
-                                Désignation : {{fractionTherapeutique.designationElementPharmaceutique}}<br/>
-                                Code : {{fractionTherapeutique.codeSubstance}}<br/>
-                                Nom : {{fractionTherapeutique.denominationSubstance}}<br/>
-                                Dosage : {{fractionTherapeutique.dosageSubstance}}<br/>
-                                Référence dosage : {{fractionTherapeutique.referenceDosage}}<br/>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- GENERIQUES -->
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Génériques</h3>
-            </div>
-            <div class="panel-body">
-                Type : {{medicament.infosGenerique.type}}<br/>
-                Groupe : {{medicament.infosGenerique.libelleGroupe}}<br/>
-
-                <div ng-repeat="generique in medicament.infosGenerique.autresMedicamentsGroupe">
-                    Code CIS : {{generique.codeCIS}}<br/>
-                    Nom : {{generique.denomination}}<br/>
-                    Type : {{generique.type}}<br/>
-                </div>
             </div>
         </div>
     </div>

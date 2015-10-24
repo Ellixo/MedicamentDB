@@ -42,7 +42,7 @@ public class Medicament {
     private List<Composition> compositions = new ArrayList<>();
     private List<AvisSMR> avisSMR = new ArrayList<>();
     private List<AvisASMR> avisASMR = new ArrayList<>();
-    private List<String> conditionsPrescriptionDelivranceCSV = new ArrayList<>();
+    private List<String> conditionsPrescriptionDelivrance = new ArrayList<>();
     private InfosGenerique infosGenerique;
     private List<InfoImportante> infosImportantes = new ArrayList<>();
 
@@ -174,12 +174,12 @@ public class Medicament {
         this.avisASMR = avisASMR;
     }
 
-    public List<String> getConditionsPrescriptionDelivranceCSV() {
-        return conditionsPrescriptionDelivranceCSV;
+    public List<String> getConditionsPrescriptionDelivrance() {
+        return conditionsPrescriptionDelivrance;
     }
 
-    public void setConditionsPrescriptionDelivranceCSV(List<String> conditionsPrescriptionDelivranceCSV) {
-        this.conditionsPrescriptionDelivranceCSV = conditionsPrescriptionDelivranceCSV;
+    public void setConditionsPrescriptionDelivrance(List<String> conditionsPrescriptionDelivrance) {
+        this.conditionsPrescriptionDelivrance = conditionsPrescriptionDelivrance;
     }
 
     public InfosGenerique getInfosGenerique() {
@@ -233,7 +233,7 @@ public class Medicament {
                 ", compositions=" + compositions +
                 ", avisSMR=" + avisSMR +
                 ", avisASMR=" + avisASMR +
-                ", conditionsPrescriptionDelivranceCSV=" + conditionsPrescriptionDelivranceCSV +
+                ", conditionsPrescriptionDelivrance=" + conditionsPrescriptionDelivrance +
                 ", infosGenerique=" + infosGenerique +
                 ", infosImportantes=" + infosImportantes +
                 '}';

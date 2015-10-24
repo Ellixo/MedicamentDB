@@ -18,16 +18,25 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-public class MedicamentTest {
+public class MedicamentManualTest {
 
     @Autowired
     MedicamentService service;
 
     @Test
     public void readMedicaments() {
-        File dir = new File(MedicamentTest.class.getClassLoader().getResource(".").getFile());
+        //File dir = new File(MedicamentTest.class.getClassLoader().getResource("/Users/Greg/Projects/MedicamentDB/src/main/resources/dataset").getFile());
+        File dir = new File("/Users/Greg/Projects/MedicamentDB/src/main/resources/dataset");
 
         List<Medicament> medicaments = service.readMedicaments(dir).getLeft();
+
+        medicaments.forEach(x -> x.getCompositions()
+                .forEach(y -> y.getSubstancesActives()
+                        .forEach(z -> {
+                            if (z.getFractionsTherapeutiques().size() > 1) {
+                                System.out.println(x.getCodeCIS());
+                            }
+                        } )));
 
         assertEquals(medicaments.size(), 7);
         assertEquals(medicaments.get(0).getCodeCIS(), "61266250");
@@ -36,8 +45,8 @@ public class MedicamentTest {
 
         Medicament medicament = medicaments.stream().filter(x -> x.getCodeCIS().equals("60008845")).findFirst().get();
 
-        assertEquals(medicament.getCompositions().get(0).getSubstancesActives().size(), 1);
-        assertEquals(medicament.getCompositions().get(0).getSubstancesActives().get(0).getFractionsTherapeutiques().size(), 1);
+        //assertEquals(medicament.getComposition().get(0).getFractionsTherapeutiques().size(), 1);
+        //assertEquals(medicament.getComposition().get(0).getFractionsTherapeutiques().size(), 1);
 
         medicament = medicaments.stream().filter(x -> x.getCodeCIS().equals("62869109")).findFirst().get();
 

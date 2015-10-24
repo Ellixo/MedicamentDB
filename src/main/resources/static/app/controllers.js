@@ -24,7 +24,7 @@ medicamentDBControllers.controller('SearchController', ['$scope', '$http', '$loc
 
 }]);
 
-medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', '$sce', function($scope, $http, $routeParams, $sce) {
+medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', '$sce', '$location', function($scope, $http, $routeParams, $sce, $location) {
     if ($routeParams.codeCIS) {
         $http.get('http://localhost:8080/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
             var medicament = resp.data;
@@ -161,12 +161,8 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
         $scope.medicament = {};
     }
 
-    $scope.go = function(path) {
-        var win = window.open(path, '_blank');
-        if(win){
-            win.focus();
-        }else{
-            alert('Please allow popups for this site');
-        }
+    $scope.display = function(codeCIS) {
+        console.log("codeCIS");
+        $location.path("/display/" + codeCIS);
     }
 }]);

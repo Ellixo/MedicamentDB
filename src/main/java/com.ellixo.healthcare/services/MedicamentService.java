@@ -168,6 +168,8 @@ public class MedicamentService {
 
                 medicament.getCompositions().add(composition);
             }
+
+
         }
     }
 
@@ -244,7 +246,23 @@ public class MedicamentService {
                     .findFirst().orElse(null);
 
             if (medicament != null) {
-                medicament.getConditionsPrescriptionDelivranceCSV().add(condition.getCondition());
+                medicament.getConditionsPrescriptionDelivrance().add(condition.getCondition());
+
+                medicament.getConditionsPrescriptionDelivrance().sort((o1, o2) -> {
+                    if (o1.trim().equals("liste I")) {
+                        return -1;
+                    } else if (o2.trim().equals("liste I")) {
+                        return 1;
+                    } else {
+                        if (o1.trim().equals("liste II")) {
+                            return -1;
+                        } else if (o2.trim().equals("liste II")) {
+                            return 1;
+                        } else {
+                            return o1.compareTo(o2);
+                        }
+                    }
+                });
             }
         }
     }
