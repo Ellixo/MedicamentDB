@@ -35,7 +35,25 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
             $scope.nomMedicament = medicament.denomination;
             var index = $scope.nomMedicament.lastIndexOf(",");
             if (index != -1) {
-                $scope.nomMedicament = $scope.nomMedicament.substring(0,index).trim() + " [" + $scope.nomMedicament.substring(index + 1).trim() + "]";
+                $scope.nomMedicament = $scope.nomMedicament.substring(0,index).trim() + " (" + $scope.nomMedicament.substring(index + 1).trim() + ")";
+            }
+
+            // voies administration
+            $scope.voiesAdministration = "";
+            for (var i = 0; i < medicament.voiesAdministration.length; i++) {
+                if (i != 0) {
+                    $scope.voiesAdministration += "/";
+                }
+                $scope.voiesAdministration += medicament.voiesAdministration[i];
+            }
+
+            // titulaires
+            $scope.titulaires = "";
+            for (var i = 0; i < medicament.titulaires.length; i++) {
+                if (i != 0) {
+                    $scope.titulaires += "/";
+                }
+                $scope.titulaires += medicament.titulaires[i];
             }
 
             // alerte/warning

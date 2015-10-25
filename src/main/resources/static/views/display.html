@@ -1,13 +1,17 @@
 <div class="container container-medicament">
 
-    <div class="panel panel-default header-medicament">
+    <div class="panel panel-default header-medicament-parent">
         <div class="container">
             <h3>{{nomMedicament}}</h3>
+            <h7>{{medicament.statutAdministratifAMM}} - date AMM : {{medicament.dateAMM}} ({{medicament.typeProcedureAMM}})</h7><br>
+            <h7>Voies administration : {{voiesAdministration}} </h7><br>
+            <h7>Titulaires : {{titulaires}} </h7>
         </div>
+        <span class="header-medicament-info">CIS : {{medicament.codeCIS}} <span ng-if="medicament.numeroAutorisationEuropeenne"> - Numéro autorisation européenne : {{medicament.numeroAutorisationEuropeenne}}</span></span>
     </div>
 
     <!-- ALERTES -->
-    <div class="row" ng-if="medicament.surveillanceRenforcee" >
+    <div class="row" ng-if="medicament.surveillanceRenforcee">
         <div class="alert alert-danger" role="alert">
                 <a target="_blank" href="http://ansm.sante.fr/Activites/Surveillance-des-medicaments/Surveillance-des-medicaments" title="Lien vers le site de l'ANSM sur les médicaments sous surveillance - nouvelle fenêtre"><img class="imgMiddle" height="35px" src="img/triangle_noir.png" alt="Médicament sous surveillance renforcée"></a>&nbsp;Ce médicament fait l’objet d’une surveillance renforcée. Pour plus d'informations, <a target="_blank" href="http://ansm.sante.fr/Activites/Surveillance-des-medicaments/Surveillance-des-medicaments" title="Lien vers le site de l'ANSM sur les médicaments sous surveillance - nouvelle fenêtre">cliquez ici</a>
         </div>
@@ -63,21 +67,23 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Groupe Générique [{{medicament.infosGenerique.libelleGroupe}}]</h3>
+                <h3 class="panel-title" ng-if="medicament.infosGenerique.autresMedicamentsGroupe">Groupe Générique - {{medicament.infosGenerique.libelleGroupe}}</h3>
+                <h3 class="panel-title" ng-if="!medicament.infosGenerique.autresMedicamentsGroupe">Groupe Générique</h3>
             </div>
             <div class="panel-body">
-                <ul class="list-group">
+                <ul class="list-group" ng-if="medicament.infosGenerique.autresMedicamentsGroupe">
                     <a href class="list-group-item active">
                         <span class="badge">{{medicament.infosGenerique.type}}</span>
                         {{nomMedicament}}
                     </a>
                 </ul>
-                <ul class="list-group" ng-repeat="generique in medicament.infosGenerique.autresMedicamentsGroupe">
+                <ul class="list-group" ng-if="medicament.infosGenerique.autresMedicamentsGroupe" ng-repeat="generique in medicament.infosGenerique.autresMedicamentsGroupe">
                     <a href ng-click="display(generique.codeCIS)" class="list-group-item">
                         <span class="badge">{{generique.type}}</span>
                         {{generique.denomination}}
                     </a>
                 </ul>
+                <p ng-if="!medicament.infosGenerique.autresMedicamentsGroupe">Ce médicament n'appartient pas à un groupe générique</p>
             </div>
         </div>
     </div>
@@ -132,24 +138,6 @@
                         <p ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- FICHE -->
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Médicament</h3>
-            </div>
-            <div class="panel-body">
-                Code CIS : {{medicament.codeCIS}}<br/>
-                Voies administration : {{medicament.voiesAdministration}}<br/>
-                Statut administratif : {{medicament.statutAdministratifAMM}}<br/>
-                Type procédure AMM : {{medicament.typeProcedureAMM}}<br/>
-                Date AMM : {{medicament.dateAMM}}<br/>
-                Numéro autorisation européenne : {{medicament.numeroAutorisationEuropeenne}}<br/>
-                Titulaires : {{medicament.titulaires}}<br/>
             </div>
         </div>
     </div>
