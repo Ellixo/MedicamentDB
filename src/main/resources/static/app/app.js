@@ -8,4 +8,17 @@ medicamentDBApp.config(function ($routeProvider) {
     $routeProvider.otherwise({redirectTo: '/search'});
 });
 
+medicamentDBApp.service("dateUtils", [
+    function() {
+        this.format = function(date) {
+            console.log(date);
+
+            if (!date) {
+                return '';
+            }
+
+            return date.substring(8,10) + '/' + date.substring(5,7) + '/' + date.substring(0,4);
+        }
+    }
+]);
 

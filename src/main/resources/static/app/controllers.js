@@ -24,7 +24,7 @@ medicamentDBControllers.controller('SearchController', ['$scope', '$http', '$loc
 
 }]);
 
-medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', '$sce', '$location', function($scope, $http, $routeParams, $sce, $location) {
+medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', '$sce', '$location', 'dateUtils', function($scope, $http, $routeParams, $sce, $location, dateUtils) {
     if ($routeParams.codeCIS) {
         $http.get('http://localhost:8080/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
             var medicament = resp.data;
@@ -37,7 +37,6 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
             if (index != -1) {
                 $scope.nomMedicament = $scope.nomMedicament.substring(0,index).trim() + " (" + $scope.nomMedicament.substring(index + 1).trim() + ")";
             }
-
             // voies administration
             $scope.voiesAdministration = "";
             for (var i = 0; i < medicament.voiesAdministration.length; i++) {
@@ -46,6 +45,8 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                 }
                 $scope.voiesAdministration += medicament.voiesAdministration[i];
             }
+            // medicaments infos
+            $scope.info1 = medicament.statutAdministratifAMM + ' - date AMM : ' + dateUtils.format(medicament.dateAMM) + ' (' + medicament.typeProcedureAMM + ')';
 
             // titulaires
             $scope.titulaires = "";
@@ -84,7 +85,7 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                 presentation.codeCIP13 = presentationTmp.codeCIP13;
                 presentation.etatCommercialisationAMM = presentationTmp.etatCommercialisationAMM;
                 presentation.statut = (presentation.etatCommercialisationAMM === "Déclaration de commercialisation");
-                presentation.dateDeclarationCommercialisation = presentationTmp.dateDeclarationCommercialisation;
+                presentation.dateDeclarationCommercialisation = dateUtils.format(presentationTmp.dateDeclarationCommercialisation);
                 presentation.agrementCollectivites = presentationTmp.agrementCollectivites;
                 presentation.remboursement = presentationTmp.prix && presentationTmp.prix.length != 0;
 
@@ -120,7 +121,7 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                     index = presentationTmp.libelle.lastIndexOf("(");
                     presentation.libelle = presentationTmp.libelle.substring(0,index).trim();
                     index = presentationTmp.libelle.lastIndexOf("/");
-                    presentation.dateAbrogation = presentationTmp.libelle.substring(index - 5,index + 5);
+                    presentation.dateAbrogation = dateUtils.format(presentationTmp.libelle.substring(index - 5,index + 5));
                     presentation.warning = "Abrogée";
                 }
 
@@ -136,7 +137,7 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                 avisTmp = medicament.avisSMR[i];
 
                 avis.valeurSMR = avisTmp.valeurSMR;
-                avis.dateAvisCommissionTransparence = avisTmp.dateAvisCommissionTransparence;
+                avis.dateAvisCommissionTransparence = dateUtils.format(avisTmp.dateAvisCommissionTransparence);
                 avis.motifEvaluation = avisTmp.motifEvaluation;
                 avis.libelleSMR = $sce.trustAsHtml(avisTmp.libelleSMR);
 
@@ -163,11 +164,11 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                         avis.valeurSMR = "Mineure (IV)";
                         break;
                     case "V" :
-                        avis.valeurSMR = "Inexistante (V - Absence de progrès thérapeutique)";
+                        avis.valeurSMR = "Inexistante (V)";
                         break;
                 }
 
-                avis.dateAvisCommissionTransparence = avisTmp.dateAvisCommissionTransparence;
+                avis.dateAvisCommissionTransparence = dateUtils.format(avisTmp.dateAvisCommissionTransparence);
                 avis.motifEvaluation = avisTmp.motifEvaluation;
                 avis.libelleSMR = $sce.trustAsHtml(avisTmp.libelleSMR);
 
@@ -183,4 +184,10 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
         console.log("codeCIS");
         $location.path("/display/" + codeCIS);
     }
+}]);
+
+medicamentDBControllers.controller('DateController', [function() {
+
+
+
 }]);

@@ -22,43 +22,90 @@ footer {
     margin-top: 120px;
 }
 
+.list-group-item {
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.navbar {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #292c39;
+    background-color: white;
+    z-index: 1030;
+}
+
 .header-medicament-parent {
     position: fixed;
     top : 50px;
     right: 0;
     left: 0;
     z-index: 1030;
+    color: #008576;
+    background-color: #eeeeee;
+    padding-right: 5px;
 }
 
 .header-medicament-info {
     float: right;
-    padding-right:5px;
     font-style: italic;
     font-size: 80%;
+    display: inline-block;
+    text-align: right;
 }
 
-.set-item {
-    padding: 5px;
+.list-group{
+    margin-bottom: 0px;
+}
+
+.list-presentation-item {
+}
+
+.presentations {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .presentationOK {
-    padding: 5px;
     border: 1px solid transparent;
     border-color: #ddd;
     background-color: #F5FFF5;
-    margin-bottom: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+.presentationOK:last-child {
+    margin-bottom: 0px;
 }
 
 .presentationKO {
-    padding: 5px;
     border: 1px solid transparent;
     border-color: #ddd;
     background-color: #F9DBDB;
-    margin-bottom: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+.presentationKO:last-child {
+    margin-bottom: 0px;
 }
 
 .presentationTitle {
     font-size: 18px;
     font-weight: bold;
     margin-right: 5px;
+}
+
+.presentationPrix {
+    float: left;
+}
+
+.no-wrap {
+    white-space: nowrap;
 }

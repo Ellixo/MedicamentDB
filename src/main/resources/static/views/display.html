@@ -3,7 +3,7 @@
     <div class="panel panel-default header-medicament-parent">
         <div class="container">
             <h3>{{nomMedicament}}</h3>
-            <h7>{{medicament.statutAdministratifAMM}} - date AMM : {{medicament.dateAMM}} ({{medicament.typeProcedureAMM}})</h7><br>
+            <h7>{{info1}}</h7><br>
             <h7>Voies administration : {{voiesAdministration}} </h7><br>
             <h7>Titulaires : {{titulaires}} </h7>
         </div>
@@ -54,11 +54,12 @@
                 <h3 class="panel-title">Conditions de prescriptions</h3>
             </div>
             <div class="panel-body">
-                <ul>
+                <ul ng-if="medicament.conditionsPrescriptionDelivrance.length != 0">
                     <li data-ng-repeat="condition in medicament.conditionsPrescriptionDelivrance">
                         {{condition}}
                     </li>
                 </ul>
+                <p ng-if="medicament.conditionsPrescriptionDelivrance.length == 0">Ce médicament ne possède pas de conditions de prescription particulières</p>
             </div>
         </div>
     </div>
@@ -97,7 +98,7 @@
             <div class="panel-body">
                 <div class="tree">
                     <ul>
-                        <li ng-repeat="composition in medicament.compositions">
+                        <li ng-repeat="composition in medicament.compositions" ng-class="{'root': $first}">
                             <a href="#">{{composition.designationElementPharmaceutique}} (composition pour {{composition.referenceDosage}})</a>
                             <ul>
                                 <li ng-repeat="substanceActive in composition.substancesActives">
@@ -122,22 +123,22 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Présentations</h3>
             </div>
-            <div class="panel-body">
-                <ul class="list-group" ng-repeat="presentation in presentations">
-                    <li class="list-group-item" ng-class="presentation.statut ? 'presentationOK' : 'presentationKO'" >
-                        <p><span class="presentationTitle">{{presentation.libelle}}</span><span ng-if="!presentation.statut" class="label label-warning">{{presentation.warning}}</span>
-                        </p>
-                        <br>
-                        <p>Code CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}</p>
-                        <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}}</p>
-                        <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
-                        <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
-                        <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>
-                        <p ng-if="presentation.remboursement">Prix : {{presentation.prix}}€ (taux de remboursement : {{presentation.tauxRemboursement}})</p>
-                        <p ng-bind-html="presentation.indicationsRemboursement"></p>
-                        <p ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
-                    </li>
-                </ul>
+            <div class="panel-body presentations">
+                <div ng-repeat="presentation in presentations" class="row" ng-class="presentation.statut ? 'presentationOK' : 'presentationKO'" >
+                    <ul class="list-group list-presentation-group">
+                        <li class="list-group-item list-presentation-item">
+                            <p><span class="presentationTitle">{{presentation.libelle}} </span><span ng-if="!presentation.statut" class="label label-warning">{{presentation.warning}}</span></p>
+                            <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}}</p>
+                            <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
+                            <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
+                            <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>
+                            <p ng-if="presentation.remboursement">Prix : {{presentation.prix}}€ (taux de remboursement : {{presentation.tauxRemboursement}})</p>
+                            <p ng-bind-html="presentation.indicationsRemboursement"></p>
+                            <p class="presentationPrix" ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p><p class="header-medicament-info">CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}</p>
+                            <div style="clear: both;"></div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -161,9 +162,9 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="avis in avisSMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
-                        <td>{{avis.valeurSMR}}</td>
-                        <td>{{avis.dateAvisCommissionTransparence}}</td>
-                        <td>{{avis.motifEvaluation}}</td>
+                        <td class="no-wrap">{{avis.valeurSMR}}</td>
+                        <td class="no-wrap">{{avis.dateAvisCommissionTransparence}}</td>
+                        <td class="no-wrap">{{avis.motifEvaluation}}</td>
                         <td ng-bind-html="avis.libelleSMR"/>
                     </tr>
                     </tbody>
@@ -192,9 +193,9 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="avis in avisASMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
-                        <td>{{avis.valeurSMR}}</td>
-                        <td>{{avis.dateAvisCommissionTransparence}}</td>
-                        <td>{{avis.motifEvaluation}}</td>
+                        <td class="no-wrap">{{avis.valeurSMR}}</td>
+                        <td class="no-wrap">{{avis.dateAvisCommissionTransparence}}</td>
+                        <td class="no-wrap">{{avis.motifEvaluation}}</td>
                         <td ng-bind-html="avis.libelleSMR"/>
                     </tr>
                     </tbody>
