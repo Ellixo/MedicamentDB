@@ -3,7 +3,7 @@ package com.ellixo.healthcare.api;
 import com.ellixo.healthcare.domain.Medicament;
 import com.ellixo.healthcare.exception.UnknownObjectException;
 import com.ellixo.healthcare.repository.MedicamentRepository;
-import com.wordnik.swagger.annotations.Api;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
