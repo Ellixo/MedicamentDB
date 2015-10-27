@@ -32,7 +32,6 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 @Configuration
 @EnableSwagger2
-//@Profile({"prod"})
 public class SwaggerConfig {
 
 
