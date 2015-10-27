@@ -33,8 +33,7 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-
-
+    
     @Bean
     public Docket petApi() {
         return new Docket(DocumentationType.SWAGGER_2)
