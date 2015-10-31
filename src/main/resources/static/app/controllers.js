@@ -48,6 +48,18 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
             // medicaments infos
             $scope.info1 = medicament.statutAdministratifAMM + ' - date AMM : ' + dateUtils.format(medicament.dateAMM) + ' (' + medicament.typeProcedureAMM + ')';
 
+            // conditions prescription
+            $scope.prescriptions = [];
+            for (var i = 0; i < medicament.conditionsPrescriptionDelivrance.length; i++) {
+                $scope.prescriptions.push(medicament.conditionsPrescriptionDelivrance[i]);
+                if ($scope.prescriptions[i] === "liste I") {
+                    $scope.prescriptions[i] = $scope.prescriptions[i] + " (soumis à prescription médicale - ne peut être délivré que pour la durée de traitement mentionnée sur l'ordonnance)";
+                }
+                if ($scope.prescriptions[i] === "liste II") {
+                    $scope.prescriptions[i] = $scope.prescriptions[i] + " (soumis à prescription médicale - peut être délivré plusieurs fois à partir de la même ordonnance pendant 12 mois, sauf indication contraire du prescripteur)";
+                }
+            }
+
             // titulaires
             $scope.titulaires = "";
             for (var i = 0; i < medicament.titulaires.length; i++) {
@@ -140,6 +152,7 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                 avis.dateAvisCommissionTransparence = dateUtils.format(avisTmp.dateAvisCommissionTransparence);
                 avis.motifEvaluation = avisTmp.motifEvaluation;
                 avis.libelleSMR = $sce.trustAsHtml(avisTmp.libelleSMR);
+                avis.urlHAS = avisTmp.urlHAS;
 
                 $scope.avisSMR.push(avis);
             }
@@ -171,6 +184,7 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
                 avis.dateAvisCommissionTransparence = dateUtils.format(avisTmp.dateAvisCommissionTransparence);
                 avis.motifEvaluation = avisTmp.motifEvaluation;
                 avis.libelleSMR = $sce.trustAsHtml(avisTmp.libelleSMR);
+                avis.urlHAS = avisTmp.urlHAS;
 
                 $scope.avisASMR.push(avis);
             }
@@ -181,13 +195,15 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$ro
     }
 
     $scope.display = function(codeCIS) {
-        console.log("codeCIS");
         $location.path("/display/" + codeCIS);
     }
-}]);
 
-medicamentDBControllers.controller('DateController', [function() {
-
-
-
+    $scope.go = function(path) {
+        var win = window.open(path, '_blank');
+        if(win){
+            win.focus();
+        }else{
+            alert('Please allow popups for this site');
+        }
+    }
 }]);

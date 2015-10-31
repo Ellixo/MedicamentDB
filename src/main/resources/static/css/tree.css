@@ -8,7 +8,6 @@
 
 .tree li {
     margin: 0px 0;
-
     list-style-type: none;
     position: relative;
     padding: 20px 5px 0px 5px;
@@ -40,9 +39,9 @@
     border: 1px solid #ccc;
     padding: 5px 10px;
     text-decoration: none;
-    color: #666;
-    font-family: arial, verdana, tahoma;
-    font-size: 11px;
+    color: black;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;

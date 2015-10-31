@@ -11,8 +11,6 @@ medicamentDBApp.config(function ($routeProvider) {
 medicamentDBApp.service("dateUtils", [
     function() {
         this.format = function(date) {
-            console.log(date);
-
             if (!date) {
                 return '';
             }
