@@ -12,6 +12,7 @@ medicamentDBControllers.controller('HeaderController', ['$scope', '$rootScope', 
         } else if (current.templateUrl === "views/search.html") {
             if ($rootScope.prefix) {
                 $scope.query = $rootScope.prefix;
+                $scope.runQuery($scope.query)
                 $rootScope.prefix = null;
             }
         } else if (current.templateUrl === "views/display.html") {

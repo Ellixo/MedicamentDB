@@ -35,9 +35,9 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" ng-href="#/home" ng-show="headerSearch">MedicamentDB</a>
-            <form data-ng-submit="runQuery(query)" ng-show="headerSearch">
+            <form ng-show="headerSearch">
                 <div class="input-group input-group-lg search-field">
-                    <input type="text" id="searchInput" class="form-control" show-focus="headerSearch" aria-describedby="sizing-addon1" ng-model="query">
+                    <input type="text" id="searchInput" class="form-control" show-focus="headerSearch" aria-describedby="sizing-addon1" ng-model="query" ng-change="runQuery(query)" autocomplete="off">
                     <span class="input-group-btn">
                         <button class="btn btn-danger" type="submit">
                             <span class="glyphicon glyphicon-search" id="sizing-addon1"></span>

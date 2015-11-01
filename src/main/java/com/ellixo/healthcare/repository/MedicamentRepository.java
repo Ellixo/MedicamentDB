@@ -8,7 +8,13 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 public interface MedicamentRepository extends ElasticsearchRepository<Medicament, String> {
 
-    @Query("{\"bool\" : {\"must\" : { \"match\" : { \"_all\" : {\"query\": \"?0\", \"fuzziness\" : \"1\", \"operator\" : \"and\" }}}}}")
+    @Query("{" +
+            "        \"match_phrase_prefix\": {" +
+            "            \"_all\": {" +
+            "                \"query\": \"?0\"," +
+            "                \"slop\":  100" +
+            "            }" +
+            "        }" +
+            "    }")
     Page<Medicament> searchAll(String criteria, Pageable pageable);
-
 }
