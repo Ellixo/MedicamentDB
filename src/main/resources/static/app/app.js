@@ -8,14 +8,24 @@ medicamentDBApp.config(function ($routeProvider) {
     $routeProvider.otherwise({redirectTo: '/search'});
 });
 
-medicamentDBApp.service("dateUtils", [
+medicamentDBApp.service("formatUtils", [
     function() {
-        this.format = function(date) {
+        this.formatDate = function(date) {
             if (!date) {
                 return '';
             }
 
             return date.substring(8,10) + '/' + date.substring(5,7) + '/' + date.substring(0,4);
+        }
+
+        this.formatPrix = function(prix) {
+            if (!prix) {
+                return '';
+            }
+
+            prix = prix + "€";
+
+            return prix.replace(".",",")
         }
     }
 ]);

@@ -47,7 +47,25 @@ p {
 }
 
 .container-medicament {
-    margin-top: 130px;
+    margin-top: 150px;
+}
+
+@media (max-width: 1300px) {
+    .container-medicament {
+        margin-top: 200px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container-medicament {
+        margin-top: 240px;
+    }
+}
+
+@media (max-width: 500px) {
+    .container-medicament {
+        margin-top: 280px;
+    }
 }
 
 .header-medicament-parent {
@@ -79,6 +97,10 @@ p {
     padding-right:10px;
 }
 
+.header-prix {
+    font-weight: bold;
+}
+
 .infosImportantes {
     border-color: #292C39;
 }
@@ -103,16 +125,20 @@ p {
 
 .generique.active, .generique.active:focus, .generique.active:hover {
     z-index: 2;
-    color: #fff;
     background-color: #505777;
     border: 1px solid #505777;
     margin-top: 0px;
 }
 
-.generique {
-    background-color: transparent;
-    border: 1px solid #ccc;
+.generique, .generique:focus, .generique:hover {
+    z-index: 2;
+    background-color: #D9DEF7;
+    border: 1px solid #D9DEF7;
     margin-top: 10px;
+}
+
+.generique-nom {
+    font-weight: bold;
 }
 
 .list-presentation-item {
@@ -170,7 +196,23 @@ p {
     white-space: nowrap;
 }
 
+@media (max-width: 600px) {
+    .no-wrap {
+        white-space: normal;
+    }
+}
+
 .legende {
     font-style: italic;
     font-size: 12px;
+}
+
+.prixLibre {
+    font-weight: bold;
+    color: green;
+}
+
+.prixRembourse {
+    font-weight: bold;
+    color: red;
 }

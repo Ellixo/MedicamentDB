@@ -168,8 +168,6 @@ public class MedicamentService {
 
                 medicament.getCompositions().add(composition);
             }
-
-
         }
     }
 
@@ -335,6 +333,8 @@ public class MedicamentService {
                                 generique.setCodeCIS(x.getLeft().getCodeCIS());
                                 generique.setDenomination(x.getLeft().getDenomination());
                                 generique.setType(TypeGenerique.fromCode(x.getRight()));
+                                generique.getPrix().addAll(x.getLeft().getPresentations()
+                                        .stream().map(y -> y.getPrix()).collect(Collectors.toSet()));
                                 return generique;
                             }).collect(Collectors.toList())
             );

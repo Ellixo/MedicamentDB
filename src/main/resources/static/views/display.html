@@ -4,6 +4,7 @@
         <div class="container-header-medicament">
             <div>
                 <h3>{{nomMedicament}}</h3>
+                <h7 class="header-prix">Prix : {{prix}}</h7><br>
                 <h7>{{info1}}</h7><br>
                 <h7>Voies administration : {{voiesAdministration}} </h7><br>
                 <h7>Titulaires : {{titulaires}} </h7>
@@ -75,19 +76,19 @@
                 <h3 class="panel-title" ng-if="!medicament.infosGenerique.autresMedicamentsGroupe">Groupe Générique</h3>
             </div>
             <div class="panel-body">
-                <ul class="list-group" ng-if="medicament.infosGenerique.autresMedicamentsGroupe">
+                <ul class="list-group" ng-if="generiques.length != 0">
                     <a href class="list-group-item generique active">
                         <span class="badge">{{medicament.infosGenerique.type}}</span>
-                        {{nomMedicament}}
+                        <span class="generique-nom">{{nomMedicament}}</span> - prix : {{prix}}
                     </a>
                 </ul>
-                <ul class="list-group" ng-if="medicament.infosGenerique.autresMedicamentsGroupe" ng-repeat="generique in medicament.infosGenerique.autresMedicamentsGroupe">
+                <ul class="list-group" ng-if="generiques.length != 0" ng-repeat="generique in generiques">
                     <a href ng-click="display(generique.codeCIS)" class="list-group-item generique">
                         <span class="badge">{{generique.type}}</span>
-                        {{generique.denomination}}
+                        <span class="generique-nom">{{generique.denomination}}</span> - prix : {{generique.prix}}
                     </a>
                 </ul>
-                <p ng-if="!medicament.infosGenerique.autresMedicamentsGroupe">Ce médicament n'appartient pas à un groupe générique</p>
+                <p ng-if="generiques.length == 0">Ce médicament n'appartient pas à un groupe générique</p>
             </div>
         </div>
     </div>
@@ -102,13 +103,16 @@
                 <div class="tree" ng-if="medicament.compositions.length != 0">
                     <ul>
                         <li ng-repeat="composition in medicament.compositions" ng-class="{'root': $first}">
-                            <a href="#">{{composition.designationElementPharmaceutique}} (composition pour {{composition.referenceDosage}})</a>
+                            <a href="#" ng-if="composition.referenceDosage.length != 0">{{composition.designationElementPharmaceutique}} (composition pour {{composition.referenceDosage}})</a>
+                            <a href="#" ng-if="composition.referenceDosage.length == 0">{{composition.designationElementPharmaceutique}}</a>
                             <ul>
                                 <li ng-repeat="substanceActive in composition.substancesActives">
-                                    <a href="#">{{substanceActive.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                    <a href="#" ng-if="substanceActive.dosageSubstance.length != 0">{{substanceActive.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                    <a href="#" ng-if="substanceActive.dosageSubstance.length == 0">{{substanceActive.denominationSubstance}}</a>
                                     <ul>
                                         <li ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
-                                            <a href="#">{{fractionTherapeutique.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                            <a href="#" ng-if="substanceActive.dosageSubstance.length != 0">{{fractionTherapeutique.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                            <a href="#" ng-if="substanceActive.dosageSubstance.length == 0">{{fractionTherapeutique.denominationSubstance}} </a>
                                         </li>
                                     </ul>
                                 </li>
@@ -138,8 +142,8 @@
                             <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
                             <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
                             <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>
-                            <p ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
-                            <p ng-if="presentation.remboursement">Prix : {{presentation.prix}}€ (taux de remboursement : {{presentation.tauxRemboursement}})</p>
+                            <p class="prixLibre" ng-if="!presentation.remboursement">Prix libre, médicament non remboursable</p>
+                            <p class="prixRembourse" ng-if="presentation.remboursement">Prix : {{presentation.prix}} (taux de remboursement : {{presentation.tauxRemboursement}})</p>
                             <p ng-bind-html="presentation.indicationsRemboursement"></p>
                         </li>
                     </ul>

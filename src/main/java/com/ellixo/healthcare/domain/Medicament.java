@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
 
@@ -20,6 +18,7 @@ public class Medicament {
     private String codeCIS;
     private String denomination;
     private String formePharmaceutique;
+    private boolean homeopathie;
     private List<String> voiesAdministration = new ArrayList<>();
     private String statutAdministratifAMM;
     private String typeProcedureAMM;
@@ -52,6 +51,14 @@ public class Medicament {
 
     public void setCodeCIS(String codeCIS) {
         this.codeCIS = codeCIS;
+    }
+
+    public boolean isHomeopathie() {
+        return homeopathie;
+    }
+
+    public void setHomeopathie(boolean homeopathie) {
+        this.homeopathie = homeopathie;
     }
 
     public String getDenomination() {
@@ -311,6 +318,7 @@ public class Medicament {
             private String codeCIS;
             private String denomination;
             private TypeGenerique type;
+            private Set<Float> prix = new HashSet<>();
 
             public String getCodeCIS() {
                 return codeCIS;
@@ -336,6 +344,14 @@ public class Medicament {
                 this.type = type;
             }
 
+            public Set<Float> getPrix() {
+                return prix;
+            }
+
+            public void setPrix(Set<Float> prix) {
+                this.prix = prix;
+            }
+
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
@@ -358,6 +374,7 @@ public class Medicament {
                         "codeCIS='" + codeCIS + '\'' +
                         ", denomination='" + denomination + '\'' +
                         ", type=" + type +
+                        ", prix=" + prix +
                         '}';
             }
         }

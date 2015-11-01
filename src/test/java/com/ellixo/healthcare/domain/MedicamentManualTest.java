@@ -25,40 +25,16 @@ public class MedicamentManualTest {
 
     @Test
     public void readMedicaments() {
-        //File dir = new File(MedicamentTest.class.getClassLoader().getResource("/Users/Greg/Projects/MedicamentDB/src/main/resources/dataset").getFile());
         File dir = new File("/Users/Greg/Projects/MedicamentDB/src/main/resources/dataset");
 
         List<Medicament> medicaments = service.readMedicaments(dir).getLeft();
 
-        medicaments.forEach(x -> x.getCompositions()
-                .forEach(y -> y.getSubstancesActives()
-                        .forEach(z -> {
-                            if (z.getFractionsTherapeutiques().size() > 1) {
-                                System.out.println(x.getCodeCIS());
-                            }
-                        } )));
-
-        assertEquals(medicaments.size(), 7);
-        assertEquals(medicaments.get(0).getCodeCIS(), "61266250");
-        assertEquals(medicaments.get(0).getDenomination(), "A 313 200 000 UI POUR CENT, pommade");
-        assertEquals(medicaments.get(0).getDateAMM(), Date.from(LocalDate.of(1998, 3, 12).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-
-        Medicament medicament = medicaments.stream().filter(x -> x.getCodeCIS().equals("60008845")).findFirst().get();
-
-        //assertEquals(medicament.getComposition().get(0).getFractionsTherapeutiques().size(), 1);
-        //assertEquals(medicament.getComposition().get(0).getFractionsTherapeutiques().size(), 1);
-
-        medicament = medicaments.stream().filter(x -> x.getCodeCIS().equals("62869109")).findFirst().get();
-
-        assertEquals(medicament.getAvisSMR().size(), 1);
-        assertEquals(medicament.getConditionsPrescriptionDelivrance().size(), 1);
-
-        medicament = medicaments.stream().filter(x -> x.getCodeCIS().equals("61872344")).findFirst().get();
-
-        assertEquals(medicament.getInfosGenerique().getCodeGroupe(), "1");
-        assertEquals(medicament.getInfosGenerique().getLibelleGroupe(), "CIMETIDINE 200 mg - TAGAMET 200 mg, comprimé pelliculé");
-        assertEquals(medicament.getInfosGenerique().getType(), TypeGenerique.GENERIQUE);
-        assertEquals(medicament.getInfosGenerique().getAutresMedicamentsGroupe().get(0).getCodeCIS(), "67535309");
+        medicaments.forEach(x -> {
+            int count = 0;
+            if (x.getPresentations().size() == 0) {
+                System.out.println(x.getCodeCIS());
+            }
+        });
     }
 
 }

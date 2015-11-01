@@ -21,6 +21,9 @@ public class ESMapperDecorator implements ESMapper {
         // etat
         String etat = csv.getEtatCommercialisation();
         medicament.setEtatCommercialisation(etat != null && etat.equals("Commercialisée"));
+        // homeopathie
+        medicament.setHomeopathie(medicament.getTypeProcedureAMM().equalsIgnoreCase("Enreg homéo (Proc. Nat.)"));
+
         return medicament;
     }
 
