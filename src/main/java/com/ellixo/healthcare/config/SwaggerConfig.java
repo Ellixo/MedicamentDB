@@ -1,47 +1,110 @@
 package com.ellixo.healthcare.config;
 
-import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
-import com.mangofactory.swagger.models.dto.ApiInfo;
-import com.mangofactory.swagger.plugin.EnableSwagger;
-import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.context.EnvironmentAware;
+import com.fasterxml.classmate.TypeResolver;
+import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.async.DeferredResult;
+import springfox.documentation.builders.ParameterBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.schema.WildcardType;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.SecurityConfiguration;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static springfox.documentation.schema.AlternateTypeRules.newRule;
+
 
 @Configuration
-@EnableSwagger
-@Profile({"prod"})
-public class SwaggerConfig implements EnvironmentAware {
+@EnableSwagger2
+public class SwaggerConfig {
+    
+    @Bean
+    public Docket medicamentApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build()
+                .pathMapping("/")
+                .directModelSubstitute(LocalDate.class,
+                        String.class)
+                .genericModelSubstitutes(ResponseEntity.class)
+                .alternateTypeRules(
+                        newRule(typeResolver.resolve(DeferredResult.class,
+                                        typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
+                                typeResolver.resolve(WildcardType.class)))
+                .useDefaultResponseMessages(false)
+                .globalResponseMessage(RequestMethod.GET,
+                        newArrayList(new ResponseMessageBuilder()
+                                .code(500)
+                                .message("500 message")
+                                .responseModel(new ModelRef("Error"))
+                                .build()))
+                .securitySchemes(newArrayList(apiKey()))
+                .securityContexts(newArrayList(securityContext()))
+                .enableUrlTemplating(true)
+                .globalOperationParameters(
+                        newArrayList(new ParameterBuilder()
+                                .name("someGlobalParameter")
+                                .description("Description of someGlobalParameter")
+                                .modelRef(new ModelRef("string"))
+                                .parameterType("query")
+                                .required(true)
+                                .build()))
+                ;
+    }
 
-    public static final String DEFAULT_INCLUDE_PATTERN = "/v1/.*";
+    @Autowired
+    private TypeResolver typeResolver;
 
-    private RelaxedPropertyResolver propertyResolver;
+    private ApiKey apiKey() {
+        return new ApiKey("mykey", "api_key", "header");
+    }
 
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.propertyResolver = new RelaxedPropertyResolver(environment, "swagger.");
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("/anyPath.*"))
+                .build();
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope
+                = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return newArrayList(
+                new SecurityReference("mykey", authorizationScopes));
     }
 
     @Bean
-    public SwaggerSpringMvcPlugin swaggerSpringMvcPlugin(SpringSwaggerConfig springSwaggerConfig) {
-        return new SwaggerSpringMvcPlugin(springSwaggerConfig)
-                .apiInfo(apiInfo())
-                .genericModelSubstitutes(ResponseEntity.class)
-                .includePatterns(DEFAULT_INCLUDE_PATTERN);
+    SecurityConfiguration security() {
+        return new SecurityConfiguration(
+                "test-app-client-id",
+                "test-app-realm",
+                "test-app",
+                "apiKey");
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfo(
-                propertyResolver.getProperty("title"),
-                propertyResolver.getProperty("description"),
-                propertyResolver.getProperty("termsOfServiceUrl"),
-                propertyResolver.getProperty("contact"),
-                propertyResolver.getProperty("license"),
-                propertyResolver.getProperty("licenseUrl"));
+    @Bean
+    UiConfiguration uiConfig() {
+        return new UiConfiguration(
+                "validatorUrl");
     }
-
 }
