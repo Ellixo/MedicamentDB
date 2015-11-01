@@ -1,5 +1,14 @@
+* {
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
 body {
-    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    padding-top: 70px;
+    height: 100%;
 }
 
 p {
@@ -14,10 +23,27 @@ p {
     margin-bottom: 30px;
 }
 
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -40px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.push {
+    height: 40px;
+}
+
 .footer {
+    height: 40px;
     background-color: #008576;
     color: white;
     padding: 10px 0;
+}
+
+.container-menu {
+    padding-left:15px;
+    padding-right:15px;
 }
 
 .navbar {
@@ -29,12 +55,18 @@ p {
     z-index: 1030;
 }
 
-.navbar-brand {
+.navbar-brand, .navbar-brand:focus, .navbar-brand:hover {
     color: white;
 }
 
-.navbar-brand:hover{
-    color: #eeeeee;
+.search-field {
+    padding: 2px;
+    max-width : 600px;
+}
+
+.menu-item, .menu-item:focus, .menu-item:hover {
+    color: white;
+    background-color: #008576 !important;
 }
 
 .panel-default>.panel-heading {
@@ -44,6 +76,12 @@ p {
 
 .panel-default {
     border-color: #292C39;
+}
+
+.container-table {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
 }
 
 .container-medicament {

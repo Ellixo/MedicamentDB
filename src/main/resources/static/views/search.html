@@ -1,32 +1,5 @@
 <div class="container">
-
-    <header class="spacer">
-        <h1>Medicament DB</h1>
-        <div class="row">
-            <div class="col-xs-12">
-                <form data-ng-submit="search(query)">
-                    <div class="input-group input-group-lg col-xs-12">
-                        <input type="text" class="form-control" placeholder="exemple : paracétamol 500 mg" aria-describedby="sizing-addon1" data-ng-model="query">
-                    <span class="input-group-btn">
-                        <button class="btn btn-danger" type="submit">
-                            <span class="glyphicon glyphicon-search" id="sizing-addon1"></span>
-                        </button>
-                    </span>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </header>
-
-    <hr>
-
-    <div data-ng-show="results.length > 0">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>Résultats</h3>
-            </div>
-        </div>
-
+    <div>
         <div class="row feature thumbnail" data-ng-repeat="result in results" style="cursor: pointer;" ng-click="display(result.codeCIS)">
             <div class="col-xs-2">
                 <img src="http://placehold.it/150x150" alt="{{result.denomination}}">
@@ -46,8 +19,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-    <hr>
 </div>

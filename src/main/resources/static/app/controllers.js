@@ -2,29 +2,54 @@
 
 var medicamentDBControllers = angular.module('MedicamentDBControllers', []);
 
-medicamentDBControllers.controller('SearchController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+medicamentDBControllers.controller('HeaderController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
 
-    $scope.getFormePharmaceutiqueImage = function(forme) {
-        if (forme === "gélule") {
-            return "img/capsule-icon.png";
-        } else {
-            return "http://placehold.it/32x32";
+    $scope.$on('$routeChangeStart', function(next, current) {
+        $scope.headerSearch = (current.templateUrl !== "views/home.html");
+
+        if (!$scope.headerSearch) {
+            $scope.query = "";
+        } else if (current.templateUrl === "views/search.html") {
+            if ($rootScope.prefix) {
+                $scope.query = $rootScope.prefix;
+                $rootScope.prefix = null;
+            }
+        } else if (current.templateUrl === "views/display.html") {
+            $scope.query = "";
         }
-    }
+    });
 
-    $scope.search = function(query) {
+    $scope.runQuery = function(query) {
+        $location.path("/search");
+
+        $scope.query = query;
         $http.get('http://localhost:8080/api/v1/medicaments', {params: { query: query }}).then(function(resp) {
-            $scope.results = resp.data;
+            $rootScope.results = resp.data;
         });
     }
 
+}]);
+
+medicamentDBControllers.controller('HomeController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
+    $scope.search = function(query) {
+        if (query.length != 0) {
+            $rootScope.prefix = query;
+            $rootScope.results = null;
+            $location.path("/search");
+        }
+    }
+}]);
+
+medicamentDBControllers.controller('SearchController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
     $scope.display = function(codeCIS) {
         $location.path("/display/" + codeCIS);
     }
 
 }]);
 
-medicamentDBControllers.controller('DisplayController', ['$scope', '$http', '$routeParams', '$sce', '$location', 'formatUtils', function($scope, $http, $routeParams, $sce, $location, formatUtils) {
+medicamentDBControllers.controller('DisplayController', ['$scope', '$rootScope', '$http', '$routeParams', '$sce', '$location', 'formatUtils', function($scope, $rootScope, $http, $routeParams, $sce, $location, formatUtils) {
+    $rootScope.results = null;
+
     if ($routeParams.codeCIS) {
         $http.get('http://localhost:8080/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
             var medicament = resp.data;
