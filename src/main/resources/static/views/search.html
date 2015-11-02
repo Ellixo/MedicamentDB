@@ -1,24 +1,15 @@
 <div class="container">
-    <div>
-        <div class="row feature thumbnail" data-ng-repeat="result in results" style="cursor: pointer;" ng-click="display(result.codeCIS)">
-            <div class="col-xs-2">
-                <img src="http://placehold.it/150x150" alt="{{result.denomination}}">
-            </div>
-            <div class="col-xs-10">
-                <div class="row">
-                    <div>
-                        <h3>{{result.denomination}}</h3>
-                        <p>{{result.titulaires}}</p>
-                        <div>Date d'autorisation : {{result.dateAMM}}</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="pull-right">
-                        <img src="#" data-ng-src="{{getFormePharmaceutiqueImage(result.formePharmaceutique)}}" alt="{{result.formePharmaceutique}}" data-toggle="tooltip" data-placement="bottom" title="{{result.formePharmaceutique}}"/>
-                        <img src="img/generique.png" alt="Générique" data-toggle="tooltip" data-placement="bottom" title="Générique" height="32"/>
-                    </div>
-                </div>
-            </div>
+    <h4>
+        <ng-pluralize count="medicaments.length"
+                      when="{'0': 'Aucun médicament ne correspond aux critères fournis',
+                     'one': 'un résultat disponible',
+                     'other': '{} résultats disponibles'}">
+        </ng-pluralize>
+    </h4>
+    <br>
+    <div class="medicaments">
+        <div class="list-group">
+            <a ng-href class="list-group-item medicament-item" data-ng-repeat="medicament in medicaments" style="cursor: pointer;" ng-click="display(medicament.codeCIS)">{{medicament.nom}}</a>
         </div>
     </div>
 </div>

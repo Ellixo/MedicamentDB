@@ -247,10 +247,26 @@ p {
 
 .prixLibre {
     font-weight: bold;
-    color: green;
 }
 
 .prixRembourse {
     font-weight: bold;
-    color: red;
+}
+
+.medicaments {
+    padding-bottom:40px;
+}
+
+.medicament-item.active, .medicament-item.active:focus, .medicament-item.active:hover {
+    z-index: 2;
+    background-color: #505777;
+    border: 1px solid #505777;
+    margin-top: 0px;
+}
+
+.medicament-item, .medicament-item:focus, .medicament-item:hover {
+    z-index: 2;
+    background-color: #D9DEF7;
+    border: 1px solid #D9DEF7;
+    margin-top: 10px;
 }

@@ -4,6 +4,8 @@ var medicamentDBControllers = angular.module('MedicamentDBControllers', []);
 
 medicamentDBControllers.controller('HeaderController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
 
+    $rootScope.medicaments = [];
+
     $scope.$on('$routeChangeStart', function(next, current) {
         $scope.headerSearch = (current.templateUrl !== "views/home.html");
 
@@ -24,8 +26,21 @@ medicamentDBControllers.controller('HeaderController', ['$scope', '$rootScope', 
         $location.path("/search");
 
         $scope.query = query;
-        $http.get('http://localhost:8080/api/v1/medicaments', {params: { query: query }}).then(function(resp) {
-            $rootScope.results = resp.data;
+
+        $http.get('http://localhost:8080/api/v1/medicaments', {params: {query: query}}).then(function(resp) {
+
+            $rootScope.medicaments = [];
+
+            for (var i = 0; i < resp.data.length; i++) {
+                var medicament = {};
+                medicament.codeCIS = resp.data[i].codeCIS;
+                medicament.nom = resp.data[i].denomination;
+                var index = medicament.nom.lastIndexOf(",");
+                if (index != -1) {
+                    medicament.nom = medicament.nom.substring(0,index).trim() + " (" + medicament.nom.substring(index + 1).trim() + ")";
+                }
+                $rootScope.medicaments.push(medicament);
+            }
         });
     }
 
