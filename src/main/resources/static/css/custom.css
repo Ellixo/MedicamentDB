@@ -57,6 +57,20 @@ p {
 
 .navbar-brand, .navbar-brand:focus, .navbar-brand:hover {
     color: white;
+    padding: 10px 10px;
+}
+
+.container-home {
+    text-align: center;
+}
+
+.logo-home {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.logo-header {
+    width: 210px;
 }
 
 .search-field {
@@ -120,9 +134,8 @@ p {
 }
 
 .container-header-medicament {
-    float: left;
     margin-left: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .header-medicament-info {
@@ -133,6 +146,21 @@ p {
     text-align: right;
     padding-top:20px;
     padding-right:10px;
+}
+
+.main-search-input, .main-search-input:focus, .main-search-input:hover {
+    border-style: none;
+    margin-bottom: 10px;
+}
+
+.header-search-input, .header-search-input:focus, .header-search-input:hover {
+    margin-top: 3px;
+    height: 40px !important;
+    border-style: none;
+}
+
+.header-medicament {
+    margin-top: 5px;
 }
 
 .header-prix {
@@ -189,7 +217,6 @@ p {
 }
 
 .presentation-medicament-info {
-    float: right;
     font-style: italic;
     font-size: 80%;
     display: inline-block;

@@ -3,15 +3,13 @@
     <div class="panel panel-default header-medicament-parent">
         <div class="container-header-medicament">
             <div>
-                <h3>{{nomMedicament}}</h3>
+                <h3 class="header-medicament">{{nomMedicament}}</h3>
                 <h7 class="header-prix">Prix : {{prix}}</h7><br>
-                <h7>{{info1}}</h7><br>
+                <h7>{{info1}} - [CIS : {{medicament.codeCIS}} <span ng-if="medicament.numeroAutorisationEuropeenne"> - Numéro autorisation européenne : {{medicament.numeroAutorisationEuropeenne}}</span>]</h7><br>
                 <h7>Voies administration : {{voiesAdministration}} </h7><br>
                 <h7>Titulaires : {{titulaires}} </h7>
             </div>
         </div>
-        <p class="header-medicament-info">CIS : {{medicament.codeCIS}} <p ng-if="medicament.numeroAutorisationEuropeenne"> - Numéro autorisation européenne : {{medicament.numeroAutorisationEuropeenne}}</p></p>
-        <div style="clear: both;"></div>
     </div>
 
     <!-- ALERTES -->
@@ -72,8 +70,7 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title" ng-if="medicament.infosGenerique.autresMedicamentsGroupe">Groupe Générique - {{medicament.infosGenerique.libelleGroupe}}</h3>
-                <h3 class="panel-title" ng-if="!medicament.infosGenerique.autresMedicamentsGroupe">Groupe Générique</h3>
+                <h3 class="panel-title">Groupe Générique</h3>
             </div>
             <div class="panel-body">
                 <ul class="list-group" ng-if="generiques.length != 0">
@@ -135,10 +132,8 @@
                 <div ng-repeat="presentation in presentations" class="row" ng-class="presentation.statut ? 'presentationOK' : 'presentationKO'">
                     <ul class="list-group list-presentation-group">
                         <li class="list-group-item list-presentation-item">
-                            <p style="float:left"><span class="presentationTitle">{{presentation.libelle}} </span><span ng-if="!presentation.statut" class="label label-warning">{{presentation.warning}}</span></p>
-                            <p class="presentation-medicament-info">CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}</p>
-                            <div style="clear: both;"></div>
-                            <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}}</p>
+                            <span class="presentationTitle">{{presentation.libelle}} </span><span ng-if="!presentation.statut" class="label label-warning">{{presentation.warning}}</span>
+                            <p>{{presentation.etatCommercialisationAMM}} : {{presentation.dateDeclarationCommercialisation}} [CIP : {{presentation.codeCIP7}} ou {{presentation.codeCIP13}}]</p>
                             <p ng-if="presentation.abrogation">Date d'abrogation : {{presentation.dateAbrogation}}</p>
                             <p ng-if="presentation.agrementCollectivites">Cette présentation est agréée aux collectivités</p>
                             <p ng-if="!presentation.agrementCollectivites">Cette présentation n'est pas agréée aux collectivités</p>

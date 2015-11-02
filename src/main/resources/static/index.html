@@ -34,17 +34,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-href="#/home" ng-show="headerSearch">Open Medicaments</a>
-            <form ng-show="headerSearch">
-                <div class="input-group input-group-lg search-field">
-                    <input type="text" id="searchInput" class="form-control" show-focus="headerSearch" aria-describedby="sizing-addon1" ng-model="query" ng-change="runQuery(query)" autocomplete="off">
-                    <span class="input-group-btn">
-                        <button class="btn btn-danger" type="submit">
-                            <span class="glyphicon glyphicon-search" id="sizing-addon1"></span>
-                        </button>
-                    </span>
-                </div>
-            </form>
+            <a class="navbar-brand" ng-href="#/home" ng-show="headerSearch">
+                <img src="img/logo2.png" class="logo-header"/>
+            </a>
+            <div class="input-group input-group-lg search-field" ng-show="headerSearch">
+                <input type="text" id="searchInput" class="form-control header-search-input" show-focus="headerSearch" aria-describedby="sizing-addon1" ng-model="query" ng-change="runQuery(query)" autocomplete="off">
+            </div>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
