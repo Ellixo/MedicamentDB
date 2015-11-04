@@ -1,8 +1,8 @@
 'use strict';
 
-var medicamentDBControllers = angular.module('MedicamentDBControllers', []);
+var openMedicamentsControllers = angular.module('OpenMedicamentsControllers', []);
 
-medicamentDBControllers.controller('HeaderController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
+openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
 
     $rootScope.medicaments = [];
 
@@ -46,7 +46,7 @@ medicamentDBControllers.controller('HeaderController', ['$scope', '$rootScope', 
 
 }]);
 
-medicamentDBControllers.controller('HomeController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
+openMedicamentsControllers.controller('HomeController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
     $scope.search = function(query) {
         if (query.length != 0) {
             $rootScope.prefix = query;
@@ -56,14 +56,14 @@ medicamentDBControllers.controller('HomeController', ['$scope', '$rootScope', '$
     }
 }]);
 
-medicamentDBControllers.controller('SearchController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
+openMedicamentsControllers.controller('SearchController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
     $scope.display = function(codeCIS) {
         $location.path("/display/" + codeCIS);
     }
 
 }]);
 
-medicamentDBControllers.controller('DisplayController', ['$scope', '$rootScope', '$http', '$routeParams', '$sce', '$location', 'formatUtils', function($scope, $rootScope, $http, $routeParams, $sce, $location, formatUtils) {
+openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScope', '$http', '$routeParams', '$sce', '$location', 'formatUtils', function($scope, $rootScope, $http, $routeParams, $sce, $location, formatUtils) {
     $rootScope.results = null;
 
     if ($routeParams.codeCIS) {
@@ -221,7 +221,7 @@ medicamentDBControllers.controller('DisplayController', ['$scope', '$rootScope',
                     var prix;
                     for (var j=0 ; j<medicament.infosGenerique.autresMedicamentsGroupe[i].prix.length ; j++) {
                         prix = medicament.infosGenerique.autresMedicamentsGroupe[i].prix[j];
-                        if (j == null) {
+                        if (prix == null) {
                             prixLibre = true;
                         } else {
                             minPrix = minPrix == -1 ? prix : Math.min(minPrix, prix);

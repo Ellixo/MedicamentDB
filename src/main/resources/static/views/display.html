@@ -1,6 +1,6 @@
 <div class="container container-medicament">
 
-    <div class="panel panel-default header-medicament-parent">
+    <div master resizeheader class="panel panel-default header-medicament-parent">
         <div class="container-header-medicament">
             <div>
                 <h3 class="header-medicament">{{nomMedicament}}</h3>
@@ -11,6 +11,8 @@
             </div>
         </div>
     </div>
+
+    <div ng-style="masterStyle"></div>
 
     <!-- ALERTES -->
     <div class="row" ng-if="medicament.surveillanceRenforcee">

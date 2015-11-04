@@ -30,8 +30,20 @@ p {
     margin: 0 auto -40px; /* the bottom margin is the negative value of the footer's height */
 }
 
+@media (max-width: 992px) {
+    .wrapper {
+        margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+    }
+}
+
 .push {
     height: 40px;
+}
+
+@media (max-width: 992px) {
+    .push {
+        height: 100px;
+    }
 }
 
 .footer {
@@ -39,11 +51,29 @@ p {
     background-color: #008576;
     color: white;
     padding: 10px 0;
+    text-align:center;
+}
+
+@media (max-width: 992px) {
+    .footer {
+        height: 100px;
+    }
 }
 
 .container-menu {
-    padding-left:15px;
     padding-right:15px;
+}
+
+.container-logo {
+    padding-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .container-logo {
+        visibility: hidden;
+        width: 0px;
+        padding-left: 0px;
+    }
 }
 
 .navbar {
@@ -51,13 +81,16 @@ p {
     text-transform: uppercase;
     font-weight: 400;
     letter-spacing: 1px;
+    letter-spacing: 1px;
     background-color: #008576;
     z-index: 1030;
+    border-color: #008576;
 }
 
-.navbar-brand, .navbar-brand:focus, .navbar-brand:hover {
-    color: white;
-    padding: 10px 10px;
+.collapse-menu {
+    background-color: #008576;
+    z-index: 1020;
+    color: white !important;
 }
 
 .container-home {
@@ -65,6 +98,9 @@ p {
 }
 
 .logo-home {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
     margin-top: 50px;
     margin-bottom: 50px;
 }
@@ -73,13 +109,57 @@ p {
     width: 210px;
 }
 
+@media (max-width: 768px) {
+    .logo-header {
+        visibility: hidden;
+        width: 0px;
+    }
+}
+
 .search-field {
+    float: left;
     padding: 2px;
-    max-width : 600px;
+    width : 600px;
+}
+
+@media (max-width: 1100px) {
+    .search-field {
+        width: 500px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .search-field {
+        width: 400px;
+    }
+}
+
+@media (max-width: 900px) {
+    .search-field {
+        width: 300px;
+    }
+}
+
+@media (max-width: 800px) {
+    .search-field {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-field {
+        width: 400px;
+    }
+}
+
+@media (max-width: 500px) {
+    .search-field {
+        width: 200px;
+    }
 }
 
 .menu-item, .menu-item:focus, .menu-item:hover {
-    color: white;
+    color: white  !important;
     background-color: #008576 !important;
 }
 
@@ -99,25 +179,7 @@ p {
 }
 
 .container-medicament {
-    margin-top: 150px;
-}
 
-@media (max-width: 1300px) {
-    .container-medicament {
-        margin-top: 200px;
-    }
-}
-
-@media (max-width: 1000px) {
-    .container-medicament {
-        margin-top: 240px;
-    }
-}
-
-@media (max-width: 500px) {
-    .container-medicament {
-        margin-top: 280px;
-    }
 }
 
 .header-medicament-parent {
@@ -125,7 +187,7 @@ p {
     top : 50px;
     right: 0;
     left: 0;
-    z-index: 1030;
+    z-index: 1000;
     color: white;
     background-color: #292C39;
     padding-right: 5px;
@@ -149,7 +211,6 @@ p {
 }
 
 .main-search-input, .main-search-input:focus, .main-search-input:hover {
-    border-style: none;
     margin-bottom: 10px;
 }
 
@@ -296,4 +357,20 @@ p {
     background-color: #D9DEF7;
     border: 1px solid #D9DEF7;
     margin-top: 10px;
+}
+
+@media (max-width: 992px) {
+    .container-icons {
+        margin-top: 10px;
+    }
+}
+
+.icons, .icons:hover, .icons:focus, .icons:active, .icons.active {
+    color: white;
+    outline: none;
+}
+
+.mentions, .mentions:hover, .mentions:focus, .mentions:active, .mentions.active {
+    color: white;
+    outline: none;
 }

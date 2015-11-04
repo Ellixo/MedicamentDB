@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-ng-app="MedicamentDB">
+<html lang="fr" data-ng-app="OpenMedicaments">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,11 +7,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MedicamentDB</title>
+    <title>Open Medicaments</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/tree.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
+
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -25,29 +27,29 @@
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-fixed-top" role="navigation" ng-controller="HeaderController">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="HeaderController">
     <div class="container-menu">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+        <div class="navbar-header page-scroll container-menu-left">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-href="#/home" ng-show="headerSearch">
+            <a class="navbar-brand container-logo" ng-href="#/home" ng-show="headerSearch">
                 <img src="img/logo2.png" class="logo-header"/>
             </a>
             <div class="input-group input-group-lg search-field" ng-show="headerSearch">
                 <input type="text" id="searchInput" class="form-control header-search-input" show-focus="headerSearch" aria-describedby="sizing-addon1" ng-model="query" ng-change="runQuery(query)" autocomplete="off">
             </div>
         </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
+        <div class="collapse navbar-collapse collapse-menu" id="nav-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#" class="menu-item">A Propos</a>
+                    <a href="#" class="page-scroll menu-item">A Propos</a>
                 </li>
                 <li>
-                    <a href="#" class="menu-item">Développeur</a>
+                    <a href="/swagger-ui.html" class="page-scroll menu-item">Développeur</a>
                 </li>
             </ul>
         </div>
@@ -56,7 +58,7 @@
 
 
 <div class="wrapper">
-    <div data-ng-view></div>
+    <div data-ng-view autoscroll="true"></div>
     <div class="push"></div>
 </div>
 
@@ -64,7 +66,20 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <span class="copyright">Copyright © Ellixo 2015</span>
+                <span class="copyright">Copyright &copy; <a href="http://www.ellixo.com" target="_blank" class="icons">Ellixo</a> 2015</span>
+            </div>
+            <div class="col-md-4 container-icons">
+                <ul class="list-inline">
+                    <li><a href="https://twitter.com/EllixoFR" target="_blank" class="icons"><i class="fa fa-twitter" title="Twitter"></i></a>
+                    </li>
+                    <li><a href="https://www.linkedin.com/company/ellixo" target="_blank" class="icons"><i class="fa fa-linkedin" title="LinkedIn"></i></a>
+                    </li>
+                    <li><a href="https://github.com/Ellixo/MedicamentDB" target="_blank" class="icons"><i class="fa fa-github" title="GitHub"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 container-mentions">
+                <span><a href="mentions.html" class="mentions">Mentions légales</a></span>
             </div>
         </div>
     </div>
@@ -76,6 +91,17 @@
 <script src="js/angular-route.min.js"></script>
 <script src="app/app.js"></script>
 <script src="app/controllers.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-69734304-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
 </body>
 
 </html>

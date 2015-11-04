@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.ellixo.healthcare</groupId>
-    <artifactId>medicamentDB</artifactId>
+    <artifactId>openMedicaments</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
