@@ -55,6 +55,7 @@
       height: 30px;
 }
 
+/*
 .tree li a:hover, .tree li a:hover+ul li a {
     background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
 }
@@ -64,4 +65,4 @@
 .tree li a:hover+ul::before,
 .tree li a:hover+ul ul::before{
     border-color:  #94a0b4;
-}
+}*/

@@ -46,7 +46,7 @@
         <div class="collapse navbar-collapse collapse-menu" id="nav-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#" class="page-scroll menu-item">A Propos</a>
+                    <a class="page-scroll menu-item fake-link" data-toggle="modal" data-target="#contactModal">Contact</a>
                 </li>
                 <li>
                     <a href="/swagger-ui.html" class="page-scroll menu-item">Développeur</a>
@@ -55,7 +55,6 @@
         </div>
     </div>
 </nav>
-
 
 <div class="wrapper">
     <div data-ng-view autoscroll="true"></div>
@@ -84,6 +83,57 @@
         </div>
     </div>
 </footer>
+
+<!-- Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="Contact">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content contact">
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="row-fluid container-contact">
+                        <div class="col-md-4 text-center contact-icon"><span class="glyphicon glyphicon-envelope contact-icon" title="Email"></span><br><h3 class="contact-text">INFO@ELLIXO.COM</h3></div>
+                        <div class="col-md-4 text-center contact-icon"><span class="glyphicon glyphicon-phone contact-icon" title="Téléphone"></span><br><h3 class="contact-text">02.30.96.37.78</h3></div>
+                        <div class="col-md-4 text-center contact-icon"><span class="glyphicon glyphicon-map-marker contact-icon" title="Adresse Postale"></span><br><h3 class="contact-text">76, rue d'Antrain<br>35700 RENNES</h3></div>
+                    </div>
+                </div>
+                <div>
+                    <form name="sentMessage" id="contactForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control contact-field" placeholder="Votre Nom *" id="name" required data-validation-required-message="Entrez votre nom.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control contact-field" placeholder="Votre Email *" id="email" required data-validation-required-message="Entrez votre adresse email.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input type="tel" class="form-control contact-field" placeholder="Votre téléphone" id="phone">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <textarea class="form-control contact-message" placeholder="Votre Message *" id="message" required data-validation-required-message="Entrez votre message."></textarea>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 text-center">
+                                <div id="success"></div>
+                                <button type="submit" class="btn btn-xl">Envoyer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>

@@ -374,3 +374,32 @@ p {
     color: white;
     outline: none;
 }
+
+.fake-link {
+    cursor: pointer;
+}
+
+.contact-icon {
+  font-size: 50px;
+  color: #ffffff;
+  padding-top: 20px;
+}
+
+.contact-text {
+  color: #ffffff;
+}
+
+.contact {
+    background-color: #222222;
+    background-image: url('../img/map-image.png');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.contact-field {
+    height: 50px !important;
+}
+
+.contact-message {
+    height: 182px !important;
+}

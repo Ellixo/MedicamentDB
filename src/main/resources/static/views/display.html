@@ -81,7 +81,7 @@
                         <span class="generique-nom">{{nomMedicament}}</span> - prix : {{prix}}
                     </a>
                 </ul>
-                <ul class="list-group" ng-if="generiques.length != 0" ng-repeat="generique in generiques">
+                <ul class="list-group" ng-if="generiques.length != 0" ng-repeat="generique in generiques | orderBy:'denomination'">
                     <a href ng-click="display(generique.codeCIS)" class="list-group-item generique">
                         <span class="badge">{{generique.type}}</span>
                         <span class="generique-nom">{{generique.denomination}}</span> - prix : {{generique.prix}}
@@ -101,17 +101,17 @@
             <div class="panel-body">
                 <div class="tree" ng-if="medicament.compositions.length != 0">
                     <ul>
-                        <li ng-repeat="composition in medicament.compositions" ng-class="{'root': $first}">
-                            <a href="#" ng-if="composition.referenceDosage.length != 0">{{composition.designationElementPharmaceutique}} (composition pour {{composition.referenceDosage}})</a>
-                            <a href="#" ng-if="composition.referenceDosage.length == 0">{{composition.designationElementPharmaceutique}}</a>
+                        <li ng-repeat="composition in medicament.compositions | orderBy:'designationElementPharmaceutique'" ng-class="{'root': $first}">
+                            <a ng-if="composition.referenceDosage.length != 0">{{composition.designationElementPharmaceutique}} (composition pour {{composition.referenceDosage}})</a>
+                            <a ng-if="composition.referenceDosage.length == 0">{{composition.designationElementPharmaceutique}}</a>
                             <ul>
-                                <li ng-repeat="substanceActive in composition.substancesActives">
-                                    <a href="#" ng-if="substanceActive.dosageSubstance.length != 0">{{substanceActive.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
-                                    <a href="#" ng-if="substanceActive.dosageSubstance.length == 0">{{substanceActive.denominationSubstance}}</a>
+                                <li ng-repeat="substanceActive in composition.substancesActives | orderBy:'denominationSubstance'">
+                                    <a ng-if="substanceActive.dosageSubstance.length != 0">{{substanceActive.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                    <a ng-if="substanceActive.dosageSubstance.length == 0">{{substanceActive.denominationSubstance}}</a>
                                     <ul>
-                                        <li ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques">
-                                            <a href="#" ng-if="substanceActive.dosageSubstance.length != 0">{{fractionTherapeutique.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
-                                            <a href="#" ng-if="substanceActive.dosageSubstance.length == 0">{{fractionTherapeutique.denominationSubstance}} </a>
+                                        <li ng-repeat="fractionTherapeutique in substanceActive.fractionsTherapeutiques | orderBy:'denominationSubstance'">
+                                            <a ng-if="substanceActive.dosageSubstance.length != 0">{{fractionTherapeutique.denominationSubstance}} : {{substanceActive.dosageSubstance}}</a>
+                                            <a ng-if="substanceActive.dosageSubstance.length == 0">{{fractionTherapeutique.denominationSubstance}} </a>
                                         </li>
                                     </ul>
                                 </li>

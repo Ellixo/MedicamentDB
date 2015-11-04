@@ -48,7 +48,7 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
 
 openMedicamentsControllers.controller('HomeController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
     $scope.search = function(query) {
-        if (query.length != 0) {
+        if (query && query.length != 0) {
             $rootScope.prefix = query;
             $rootScope.results = null;
             $location.path("/search");
