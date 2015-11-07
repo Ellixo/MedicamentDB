@@ -403,3 +403,10 @@ p {
 .contact-message {
     height: 182px !important;
 }
+
+#indicationsTherapeutiques > p > b {
+    display: inline-block;
+    text-decoration: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

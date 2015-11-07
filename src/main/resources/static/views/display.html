@@ -51,6 +51,19 @@
         </div>
     </div>
 
+    <!-- INDICATIONS THERAPEUTIQUES -->
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Indications Thérapeutiques</h3>
+            </div>
+            <div class="panel-body" id="indicationsTherapeutiques">
+                <p ng-if="medicament.indicationsTherapeutiques" ng-bind-html="indicationsTherapeutiques"></p>
+                <p ng-if="!medicament.indicationsTherapeutiques">Indications thérapeutiques non disponible</p>
+            </div>
+        </div>
+    </div>
+
     <!-- PRESCRIPTION -->
     <div class="row">
         <div class="panel panel-default">

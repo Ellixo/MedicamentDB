@@ -11,13 +11,20 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.common.base.Strings;
+import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
+import sun.java2d.xr.MutableInteger;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,10 +32,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
 public class MedicamentService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MedicamentService.class);
 
     @Autowired
     private ElasticsearchTemplate template;
@@ -44,7 +56,10 @@ public class MedicamentService {
 
     public Triple<List<Medicament>, List<GroupeGenerique>, List<InfoImportante>> readMedicaments(File dir) {
         try {
+            LOG.info("référencement médicaments [START]");
             List<Medicament> medicaments = initMedicaments(dir);
+
+            linkIndicationsTherapeutiques(medicaments);
 
             linkPresentations(dir, medicaments);
             linkCompositions(dir, medicaments);
@@ -57,6 +72,8 @@ public class MedicamentService {
             List<GroupeGenerique> groupesGeneriques = initGroupesGeneriques(dir, medicaments);
 
             List<InfoImportante> infosImportantes = initInfosImportantes(dir, medicaments);
+
+            LOG.info("référencement médicaments [END]");
 
             return Triple.of(medicaments, groupesGeneriques, infosImportantes);
         } catch (IOException e) {
@@ -73,11 +90,111 @@ public class MedicamentService {
     }
 
     private List<Medicament> initMedicaments(File dir) throws IOException {
+        LOG.info("liste médicaments");
+
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema schema = csvMapper.schemaFor(MedicamentCSV.class).withArrayElementSeparator(';').withColumnSeparator('\t');
         MappingIterator<MedicamentCSV> it = csvMapper.readerFor(MedicamentCSV.class).with(schema).readValues(new File(dir, Constants.CIS_BDPM_FILE));
 
         return mapper.toMedicamentES(it.readAll());
+    }
+
+    private void linkIndicationsTherapeutiques(List<Medicament> medicaments) {
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        for (int i = 0; i < medicaments.size(); i++) {
+            Medicament medicament = medicaments.get(i);
+            executor.submit(new Thread() {
+
+                public void run() {
+                    LOG.info("scraping information médicament - CodeCIS : " + medicament.getCodeCIS());
+                    try {
+                        Document doc = Jsoup.connect("http://base-donnees-publique.medicaments.gouv.fr/extrait.php?specid=" + medicament.getCodeCIS()).get();
+                        Elements elements = doc.select("h2.ficheInfo:contains(Indications thérapeutiques)");
+                        if (elements.size() != 0) {
+                            Element start = elements.first();
+                            Element end = doc.select("h2:gt(" + start.elementSiblingIndex() + ")").first();
+                            elements = doc.select("p:gt(" + start.elementSiblingIndex() + "):lt(" + end.elementSiblingIndex() + ")");
+
+                            StringBuilder sb = new StringBuilder();
+                            MutableInteger listeCount = new MutableInteger(0);
+                            elements.forEach(
+                                    x -> {
+                                        x.childNodes().forEach(
+                                                y -> {
+                                                    String string = getString(y);
+                                                    if (!Strings.isNullOrEmpty(string)) {
+                                                        String classParent = y.parentNode().attributes().get("class");
+                                                        if (classParent != null && classParent.startsWith("AmmListePuces")) {
+                                                            int length = "AmmListePuces".length();
+                                                            int index = Integer.parseInt(classParent.substring(length, length + 1));
+                                                            if (listeCount.getValue() > index) {
+                                                                sb.append("</ul>");
+                                                            } else if (listeCount.getValue() < index) {
+                                                                sb.append("<ul>");
+                                                            }
+                                                            listeCount.setValue(index);
+
+                                                            sb.append("<li>" + string + "</li>");
+                                                        } else {
+                                                            if (listeCount.getValue() != 0) {
+                                                                sb.append("</ul>");
+                                                            }
+                                                            listeCount.setValue(0);
+                                                            sb.append(string + " ");
+                                                        }
+                                                    }
+                                                });
+
+                                        if (sb.length() != 0) {
+                                            if (!sb.toString().endsWith(">")) {
+                                                sb.append("<br>");
+                                            }
+                                        }
+                                    }
+                            );
+                            for (int i = 0; i < listeCount.getValue(); i++) {
+                                sb.append("</ul>");
+                            }
+                            String text = sb.toString();
+
+                            if (text.endsWith("<br>")) {
+                                text = text.substring(0, text.length() - 4);
+                            }
+
+                            medicament.setIndicationsTherapeutiques(text);
+                        } else {
+                            LOG.warn("Pas d'indications thérapeutiques - codeCIS : " + medicament.getCodeCIS());
+                        }
+                    } catch (IOException e) {
+                        LOG.error("scraping error", e);
+                    }
+                }
+            });
+        }
+
+        executor.shutdown();
+        try {
+            executor.awaitTermination(1, TimeUnit.HOURS);
+        } catch (InterruptedException e) {
+            LOG.error("scraping error", e);
+        }
+    }
+
+    private String getString(Node node) {
+        String string = node.toString().trim();
+        if (string.length() > 1) {
+            if ((node.nodeName().equals("a") && Strings.isNullOrEmpty(node.attributes().get("href")))
+                    || (node.nodeName().equals("span"))) {
+                return getString(node.childNode(0));
+            } else {
+                if (string.endsWith("·")) {
+                    return null;
+                } else {
+                    return string;
+                }
+            }
+        }
+        return null;
     }
 
     private void linkPresentations(File dir, List<Medicament> medicaments) throws IOException {
@@ -88,6 +205,8 @@ public class MedicamentService {
         Medicament medicament;
         while (it.hasNext()) {
             PresentationCSV presentation = it.next();
+
+            LOG.info("référencement presentation médicament - CodeCIS : " + presentation.getCodeCIS());
 
             medicament = medicaments.stream()
                     .filter(x -> x.getCodeCIS().equals(presentation.getCodeCIS()))
@@ -109,6 +228,8 @@ public class MedicamentService {
         List<CompositionCSV> compositions = new ArrayList<>();
         while (it.hasNext()) {
             composition = it.next();
+
+            LOG.info("référencement composition médicament - CodeCIS : " + composition.getCodeCIS());
 
             if (previousCodeCIS != null && !composition.getCodeCIS().equals(previousCodeCIS)) {
                 linkCompositions(previousCodeCIS, compositions, medicaments);
@@ -181,6 +302,8 @@ public class MedicamentService {
         while (it.hasNext()) {
             AvisSMRCSV csv = it.next();
 
+            LOG.info("référencement SMR médicament - CodeCIS : " + csv.getCodeCIS());
+
             medicament = medicaments.stream()
                     .filter(x -> x.getCodeCIS().equals(csv.getCodeCIS()))
                     .findFirst().orElse(null);
@@ -202,6 +325,8 @@ public class MedicamentService {
         AvisASMR avisASMR;
         while (it.hasNext()) {
             AvisASMRCSV csv = it.next();
+
+            LOG.info("référencement ASMR médicament - CodeCIS : " + csv.getCodeCIS());
 
             medicament = medicaments.stream()
                     .filter(x -> x.getCodeCIS().equals(csv.getCodeCIS()))
@@ -238,6 +363,8 @@ public class MedicamentService {
         Medicament medicament;
         while (it.hasNext()) {
             ConditionPrescriptionDelivranceCSV condition = it.next();
+
+            LOG.info("référencement condition prescription médicament - CodeCIS : " + condition.getCodeCIS());
 
             medicament = medicaments.stream()
                     .filter(x -> x.getCodeCIS().equals(condition.getCodeCIS()))
@@ -277,6 +404,8 @@ public class MedicamentService {
         List<GroupeGeneriqueCSV> groupes = new ArrayList<>();
         while (it.hasNext()) {
             csv = it.next();
+
+            LOG.info("référencement groupe générique médicament - CodeCIS : " + csv.getCodeCIS());
 
             if (previousCode != null && !csv.getCodeGroupe().equals(previousCode)) {
                 groupesGeneriques.add(handleGroupeGenerique(groupes, medicaments));
@@ -356,6 +485,8 @@ public class MedicamentService {
         List<InfoImportanteCSV> infos = new ArrayList<>();
         while (it.hasNext()) {
             csv = it.next();
+
+            LOG.info("référencement infos importantes prescription médicament - CodeCIS : " + csv.getCodeCIS());
 
             if (previousCodeCIS != null && !csv.getCodeCIS().equals(previousCodeCIS)) {
                 infosImportantes.addAll(handleInfos(infos, medicaments));

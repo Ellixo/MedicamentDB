@@ -37,6 +37,8 @@ public class Medicament {
     private List<String> titulaires = new ArrayList<>();
     private Boolean surveillanceRenforcee;
 
+    private String indicationsTherapeutiques;
+
     private List<Presentation> presentations = new ArrayList<>();
     private List<Composition> compositions = new ArrayList<>();
     private List<AvisSMR> avisSMR = new ArrayList<>();
@@ -51,6 +53,14 @@ public class Medicament {
 
     public void setCodeCIS(String codeCIS) {
         this.codeCIS = codeCIS;
+    }
+
+    public String getIndicationsTherapeutiques() {
+        return indicationsTherapeutiques;
+    }
+
+    public void setIndicationsTherapeutiques(String indicationsTherapeutiques) {
+        this.indicationsTherapeutiques = indicationsTherapeutiques;
     }
 
     public boolean isHomeopathie() {
