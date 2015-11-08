@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
-import sun.java2d.xr.MutableInteger;
 
 import java.io.File;
 import java.io.IOException;
@@ -544,6 +543,31 @@ public class MedicamentService {
         }
 
         return infosImportantes;
+    }
+
+
+    private static class MutableInteger {
+        private int value;
+
+        public MutableInteger(int var1) {
+            this.setValue(var1);
+        }
+
+        public int hashCode() {
+            return this.getValue();
+        }
+
+        public boolean equals(Object var1) {
+            return var1 instanceof MutableInteger && ((MutableInteger)var1).getValue() == this.getValue();
+        }
+
+        public void setValue(int var1) {
+            this.value = var1;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
     }
 
 }
