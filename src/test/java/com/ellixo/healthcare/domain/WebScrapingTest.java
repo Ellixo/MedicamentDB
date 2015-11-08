@@ -1,5 +1,6 @@
 package com.ellixo.healthcare.domain;
 
+import com.ellixo.healthcare.services.MedicamentService;
 import com.google.common.base.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,7 +8,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.junit.Test;
-import sun.java2d.xr.MutableInteger;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class WebScrapingTest {
             elements = doc.select("p:gt(" + start.elementSiblingIndex() + "):lt(" + end.elementSiblingIndex() + ")");
 
             StringBuilder sb = new StringBuilder();
-            MutableInteger listeCount = new MutableInteger(0);
+            MedicamentService.MutableInteger listeCount = new MedicamentService.MutableInteger(0);
             elements.forEach(
                     x -> {
                         x.childNodes().forEach(
@@ -84,7 +84,7 @@ public class WebScrapingTest {
             elements = doc.select("p:gt(" + start.elementSiblingIndex() + "):lt(" + end.elementSiblingIndex() + ")");
 
             StringBuilder sb = new StringBuilder();
-            MutableInteger listeCount = new MutableInteger(0);
+            MedicamentService.MutableInteger listeCount = new MedicamentService.MutableInteger(0);
             elements.forEach(
                     x -> {
                         x.childNodes().forEach(

@@ -546,7 +546,7 @@ public class MedicamentService {
     }
 
 
-    private static class MutableInteger {
+    public static class MutableInteger {
         private int value;
 
         public MutableInteger(int var1) {
