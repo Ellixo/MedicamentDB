@@ -27,7 +27,7 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
 
         $scope.query = query;
 
-        $http.get('http://localhost:8080/api/v1/medicaments', {params: {query: query}}).then(function(resp) {
+        $http.get('/api/v1/medicaments', {params: {query: query}}).then(function(resp) {
 
             $rootScope.medicaments = [];
 
@@ -67,7 +67,7 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
     $rootScope.results = null;
 
     if ($routeParams.codeCIS) {
-        $http.get('http://localhost:8080/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
+        $http.get('/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
             var medicament = resp.data;
 
             $scope.medicament = medicament;
