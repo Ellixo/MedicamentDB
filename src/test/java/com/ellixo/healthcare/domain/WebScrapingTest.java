@@ -7,10 +7,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
+@Ignore
 public class WebScrapingTest {
 
     @Test
@@ -75,8 +77,8 @@ public class WebScrapingTest {
 
     @Test
     public void scrapResume() throws IOException {
-        // 64460520 60730566 63357706 66391261 60558554 64073783 62607530
-        Document doc = Jsoup.connect("http://base-donnees-publique.medicaments.gouv.fr/affichageDoc.php?specid=60558554&typedoc=R").get();
+        // 64460520 60730566 63357706 66391261 60558554 64073783 62607530 69723039
+        Document doc = Jsoup.connect("http://base-donnees-publique.medicaments.gouv.fr/affichageDoc.php?specid=63921217&typedoc=R").get();
         Elements elements = doc.select("a[name=RcpIndicTherap]");
         if (elements.size() != 0) {
             Element start = elements.first().parent();
@@ -90,15 +92,16 @@ public class WebScrapingTest {
                         String css = x.attr("class");
                         if (css != null && css.startsWith("AmmListePuces")) {
                             int length = "AmmListePuces".length();
-                            int index = Integer.parseInt(css.substring(length, length + 1));
+                            int index = 1;
+                            if (css.length() > length) {
+                                index = Integer.parseInt(css.substring(length, length + 1));
+                            }
                             if (listeCount.getValue() > index) {
                                 sb.append("</ul>");
                             } else if (listeCount.getValue() < index) {
                                 sb.append("<ul>");
                             }
                             listeCount.setValue(index);
-
-                            sb.append("<li>");
                         } else {
                             if (listeCount.getValue() != 0) {
                                 sb.append("</ul>");
@@ -116,15 +119,14 @@ public class WebScrapingTest {
                                     if (!Strings.isNullOrEmpty(string)) {
                                         if (css != null && css.startsWith("AmmAnnexeTitre")) {
                                             string = "<b>" + string + "</b>";
+                                        } else if (css != null && css.startsWith("AmmListePuces")) {
+                                            string = "<li>" + string + "</li>";
                                         }
 
                                         sb.append(string + " ");
                                     }
                                 });
 
-                        if (css != null && css.startsWith("AmmListePuces")) {
-                            sb.append("</li>");
-                        }
                     }
             );
 
@@ -145,9 +147,25 @@ public class WebScrapingTest {
         String string = node.toString().trim();
         if (string.length() > 1 || string.equals(":")) {
             if (node.nodeName().equals("a") && Strings.isNullOrEmpty(node.attributes().get("href"))) {
-                return getString(node.childNode(0));
+                StringBuilder sb = new StringBuilder();
+                String tmp;
+                for (Node child : node.childNodes()) {
+                    tmp = getString(child);
+                    if (tmp != null) {
+                        sb.append(getString(child));
+                    }
+                }
+                return sb.toString();
             } else if (node.nodeName().equals("span")) {
-                string = getString(node.childNode(0));
+                StringBuilder sb = new StringBuilder();
+                String tmp;
+                for (Node child : node.childNodes()) {
+                    tmp = getString(child);
+                    if (tmp != null) {
+                        sb.append(getString(child));
+                    }
+                }
+                string = sb.toString();
 
                 if (Strings.isNullOrEmpty(string)) {
                     return null;
@@ -159,7 +177,7 @@ public class WebScrapingTest {
                 boolean souligne = css.contains("souligne");
                 boolean italique = css.contains("italique");
 
-                StringBuilder sb = new StringBuilder();
+                sb = new StringBuilder();
 
                 if (gras) {
                     sb.append("<b>");

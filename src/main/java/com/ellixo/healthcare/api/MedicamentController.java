@@ -3,6 +3,7 @@ package com.ellixo.healthcare.api;
 import com.ellixo.healthcare.domain.Medicament;
 import com.ellixo.healthcare.exception.UnknownObjectException;
 import com.ellixo.healthcare.repository.MedicamentRepository;
+import com.ellixo.healthcare.services.MedicamentService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -27,6 +29,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @Api(value = "medicaments", description = "Medicaments", produces = "application/json", consumes = "application/json")
 public class MedicamentController {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    @Autowired
+    private MedicamentService service;
     @Autowired
     private MedicamentRepository repository;
 
@@ -53,6 +59,11 @@ public class MedicamentController {
         headers.add("Link", linkBuilder.toString());
 
         return new ResponseEntity<>(medicaments.getContent(), headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public String getInfo() {
+        return "{\"dateMiseAJour\":\"" + DATE_FORMATTER.format(service.getUpdateDate()) + "\"}";
     }
 
 }

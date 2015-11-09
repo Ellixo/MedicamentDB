@@ -126,7 +126,15 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
             }
 
             // indications therapeutiques
-            $scope.indicationsTherapeutiques = $sce.trustAsHtml(medicament.indicationsTherapeutiques);
+            $scope.hasIndicationsTherapeutiques = false;
+            $scope.indicationsTherapeutiques = "";
+            if (medicament.homeopathie && medicament.indicationsTherapeutiques.startsWith("Pas d'indication thérapeutique")) {
+                $scope.hasIndicationsTherapeutiques = true;
+                $scope.indicationsTherapeutiques = $sce.trustAsHtml("Ce médicament est un médicament homéopathique à nom commun soumis à <a target='_blank' href='http://base-donnees-publique.medicaments.gouv.fr/glossaire.php#homeo'>enregistrement</a>.<br>Aucune indication thérapeutique, aucune posologie et aucune notice ne sont attribuées aux médicaments homéopathiques à nom commun. En effet, pour ces médicaments, il revient aux professionnels de santé d'en déterminer l'indication (pathologies ou symptômes) et la posologie. L'indication et la posologie sont ainsi adaptées à chaque patient en prenant en compte les données de l'usage traditionnel homéopathique. Ces médicaments peuvent être délivrés par le pharmacien sans prescription médicale.");
+            } else {
+                $scope.hasIndicationsTherapeutiques = true;
+                $scope.indicationsTherapeutiques = $sce.trustAsHtml(medicament.indicationsTherapeutiques);
+            }
 
             // presentations
             $scope.presentations = [];

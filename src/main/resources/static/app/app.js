@@ -2,7 +2,12 @@
 
 var OpenMedicamentsApp = angular.module('OpenMedicaments', ['OpenMedicamentsControllers', 'ngRoute']);
 
-OpenMedicamentsApp.run(function($rootScope, $location) {
+OpenMedicamentsApp.run(function($rootScope, $location, $http) {
+
+    $http.get('/api/v1/medicaments/info').then(function(resp) {
+        $rootScope.dateMiseAJour = resp.data.dateMiseAJour;
+    });
+
 });
 
 OpenMedicamentsApp.config(function ($routeProvider) {

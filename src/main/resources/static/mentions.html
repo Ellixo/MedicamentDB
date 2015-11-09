@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="OpenMedicaments">
 
 <head>
 
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-md-12 justify">
                     <p>
-                        Conformément aux dispositions de l’article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique, nous vous informons que Le site internet www.open-medicaments.fr est édité par :<br>
+                        Conformément aux dispositions de l’article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique, nous vous informons que le site internet www.open-medicaments.fr est édité par :<br>
                         <br>
                         Ellixo - 76, rue d'Antrain- 35700 RENNES<br>
                         Société par Actions Simplifiée au capital de 5 000€<br>
@@ -55,9 +55,12 @@
                         téléphone : 02.30.96.37.78<br>
                         <br>
                         Responsable de la publication : Grégory Le Bonniec (gregory.lebonniec@ellixo.com)<br>
-                        Hébergement : GANDI SAS - 63-65 boulevard Massena - 75013 Paris<br>
+                        Hébergement : Amazon Data Services Ireland Ltd - One Kilmainham Square Inchicore Road Kilmainham - Dublin - Irlande<br>
                         <br>
                         Le contenu de ce site Internet est protégé et relève des législations française et internationale sur le droit d’auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés. Ellixo décline toute responsabilité sur le contenu des sites dont il n'est pas l'éditeur et qui sont accessibles par l'intermédiaire de liens hypertextes. Ellixo n´est pas non plus responsable des hyperliens qui pointent sur son site. Ellixo s´engage à veiller à l´exactitude des informations mises en lignes sur son site, néanmoins, nous ne pouvons pas en garantir l´exhaustivité et l´actualité. Ellixo ne pourra en aucun cas être tenu responsable de tout dommage résultant de l'utilisation des informations disponibles sur ce site. Ellixo se réserve le droit de modifier les mentions légales de ce site Internet à tout moment.<br>
+                        <br>
+                        Open Médicaments s'appuie sur les données fournies par la <a href="http://base-donnees-publique.medicaments.gouv.fr" target="_blank">base de données publique des médicament</a> (mise à jour le {{dateMiseAJour}})
+                        <br>
                     <p>
                     <br>
                     <h4><a href="index.html">Retour à Open Medicaments</a></h4>
@@ -81,7 +84,14 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-    
+
+    <!-- angular -->
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/controllers.js"></script>
+
+
     <!-- Back to top button -->
     <script src="js/jquery.backTop.min.js"></script>
     <script src="js/backTop.js"></script>

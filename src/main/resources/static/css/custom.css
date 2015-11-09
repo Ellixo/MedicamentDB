@@ -210,10 +210,6 @@ p {
     padding-right:10px;
 }
 
-.main-search-input, .main-search-input:focus, .main-search-input:hover {
-    margin-bottom: 10px;
-}
-
 .header-search-input, .header-search-input:focus, .header-search-input:hover {
     margin-top: 3px;
     height: 40px !important;
@@ -404,9 +400,18 @@ p {
     height: 182px !important;
 }
 
+#indicationsTherapeutiques {
+    line-height: 1.7;
+}
+
 #indicationsTherapeutiques > p > b {
     display: inline-block;
     text-decoration: none;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.home-legende {
+    margin-top: 20px;
+    font-style: italic;
 }
