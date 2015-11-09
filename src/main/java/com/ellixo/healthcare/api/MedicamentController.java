@@ -5,6 +5,8 @@ import com.ellixo.healthcare.exception.UnknownObjectException;
 import com.ellixo.healthcare.repository.MedicamentRepository;
 import com.ellixo.healthcare.services.MedicamentService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,11 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -37,6 +35,7 @@ public class MedicamentController {
     private MedicamentRepository repository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "lecture medicament", httpMethod = "GET", response = Medicament.class)
     public Medicament get(@PathVariable(value = "id") String id) {
         Medicament medicament = repository.findOne(id);
         if (medicament == null) {
@@ -45,8 +44,9 @@ public class MedicamentController {
         return medicament;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Medicament>> list(@RequestParam(required = false) String query, Pageable pageable) {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @ApiOperation(value = "requête medicaments", httpMethod = "GET", response = ResponseEntity.class)
+    public ResponseEntity<List<Medicament>> list(@ApiParam(value = "requête", required = false) @RequestParam(required = false) String query, Pageable pageable) {
         Page<Medicament> medicaments = repository.searchAll(query, pageable);
 
         HttpHeaders headers = new HttpHeaders();
@@ -62,6 +62,7 @@ public class MedicamentController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @ApiOperation(value = "info base de données", httpMethod = "GET", response = ResponseEntity.class)
     public String getInfo() {
         return "{\"dateMiseAJour\":\"" + DATE_FORMATTER.format(service.getUpdateDate()) + "\"}";
     }

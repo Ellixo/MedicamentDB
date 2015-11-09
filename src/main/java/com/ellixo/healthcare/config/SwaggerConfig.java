@@ -50,7 +50,7 @@ public class SwaggerConfig {
                                 .message("500 message")
                                 .responseModel(new ModelRef("Error"))
                                 .build()))
-                .enableUrlTemplating(true);
+                .enableUrlTemplating(false);
     }
 
     private ApiInfo apiInfo() {
