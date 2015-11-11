@@ -1,9 +1,13 @@
 #Open Médicaments
 Open Médicaments est un moteur de recherche permettant d'accéder à l'ensemble des données et documents de référence sur les médicaments commercialisés ou ayant été commercialisés durant les trois dernières années en France.
 
+Disponible à  [open-medicaments.fr](http://open-medicaments.fr)
+
 ##Fonctionnalités
 
 ##API
+
+Interface Swagger disponible à [open-medicaments.fr/swagger](http://open-medicaments.fr/swagger-ui.html)
 
 #### service permettant de requêter la base de médicaments
 ```
