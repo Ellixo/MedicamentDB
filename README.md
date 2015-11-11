@@ -13,9 +13,9 @@ GET /api/v1/medicaments
 ##### Parameters
 |Type|Name|Description|Required|
 |----|----|----|----|
-|QueryParameter|query|requête|false|
-|QueryParameter|page|page|false|
-|QueryParameter|limit|limite|false|
+|Paramètre|query|requête|false|
+|Paramètre|page|numéro de page|false|
+|Paramètre|limit|nombre maximum de résultats par page|false|
 
 #### lecture medicament
 ```
@@ -25,9 +25,9 @@ GET /api/v1/medicaments/{id}
 ##### Parameters
 |Type|Name|Description|Required|
 |----|----|----|----|
-|PathParameter|id|id|true|
+|Chemin|id|code CIS du médicament|true|
 
-#### info base de données
+#### info base de données (ie. date de mise à jour)
 ```
 GET /api/v1/medicaments/info
 ```
