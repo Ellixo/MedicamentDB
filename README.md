@@ -50,7 +50,7 @@ GET /api/v1/medicaments/info
 GET /api/v1/health
 ```
 
-##Technologies
+##Fiche Technique
 - Spring Boot
 - Angular.js
 - Elasticsearch
