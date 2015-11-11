@@ -6,7 +6,6 @@ Open Médicaments s'appuie les données OpenData fournies par la [base de donné
 <img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-home.png" alt="Open Médicaments" width="700px"/>
 
 ##Fonctionnalités
-
 ###Recherche médicaments
 <img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-recherche.png" alt="Recherche médicaments" width="700px"/>
 
@@ -14,7 +13,6 @@ Open Médicaments s'appuie les données OpenData fournies par la [base de donné
 <img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-fiche.png" alt="Fiche médicament" width="700px"/>
 
 ##API
-
 *En complément du moteur de recherche open-medicaments.fr, une API est founie afin de permettre une intégration des fonctionnalités de recherche et d'affichage des données médicaments.*
 
 *Interface Swagger disponible à [open-medicaments.fr/swagger](http://open-medicaments.fr/swagger-ui.html)*
