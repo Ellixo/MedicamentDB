@@ -11,7 +11,7 @@ Disponible à  [open-medicaments.fr](http://open-medicaments.fr)
 <img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-search.png" alt="Recherche médicaments" width="700px"/>
 
 ###Fiche médicament
-<img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-display.png" alt="Fiche médicament" width="700px"/>
+<img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-fiche.png" alt="Fiche médicament" width="700px"/>
 
 
 
