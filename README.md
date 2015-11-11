@@ -1,5 +1,5 @@
 #Open Médicaments
-Open Médicaments est un moteur de recherche permettant d'accéder à l'ensemble des données et documents de référence sur les médicaments commercialisés ou ayant été commercialisés durant les trois dernières années en France. Disponible à  [open-medicaments.fr](http://open-medicaments.fr)
+Open Médicaments est un moteur de recherche permettant d'accéder à l'ensemble des données et documents de référence sur les médicaments commercialisés ou ayant été commercialisés durant les trois dernières années en France. Disponible sur  [open-medicaments.fr](http://open-medicaments.fr)
 
 Open Médicaments s'appuie les données OpenData fournies par la [base de données publique des médicaments](http://base-donnees-publique.medicaments.gouv.fr/index.php).
 
@@ -15,7 +15,7 @@ Open Médicaments s'appuie les données OpenData fournies par la [base de donné
 ##API
 *En complément du moteur de recherche open-medicaments.fr, une API est founie afin de permettre une intégration des fonctionnalités de recherche et d'affichage des données médicaments.*
 
-*Interface Swagger disponible à [open-medicaments.fr/swagger](http://open-medicaments.fr/swagger-ui.html)*
+*Interface Swagger disponible sur [open-medicaments.fr/swagger](http://open-medicaments.fr/swagger-ui.html)*
 
 #### service permettant de requêter la base de médicaments
 ```
@@ -29,7 +29,7 @@ GET /api/v1/medicaments
 |Paramètre|page|numéro de page|non|
 |Paramètre|limit|nombre maximum de résultats par page|non|
 
-#### lecture medicament
+#### service permettant de lire l'ensemble des informations concernant un médicament
 ```
 GET /api/v1/medicaments/{id}
 ```
@@ -39,7 +39,7 @@ GET /api/v1/medicaments/{id}
 |----|----|----|----|
 |URL|id|code CIS du médicament|oui|
 
-#### info base de données (ie. date de mise à jour)
+#### service renvoyant les infos base de données (ie. date de mise à jour)
 ```
 GET /api/v1/medicaments/info
 ```
