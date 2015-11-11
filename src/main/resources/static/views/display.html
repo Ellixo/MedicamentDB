@@ -172,24 +172,26 @@
                 <h3 class="panel-title">Service médical rendu (SMR)</h3>
             </div>
             <div class="panel-body">
-                <table class="table" ng-if="avisSMR.length != 0">
-                    <thead>
-                    <tr>
-                        <th class="no-wrap">Valeur du SMR</th>
-                        <th class="no-wrap">Date</th>
-                        <th class="no-wrap">Motif de l'évaluation</th>
-                        <th>Résumé de l'avis</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="avis in avisSMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
-                        <td class="no-wrap">{{avis.valeurSMR}}</td>
-                        <td class="no-wrap">{{avis.dateAvisCommissionTransparence}}</td>
-                        <td class="no-wrap">{{avis.motifEvaluation}}</td>
-                        <td ng-bind-html="avis.libelleSMR"/>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive table-responsive-medicaments">
+                    <table class="table table-striped table-condensed" ng-if="avisSMR.length != 0">
+                        <thead>
+                        <tr>
+                            <th class="table-cell-header">Valeur du SMR</th>
+                            <th class="table-cell-header">Date</th>
+                            <th class="table-cell-header">Motif de l'évaluation</th>
+                            <th class="table-cell-header">Résumé de l'avis</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="avis in avisSMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
+                            <td class="table-cell">{{avis.valeurSMR}}</td>
+                            <td class="table-cell">{{avis.dateAvisCommissionTransparence}}</td>
+                            <td class="table-cell">{{avis.motifEvaluation}}</td>
+                            <td class="table-cell-text" ng-bind-html="avis.libelleSMR"/>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <p class="legende" ng-if="avisSMR.length != 0">Les libellés affichés ci-dessus ne sont que des résumés ou extraits issus des avis rendus par la Commission de la Transparence. Seul l'avis complet de la Commission de la Transparence fait référence. </p>
                 <p ng-if="avisSMR.length == 0">Aucun SMR n'est disponible pour ce médicament</p>
             </div>
@@ -203,24 +205,26 @@
                 <h3 class="panel-title">Amélioration du service médical rendu (ASMR)</h3>
             </div>
             <div class="panel-body">
-                <table class="table" ng-if="avisASMR.length != 0">
-                    <thead>
-                    <tr>
-                        <th class="no-wrap">Valeur de l'ASMR</th>
-                        <th class="no-wrap">Date</th>
-                        <th class="no-wrap">Motif de l'évaluation</th>
-                        <th>Résumé de l'avis</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="avis in avisASMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
-                        <td class="no-wrap">{{avis.valeurSMR}}</td>
-                        <td class="no-wrap">{{avis.dateAvisCommissionTransparence}}</td>
-                        <td class="no-wrap">{{avis.motifEvaluation}}</td>
-                        <td ng-bind-html="avis.libelleSMR"/>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive table-responsive-medicaments">
+                    <table class="table table-striped table-condensed" ng-if="avisASMR.length != 0">
+                        <thead>
+                        <tr>
+                            <th class="table-cell-header">Valeur de l'ASMR</th>
+                            <th class="table-cell-header">Date</th>
+                            <th class="table-cell-header">Motif de l'évaluation</th>
+                            <th class="table-cell-header">Résumé de l'avis</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="avis in avisASMR" ng-click="go(avis.urlHAS)" style="cursor: pointer;">
+                            <td class="table-cell">{{avis.valeurSMR}}</td>
+                            <td class="table-cell">{{avis.dateAvisCommissionTransparence}}</td>
+                            <td class="table-cell">{{avis.motifEvaluation}}</td>
+                            <td class="table-cell-text" ng-bind-html="avis.libelleSMR"/>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <p class="legende" ng-if="avisASMR.length != 0">Les libellés affichés ci-dessus ne sont que des résumés ou extraits issus des avis rendus par la Commission de la Transparence. Seul l'avis complet de la Commission de la Transparence fait référence. </p>
                 <p ng-if="avisASMR.length == 0">Aucune ASMR n'est disponible pour ce médicament</p>
             </div>

@@ -12,6 +12,7 @@ import java.util.*;
 import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
 
 @Document(indexName = "medicament_db", type = "medicaments")
+@Setting(settingPath = "settings.json")
 public class Medicament {
 
     @Id

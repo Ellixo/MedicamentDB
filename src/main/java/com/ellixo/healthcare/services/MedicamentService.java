@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.common.base.Strings;
+import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.Jsoup;
@@ -130,10 +131,11 @@ public class MedicamentService {
                             Element end = doc.select("*." + start.attributes().get("class") + ":gt(" + start.elementSiblingIndex() + ")").first();
                             elements = doc.select("p:gt(" + start.elementSiblingIndex() + "):lt(" + end.elementSiblingIndex() + ")");
 
-                            String text = transformScrapedData(medicament.getCodeCIS(), elements);
+                            String text = transformScrapedData(medicament.getCodeCIS(), elements, link);
                             if (!text.endsWith("</ul>")) {
                                 text += "<br>";
                             }
+
                             text += "<i>Plus d'information <a href=\"" + link + "\" target=\"_blank\">en cliquant ici</a></i>";
 
                             medicament.setIndicationsTherapeutiques(text);
@@ -145,7 +147,9 @@ public class MedicamentService {
                                 Element end = doc.select("h2:gt(" + start.elementSiblingIndex() + ")").first();
                                 elements = doc.select("p:gt(" + start.elementSiblingIndex() + "):lt(" + end.elementSiblingIndex() + ")");
 
-                                medicament.setIndicationsTherapeutiques(transformScrapedData(medicament.getCodeCIS(), elements));
+                                String text = transformScrapedData(medicament.getCodeCIS(), elements, link);
+
+                                medicament.setIndicationsTherapeutiques(text);
                             } else {
                                 LOG.warn("Pas d'indications thérapeutiques - codeCIS : " + medicament.getCodeCIS());
                                 medicament.setIndicationsTherapeutiques(null);
@@ -180,7 +184,7 @@ public class MedicamentService {
         throw exception;
     }
 
-    private String transformScrapedData(String codeCIS, Elements elements) {
+    private String transformScrapedData(String codeCIS, Elements elements, String link) {
         if (elements.size() != 0) {
             StringBuilder sb = new StringBuilder();
             MedicamentService.MutableInteger listeCount = new MedicamentService.MutableInteger(0);
@@ -211,19 +215,24 @@ public class MedicamentService {
                                 listeCount.setValue(0);
                             }
 
+                            MutableBoolean isList = new MutableBoolean(false);
                             x.childNodes().forEach(
                                     y -> {
-                                        String string = getString(y);
+                                        String string = getString(y, "http://base-donnees-publique.medicaments.gouv.fr/affichageDoc.php?specid=69995434&typedoc=R");
                                         if (!Strings.isNullOrEmpty(string)) {
                                             if (css != null && css.startsWith("AmmAnnexeTitre")) {
                                                 string = "<b>" + string + "</b>";
-                                            } else if (css != null && css.startsWith("AmmListePuces")) {
-                                                string = "<li>" + string + "</li>";
+                                            } else if (css != null && css.startsWith("AmmListePuces") && isList.isFalse()) {
+                                                string = "<li>" + string;
+                                                isList.setValue(true);
                                             }
 
                                             sb.append(string + " ");
                                         }
                                     });
+                            if (isList.isTrue()) {
+                                sb.append("</li>");
+                            }
                         } catch (Exception e) {
                             LOG.error("scraping error - code CIS " + codeCIS, e);
                         }
@@ -245,26 +254,42 @@ public class MedicamentService {
         return null;
     }
 
-    private String getString(Node node) {
+    private String getString(Node node, String link) {
         String string = node.toString().trim();
         if (string.length() > 1 || string.equals(":")) {
             if (node.childNodes().size() != 0 && node.nodeName().equals("a") && Strings.isNullOrEmpty(node.attributes().get("href"))) {
                 StringBuilder sb = new StringBuilder();
                 String tmp;
                 for (Node child : node.childNodes()) {
-                    tmp = getString(child);
+                    tmp = getString(child, link);
                     if (tmp != null) {
-                        sb.append(getString(child) + " ");
+                        sb.append(getString(child, link) + " ");
                     }
                 }
                 return sb.toString();
+            } else if (node.childNodes().size() != 0 && node.nodeName().equals("a")) {
+                StringBuilder sb = new StringBuilder();
+                String tmp;
+                for (Node child : node.childNodes()) {
+                    tmp = getString(child, link);
+                    if (tmp != null) {
+                        sb.append(getString(child, link));
+                    }
+                }
+
+                String href = node.attributes().get("href");
+                if (!href.startsWith("http")) {
+                    href = link + href;
+                }
+
+                return "<a href=\"" + href + "\">" + sb.toString() + "</a>";
             } else if (node.childNodes().size() != 0 && node.nodeName().equals("span")) {
                 StringBuilder sb = new StringBuilder();
                 String tmp;
                 for (Node child : node.childNodes()) {
-                    tmp = getString(child);
+                    tmp = getString(child, link);
                     if (tmp != null) {
-                        sb.append(getString(child) + " ");
+                        sb.append(getString(child, link) + " ");
                     }
                 }
                 string = sb.toString();

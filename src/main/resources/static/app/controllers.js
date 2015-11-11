@@ -27,7 +27,7 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
 
         $scope.query = query;
 
-        $http.get('/api/v1/medicaments', {params: {query: query}}).then(function(resp) {
+        $http.get('/api/v1/medicaments', {params: {query: query, limit : 100}}).then(function(resp) {
 
             $rootScope.medicaments = [];
 

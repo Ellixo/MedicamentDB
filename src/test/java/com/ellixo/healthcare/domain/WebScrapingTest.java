@@ -2,23 +2,22 @@ package com.ellixo.healthcare.domain;
 
 import com.ellixo.healthcare.services.MedicamentService;
 import com.google.common.base.Strings;
+import org.apache.commons.lang.mutable.MutableBoolean;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
-@Ignore
 public class WebScrapingTest {
 
     @Test
     public void scrap() throws IOException {
         // 64460520 60730566 63357706 66391261 60730566 60558554
-        Document doc = Jsoup.connect("http://base-donnees-publique.medicaments.gouv.fr/extrait.php?specid=60558554").get();
+        Document doc = Jsoup.connect("http://base-donnees-publique.medicaments.gouv.fr/extrait.php?specid=69995434").get();
         Elements elements = doc.select("h2.ficheInfo:contains(Indications thérapeutiques)");
         if (elements.size() != 0) {
             Element start = elements.first();
@@ -31,7 +30,7 @@ public class WebScrapingTest {
                     x -> {
                         x.childNodes().forEach(
                                 y -> {
-                                    String string = getString(y);
+                                    String string = getString(y, null);
                                     if (!Strings.isNullOrEmpty(string)) {
                                         String classParent = y.parentNode().attributes().get("class");
                                         if (classParent != null && classParent.startsWith("AmmListePuces")) {
@@ -78,7 +77,7 @@ public class WebScrapingTest {
     @Test
     public void scrapResume() throws IOException {
         // 64460520 60730566 63357706 66391261 60558554 64073783 62607530 69723039
-        Document doc = Jsoup.connect("http://base-donnees-publique.medicaments.gouv.fr/affichageDoc.php?specid=63921217&typedoc=R").get();
+        Document doc = Jsoup.connect("http://base-donnees-publique.medicaments.gouv.fr/affichageDoc.php?specid=62607530&typedoc=R").get();
         Elements elements = doc.select("a[name=RcpIndicTherap]");
         if (elements.size() != 0) {
             Element start = elements.first().parent();
@@ -113,20 +112,24 @@ public class WebScrapingTest {
                             listeCount.setValue(0);
                         }
 
+                        MutableBoolean isList = new MutableBoolean(false);
                         x.childNodes().forEach(
                                 y -> {
-                                    String string = getString(y);
+                                    String string = getString(y, "http://base-donnees-publique.medicaments.gouv.fr/affichageDoc.php?specid=69995434&typedoc=R");
                                     if (!Strings.isNullOrEmpty(string)) {
                                         if (css != null && css.startsWith("AmmAnnexeTitre")) {
                                             string = "<b>" + string + "</b>";
-                                        } else if (css != null && css.startsWith("AmmListePuces")) {
-                                            string = "<li>" + string + "</li>";
+                                        } else if (css != null && css.startsWith("AmmListePuces") && isList.isFalse()) {
+                                            string = "<li>" + string;
+                                            isList.setValue(true);
                                         }
 
                                         sb.append(string + " ");
                                     }
                                 });
-
+                        if (isList.isTrue()) {
+                            sb.append("</li>");
+                        }
                     }
             );
 
@@ -143,26 +146,48 @@ public class WebScrapingTest {
         }
     }
 
-    private String getString(Node node) {
+    private String formatLinks(String text, String url) {
+        text = text.replace("href=\"#", "href=\"" + url + "#");
+        text = text.replace("href=\"/", "href=\"" + url + "/");
+        return text;
+    }
+
+    private String getString(Node node, String link) {
         String string = node.toString().trim();
         if (string.length() > 1 || string.equals(":")) {
             if (node.nodeName().equals("a") && Strings.isNullOrEmpty(node.attributes().get("href"))) {
                 StringBuilder sb = new StringBuilder();
                 String tmp;
                 for (Node child : node.childNodes()) {
-                    tmp = getString(child);
+                    tmp = getString(child, link);
                     if (tmp != null) {
-                        sb.append(getString(child));
+                        sb.append(getString(child, link));
                     }
                 }
                 return sb.toString();
+            } else if (node.nodeName().equals("a")) {
+                StringBuilder sb = new StringBuilder();
+                String tmp;
+                for (Node child : node.childNodes()) {
+                    tmp = getString(child, link);
+                    if (tmp != null) {
+                        sb.append(getString(child, link));
+                    }
+                }
+
+                String href = node.attributes().get("href");
+                if (!href.startsWith("http")) {
+                    href = link + href;
+                }
+
+                return "<a href=\"" + href + "\">" + sb.toString() + "</a>";
             } else if (node.nodeName().equals("span")) {
                 StringBuilder sb = new StringBuilder();
                 String tmp;
                 for (Node child : node.childNodes()) {
-                    tmp = getString(child);
+                    tmp = getString(child, link);
                     if (tmp != null) {
-                        sb.append(getString(child));
+                        sb.append(getString(child, link));
                     }
                 }
                 string = sb.toString();

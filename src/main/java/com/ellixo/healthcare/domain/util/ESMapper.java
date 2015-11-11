@@ -30,4 +30,8 @@ public interface ESMapper {
 
     AvisASMR toAvisASMRES(AvisASMRCSV csv);
 
+    MedicamentExtract toExtract(Medicament medicament);
+
+    List<MedicamentExtract> toExtractList(List<Medicament> medicaments);
+
 }

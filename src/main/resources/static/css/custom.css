@@ -218,6 +218,13 @@ p {
 
 .header-medicament {
     margin-top: 5px;
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .header-medicament {
+        font-size: 18px;
+    }
 }
 
 .header-prix {
@@ -314,16 +321,6 @@ p {
     margin-right: 5px;
 }
 
-.no-wrap {
-    white-space: nowrap;
-}
-
-@media (max-width: 600px) {
-    .no-wrap {
-        white-space: normal;
-    }
-}
-
 .legende {
     font-style: italic;
     font-size: 12px;
@@ -414,4 +411,38 @@ p {
 .home-legende {
     margin-top: 20px;
     font-style: italic;
+}
+
+.contact-email, .contact-email:hover, .contact-email:focus {
+    display: inline-block;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.table-cell-header {
+    white-space: nowrap;
+}
+
+.table-cell {
+    white-space: nowrap;
+}
+
+.table-cell-text {
+    white-space: pre-wrap !important;
+}
+
+
+@media screen and (max-width: 767px) {
+    .table-cell {
+        min-height: 25px;
+        height: 75px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .table-cell-text {
+        min-height: 25px;
+        height: 75px;
+    }
 }

@@ -66,4 +66,14 @@ public class ESMapperDecorator implements ESMapper {
     public AvisASMR toAvisASMRES(AvisASMRCSV csv) {
         return delegate.toAvisASMRES(csv);
     }
+
+    @Override
+    public MedicamentExtract toExtract(Medicament medicament) {
+        return delegate.toExtract(medicament);
+    }
+
+    @Override
+    public List<MedicamentExtract> toExtractList(List<Medicament> medicaments) {
+        return delegate.toExtractList(medicaments);
+    }
 }

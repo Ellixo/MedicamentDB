@@ -12,7 +12,8 @@ public interface MedicamentRepository extends ElasticsearchRepository<Medicament
             "        \"match_phrase_prefix\": {" +
             "            \"_all\": {" +
             "                \"query\": \"?0\"," +
-            "                \"slop\":  100" +
+            "                \"slop\": 1000," +
+            "                \"fuzziness\": 1" +
             "            }" +
             "        }" +
             "    }")
