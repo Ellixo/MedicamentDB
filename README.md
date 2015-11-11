@@ -19,7 +19,9 @@ Disponible à  [open-medicaments.fr](http://open-medicaments.fr)
 
 ##API
 
-Interface Swagger disponible à [open-medicaments.fr/swagger](http://open-medicaments.fr/swagger-ui.html)
+*En complément du moteur de recherche open-medicaments.fr, une API est founie afin de permettre une intégration des fonctionnalités de recherche et d'affichage des données médicaments.*
+
+*Interface Swagger disponible à [open-medicaments.fr/swagger](http://open-medicaments.fr/swagger-ui.html)*
 
 #### service permettant de requêter la base de médicaments
 ```
