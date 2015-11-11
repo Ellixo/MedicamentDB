@@ -22,22 +22,22 @@ Open Médicaments s'appuie les données OpenData fournies par la [base de donné
 GET /api/v1/medicaments
 ```
 
-##### Parameters
-|Type|Name|Description|Required|
+##### Paramètres
+|Type|Name|Description|Obligatoire|
 |----|----|----|----|
-|Paramètre|query|requête|false|
-|Paramètre|page|numéro de page|false|
-|Paramètre|limit|nombre maximum de résultats par page|false|
+|Paramètre|query|requête|non|
+|Paramètre|page|numéro de page|non|
+|Paramètre|limit|nombre maximum de résultats par page|non|
 
 #### lecture medicament
 ```
 GET /api/v1/medicaments/{id}
 ```
 
-##### Parameters
-|Type|Name|Description|Required|
+##### Paramètres
+|Type|Name|Description|Obligatoire|
 |----|----|----|----|
-|Chemin|id|code CIS du médicament|true|
+|URL|id|code CIS du médicament|oui|
 
 #### info base de données (ie. date de mise à jour)
 ```
