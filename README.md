@@ -1,11 +1,9 @@
 #Open Médicaments
-Open Médicaments est un moteur de recherche permettant d'accéder à l'ensemble des données et documents de référence sur les médicaments commercialisés ou ayant été commercialisés durant les trois dernières années en France. 
+Open Médicaments est un moteur de recherche permettant d'accéder à l'ensemble des données et documents de référence sur les médicaments commercialisés ou ayant été commercialisés durant les trois dernières années en France. Disponible à  [open-medicaments.fr](http://open-medicaments.fr)
 
 Open Médicaments s'appuie les données OpenData fournies par la [base de données publique des médicaments](http://base-donnees-publique.medicaments.gouv.fr/index.php).
 
 <img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-home.png" alt="Open Médicaments" width="700px"/>
-
-Disponible à  [open-medicaments.fr](http://open-medicaments.fr)
 
 ##Fonctionnalités
 
@@ -14,8 +12,6 @@ Disponible à  [open-medicaments.fr](http://open-medicaments.fr)
 
 ###Fiche médicament
 <img src="https://github.com/Ellixo/MedicamentDB/blob/master/doc/screenshot-fiche.png" alt="Fiche médicament" width="700px"/>
-
-
 
 ##API
 
