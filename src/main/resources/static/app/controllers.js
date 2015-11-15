@@ -2,6 +2,30 @@
 
 var openMedicamentsControllers = angular.module('OpenMedicamentsControllers', []);
 
+openMedicamentsControllers.controller('FormSubmitController',[ '$scope', '$http', function($scope, $http) {
+
+    $scope.submitEmail = function() {
+        console.log($scope.formData);
+
+        if ($scope.formData.url && $scope.formData.url !== '') {
+            return;
+        }
+
+        var formData = {
+                name: $scope.formData.name,
+                email: $scope.formData.email,
+                phone: $scope.formData.phone,
+                message: $scope.formData.message,
+                token: 'openmedicaments'
+        };
+
+        $http.post('/tools/email', formData);
+
+        $('#contactModal').modal('hide');
+    };
+
+}]);
+
 openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
 
     $rootScope.medicaments = [];

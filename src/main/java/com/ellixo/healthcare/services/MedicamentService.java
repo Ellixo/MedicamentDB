@@ -46,10 +46,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -87,6 +84,7 @@ public class MedicamentService {
 
             linkPresentations(dir, medicaments);
             linkCompositions(dir, medicaments);
+            linkFamillesComposition(medicaments);
             linkConditionsPrescriptionDelivrance(dir, medicaments);
 
             Map<String, String> urlsHAS = initUrlsHAS(dir);
@@ -454,6 +452,36 @@ public class MedicamentService {
 
                 medicament.getCompositions().add(composition);
             }
+        }
+    }
+
+    private void linkFamillesComposition(List<Medicament> medicaments) {
+        LOG.info("liste familles composition");
+        for (Medicament medicament : medicaments) {
+            Set<SubstanceActive> substancesActives1 = medicament.getSubstancesActives();
+            if (substancesActives1.size() == 0) {
+                continue;
+            }
+
+            medicaments.forEach(x -> {
+                if (x.getCodeCIS().equals(medicament.getCodeCIS())) {
+                    return;
+                }
+
+                Set<SubstanceActive> substanceActives2 = x.getSubstancesActives();
+
+                if (substanceActives2.size() == 0) {
+                    return;
+                }
+
+                substanceActives2.retainAll(substancesActives1);
+                if (substanceActives2.size() == substancesActives1.size()) {
+                    Medicament.MedicamentFamilleComposition frere = new Medicament.MedicamentFamilleComposition();
+                    frere.setCodeCIS(x.getCodeCIS());
+                    frere.setDenomination(x.getDenomination());
+                    medicament.getFamilleComposition().add(frere);
+                }
+            });
         }
     }
 

@@ -26,11 +26,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
 
 @Document(indexName = "medicament_db", type = "medicaments")
 @Setting(settingPath = "settings.json")
+@Mapping(mappingPath = "mapping.json")
 public class Medicament {
 
     @Id
@@ -65,6 +67,7 @@ public class Medicament {
     private List<String> conditionsPrescriptionDelivrance = new ArrayList<>();
     private InfosGenerique infosGenerique;
     private List<InfoImportante> infosImportantes = new ArrayList<>();
+    private List<MedicamentFamilleComposition> familleComposition = new ArrayList<>();
 
     public String getCodeCIS() {
         return codeCIS;
@@ -80,6 +83,14 @@ public class Medicament {
 
     public void setIndicationsTherapeutiques(String indicationsTherapeutiques) {
         this.indicationsTherapeutiques = indicationsTherapeutiques;
+    }
+
+    public List<MedicamentFamilleComposition> getFamilleComposition() {
+        return familleComposition;
+    }
+
+    public void setFamilleComposition(List<MedicamentFamilleComposition> familleComposition) {
+        this.familleComposition = familleComposition;
     }
 
     public boolean isHomeopathie() {
@@ -234,6 +245,15 @@ public class Medicament {
         this.infosImportantes = infosImportantes;
     }
 
+    public Set<SubstanceActive> getSubstancesActives() {
+        Set<SubstanceActive> substanceActives = new HashSet<>();
+        substanceActives.addAll(getCompositions().stream()
+                .map(y -> y.getSubstancesActives())
+                .flatMap(z -> z.stream())
+                .collect(Collectors.toSet()));
+        return substanceActives;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -274,6 +294,53 @@ public class Medicament {
                 ", infosImportantes=" + infosImportantes +
                 '}';
     }
+
+    public static class MedicamentFamilleComposition {
+
+        private String codeCIS;
+        private String denomination;
+
+        public String getCodeCIS() {
+            return codeCIS;
+        }
+
+        public void setCodeCIS(String codeCIS) {
+            this.codeCIS = codeCIS;
+        }
+
+        public String getDenomination() {
+            return denomination;
+        }
+
+        public void setDenomination(String denomination) {
+            this.denomination = denomination;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MedicamentFamilleComposition that = (MedicamentFamilleComposition) o;
+
+            return codeCIS.equals(that.codeCIS);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return codeCIS.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "MedicamentFamilleComposition{" +
+                    "codeCIS='" + codeCIS + '\'' +
+                    ", denomination='" + denomination + '\'' +
+                    '}';
+        }
+    }
+
 
     public static class InfosGenerique {
 

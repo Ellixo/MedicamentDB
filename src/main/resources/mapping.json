@@ -1,0 +1,16 @@
+{
+  "medicaments": {
+    "properties": {
+      "denomination": {
+        "type": "string",
+        "analyzer": "standard",
+        "fields": {
+          "folded_denomination": {
+            "type": "string",
+            "analyzer": "folding"
+          }
+        }
+      }
+    }
+  }
+}

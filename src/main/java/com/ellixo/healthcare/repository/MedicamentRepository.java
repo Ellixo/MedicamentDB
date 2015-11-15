@@ -27,13 +27,48 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 public interface MedicamentRepository extends ElasticsearchRepository<Medicament, String> {
 
     @Query("{" +
-            "        \"match_phrase_prefix\": {" +
-            "            \"_all\": {" +
-            "                \"query\": \"?0\"," +
-            "                \"slop\": 1000," +
-            "                \"fuzziness\": 1" +
+            "     \"bool\" : {" +
+            "         \"minimum_should_match\" : 1," +
+            "       \"should\" : [" +
+            "           {" +
+            "            \"match_phrase_prefix\" : {" +
+            "              \"folded_denomination\": {" +
+            "                  \"query\": \"?0\"," +
+            "                  \"boost\": 5" +
+            "              }" +
             "            }" +
-            "        }" +
-            "    }")
+            "          }," +
+            "          {" +
+            "            \"match_phrase_prefix\" : {" +
+            "              \"compositions.substancesActives.denominationSubstance\": {" +
+            "                  \"query\": \"?0\"," +
+            "                  \"boost\": 5" +
+            "              }" +
+            "              " +
+            "            }" +
+            "          }," +
+            "          {" +
+            "            \"match_phrase_prefix\" : {" +
+            "              \"folded_denomination\": {" +
+            "                  \"query\": \"?0\"," +
+            "              \"fuzziness\":  \"1\"," +
+            "              \"prefix_length\" : 3," +
+            "                  \"boost\": 2" +
+            "              }" +
+            "          " +
+            "            }" +
+            "          }," +
+            "          {" +
+            "            \"match_phrase_prefix\" : {" +
+            "          \"_all\": {" +
+            "              \"query\": \"?0\"," +
+            "               \"fuzziness\":  \"1\"," +
+            "               \"prefix_length\" : 3" +
+            "            }" +
+            "         }" +
+            "          }" +
+            "      ]" +
+            "    }" +
+            "   }")
     Page<Medicament> searchAll(String criteria, Pageable pageable);
 }

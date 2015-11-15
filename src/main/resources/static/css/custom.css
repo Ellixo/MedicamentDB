@@ -446,3 +446,7 @@ p {
         height: 75px;
     }
 }
+
+.antispam {
+    display: none;
+}

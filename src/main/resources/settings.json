@@ -1,10 +1,27 @@
 {
   "index": {
-    "refresh_interval": "1s",
-    "number_of_shards": "5",
-    "store": {
-      "type": "fs"
-    },
-    "number_of_replicas": "1"
+    "analysis": {
+      "char_filter" : {
+        "dash mapping" : {
+          "type" : "mapping",
+          "mappings" : ["-=>"]
+        }
+      },
+      "analyzer": {
+        "folding": {
+          "tokenizer": "standard",
+          "char_filter" : ["dash mapping"],
+          "filter":  [ "lowercase", "asciifolding", "synonym" ]
+        }
+      },
+      "filter" : {
+        "synonym" : {
+          "type" : "synonym",
+          "synonyms" : [
+            "bi-profenid, biprofenid, bi profenid =>biprofenid"
+          ]
+        }
+      }
+    }
   }
 }
