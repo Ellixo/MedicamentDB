@@ -71,6 +71,8 @@ public class MedicamentService {
 
     private LocalDateTime updateDate = LocalDateTime.now();
 
+    private String sitemap;
+
     public LocalDateTime getUpdateDate() {
         return updateDate;
     }
@@ -79,6 +81,8 @@ public class MedicamentService {
         try {
             LOG.info("référencement médicaments [START]");
             List<Medicament> medicaments = initMedicaments(dir);
+
+            initSitemap(medicaments);
 
             linkIndicationsTherapeutiques(medicaments);
 
@@ -127,6 +131,19 @@ public class MedicamentService {
         return mapper.toMedicamentES(it.readAll());
     }
 
+    public String getSitemap() {
+        return sitemap;
+    }
+
+    private void initSitemap(List<Medicament> medicaments) {
+        LOG.info("creation sitemap");
+        StringBuffer sb = new StringBuffer();
+        for (Medicament medicament : medicaments) {
+            sb.append("http://open-medicaments.fr/#/display/" + medicament.getCodeCIS() + "\n");
+        }
+        sitemap = sb.toString();
+    }
+
     private void linkIndicationsTherapeutiques(List<Medicament> medicaments) {
         LOG.info("liste indications thérapeutiques");
 
@@ -147,7 +164,7 @@ public class MedicamentService {
                             Element end = doc.select("*." + start.attributes().get("class") + ":gt(" + start.elementSiblingIndex() + ")").first();
                             elements = doc.select("p:gt(" + start.elementSiblingIndex() + "):lt(" + end.elementSiblingIndex() + ")");
 
-                            String text = transformScrapedData(medicament.getCodeCIS(), elements, link);
+                            String text = transformScrapedData(medicament.getCodeCIS(), elements);
                             if (!text.endsWith("</ul>")) {
                                 text += "<br>";
                             }
@@ -163,7 +180,7 @@ public class MedicamentService {
                                 Element end = doc.select("h2:gt(" + start.elementSiblingIndex() + ")").first();
                                 elements = doc.select("p:gt(" + start.elementSiblingIndex() + "):lt(" + end.elementSiblingIndex() + ")");
 
-                                String text = transformScrapedData(medicament.getCodeCIS(), elements, link);
+                                String text = transformScrapedData(medicament.getCodeCIS(), elements);
 
                                 medicament.setIndicationsTherapeutiques(text);
                             } else {
@@ -200,7 +217,7 @@ public class MedicamentService {
         throw exception;
     }
 
-    private String transformScrapedData(String codeCIS, Elements elements, String link) {
+    private String transformScrapedData(String codeCIS, Elements elements) {
         if (elements.size() != 0) {
             StringBuilder sb = new StringBuilder();
             MedicamentService.MutableInteger listeCount = new MedicamentService.MutableInteger(0);
@@ -243,7 +260,7 @@ public class MedicamentService {
                                                 isList.setValue(true);
                                             }
 
-                                            sb.append(string + " ");
+                                            sb.append(string);
                                         }
                                     });
                             if (isList.isTrue()) {
@@ -271,15 +288,15 @@ public class MedicamentService {
     }
 
     private String getString(Node node, String link) {
-        String string = node.toString().trim();
-        if (string.length() > 1 || string.equals(":")) {
+        String string = node.toString();
+        if (string.length() > 0) {
             if (node.childNodes().size() != 0 && node.nodeName().equals("a") && Strings.isNullOrEmpty(node.attributes().get("href"))) {
                 StringBuilder sb = new StringBuilder();
                 String tmp;
                 for (Node child : node.childNodes()) {
                     tmp = getString(child, link);
                     if (tmp != null) {
-                        sb.append(getString(child, link) + " ");
+                        sb.append(getString(child, link));
                     }
                 }
                 return sb.toString();
@@ -305,7 +322,7 @@ public class MedicamentService {
                 for (Node child : node.childNodes()) {
                     tmp = getString(child, link);
                     if (tmp != null) {
-                        sb.append(getString(child, link) + " ");
+                        sb.append(getString(child, link));
                     }
                 }
                 string = sb.toString();

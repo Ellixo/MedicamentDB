@@ -1,13 +1,13 @@
-<div class="container container-medicament">
+<div class="container container-medicament" itemscope itemtype="http://schema.org/Drug">
 
     <div master resizeheader class="panel panel-default header-medicament-parent">
         <div class="container-header-medicament">
             <div>
-                <h3 class="header-medicament">{{nomMedicament}}</h3>
+                <h3 class="header-medicament" itemprop="name">{{nomMedicament}}</h3>
                 <h7 class="header-prix">Prix : {{prix}}</h7><br>
                 <h7>{{info1}} - [CIS : {{medicament.codeCIS}} <span ng-if="medicament.numeroAutorisationEuropeenne"> - Numéro autorisation européenne : {{medicament.numeroAutorisationEuropeenne}}</span>]</h7><br>
                 <h7>Voies administration : {{voiesAdministration}} </h7><br>
-                <h7>Titulaires : {{titulaires}} </h7>
+                <h7 itemprop="manufacturer" itemscope itemtype="http://schema.org/Organization">Titulaires : <span itemprop="name">{{titulaires}}</span></h7>
             </div>
         </div>
     </div>

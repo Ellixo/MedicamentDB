@@ -1,10 +1,12 @@
 package com.ellixo.healthcare.web;
 
 import com.ellixo.healthcare.domain.EMail;
+import com.ellixo.healthcare.services.MedicamentService;
 import com.sendgrid.SendGrid;
 import com.sendgrid.SendGridException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class EmailController {
+public class ToolController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EmailController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ToolController.class);
+
+    @Autowired
+    private MedicamentService service;
 
     @RequestMapping(value = "/tools/email", method = RequestMethod.POST)
     public ResponseEntity emailSubmit(@RequestBody EMail emailInfo) {
@@ -44,6 +49,11 @@ public class EmailController {
         }
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/medicaments-sitemap", method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+    public ResponseEntity<String> sitemap() {
+        return new ResponseEntity(service.getSitemap(), HttpStatus.OK);
     }
 
 }
