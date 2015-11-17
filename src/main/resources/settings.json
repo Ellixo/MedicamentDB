@@ -12,6 +12,10 @@
           "tokenizer": "standard",
           "char_filter" : ["dash mapping"],
           "filter":  [ "lowercase", "asciifolding", "synonym" ]
+        },
+        "raw": {
+          "tokenizer": "keyword",
+          "filter":  [ "lowercase", "synonym" ]
         }
       },
       "filter" : {

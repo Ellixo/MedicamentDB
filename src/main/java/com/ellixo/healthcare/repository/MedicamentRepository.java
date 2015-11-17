@@ -32,6 +32,14 @@ public interface MedicamentRepository extends ElasticsearchRepository<Medicament
             "       \"should\" : [" +
             "           {" +
             "            \"match_phrase_prefix\" : {" +
+            "              \"raw_denomination\": {" +
+            "                  \"query\": \"?0\"," +
+            "                  \"boost\": 5" +
+            "              }" +
+            "            }" +
+            "          }," +
+            "           {" +
+            "            \"match_phrase_prefix\" : {" +
             "              \"folded_denomination\": {" +
             "                  \"query\": \"?0\"," +
             "                  \"boost\": 5" +

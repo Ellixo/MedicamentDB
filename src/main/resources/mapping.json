@@ -8,6 +8,10 @@
           "folded_denomination": {
             "type": "string",
             "analyzer": "folding"
+          },
+          "raw_denomination": {
+            "type": "string",
+            "analyzer": "raw"
           }
         }
       }
