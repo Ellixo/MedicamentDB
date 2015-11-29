@@ -37,7 +37,7 @@ public class ToolController {
         try {
             String keyFilePath = System.getProperty(KEY_FILE_PATH);
             String key = new String(Files.readAllBytes(Paths.get(keyFilePath)));
-            
+
             SendGrid sendgrid = new SendGrid(key.trim());
 
             SendGrid.Email email = new SendGrid.Email();
