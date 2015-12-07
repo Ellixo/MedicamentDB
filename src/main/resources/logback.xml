@@ -60,6 +60,7 @@
     </appender>
 
     <logger name="com.ellixo.healthcare" level="INFO"/>
+    <logger name="io.swagger" level="ERROR"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
