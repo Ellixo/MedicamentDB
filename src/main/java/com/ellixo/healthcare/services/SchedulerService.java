@@ -48,11 +48,11 @@ public class SchedulerService {
 
     @PostConstruct
     public void init() {
-        Runnable task = () -> { updateDB(); };
-        new Thread(task).start();
+        //Runnable task = () -> { updateDB(); };
+        //new Thread(task).start();
     }
 
-    @Scheduled(cron = "0 3 * * *")
+    @Scheduled(cron = "0 56 17 * * *")
     public void updateDB() {
         try {
             Path dir = Files.createTempDirectory("MedicamentDB");

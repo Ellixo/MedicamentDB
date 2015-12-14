@@ -73,7 +73,7 @@ public class MedicamentController {
             page = 1;
         }
         if (limit == null || limit < 1) {
-            page = 20;
+            limit = 20;
         }
 
         Pageable pageable = new PageRequest(page - 1, limit);

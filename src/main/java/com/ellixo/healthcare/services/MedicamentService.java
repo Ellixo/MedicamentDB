@@ -462,8 +462,11 @@ public class MedicamentService {
                         composition.getSubstancesActives().add(mapper.toSubstanceActiveES(valeur));
                     } else {
                         FractionTherapeutique ft = mapper.toFractionTherapeutiqueES(valeur);
-                        composition.getSubstancesActives().stream()
-                                .filter(sa -> sa.getNumero().equals(ft.getNumero())).findFirst().get().getFractionsTherapeutiques().add(ft);
+                        Optional<SubstanceActive> substanceActive = composition.getSubstancesActives().stream()
+                                .filter(sa -> sa.getNumero().equals(ft.getNumero())).findFirst();
+                        if (substanceActive.isPresent()) {
+                            substanceActive.get().getFractionsTherapeutiques().add(ft);
+                        }
                     }
                 }
 
