@@ -52,7 +52,7 @@ public class SchedulerService {
         //new Thread(task).start();
     }
 
-    @Scheduled(cron = "0 56 17 * * *")
+    @Scheduled(cron = "0 0 3 * * *")
     public void updateDB() {
         try {
             Path dir = Files.createTempDirectory("MedicamentDB");

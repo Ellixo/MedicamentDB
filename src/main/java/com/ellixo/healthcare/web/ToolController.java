@@ -3,7 +3,6 @@ package com.ellixo.healthcare.web;
 import com.ellixo.healthcare.domain.EMail;
 import com.ellixo.healthcare.services.MedicamentService;
 import com.sendgrid.SendGrid;
-import com.sendgrid.SendGridException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 @RestController
 public class ToolController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ToolController.class);
+
+    private static final String KEY_FILE_PATH = "key.file.path";
 
     @Autowired
     private MedicamentService service;
@@ -30,21 +34,25 @@ public class ToolController {
             return new ResponseEntity(HttpStatus.OK);
         }
 
-        SendGrid sendgrid = new SendGrid("KEY");
-
-        SendGrid.Email email = new SendGrid.Email();
-
-        email.addTo("info@ellixo.com");
-        email.setFrom(emailInfo.getEmail());
-        email.setSubject("Contact - Open Medicaments");
-        email.setHtml("<p>Nom : " + emailInfo.getName() + "</p>" +
-                "<p>Téléphone : " + emailInfo.getPhone() + "</p>" +
-                "<br>" +
-                "<p>" + emailInfo.getMessage() + "</p>");
-
         try {
+            String keyFilePath = System.getProperty(KEY_FILE_PATH);
+            String key = new String(Files.readAllBytes(Paths.get(keyFilePath)));
+
+            SendGrid sendgrid = new SendGrid(key.trim());
+
+            SendGrid.Email email = new SendGrid.Email();
+
+            email.addTo("info@ellixo.com");
+            email.setFrom(emailInfo.getEmail());
+            email.setSubject("Contact - Open Medicaments");
+            email.setHtml("<p>Nom : " + emailInfo.getName() + "</p>" +
+                    "<p>Téléphone : " + emailInfo.getPhone() + "</p>" +
+                    "<br>" +
+                    "<p>" + emailInfo.getMessage() + "</p>");
+
+
             sendgrid.send(email);
-        } catch (SendGridException e) {
+        } catch (Exception e) {
             LOG.error("Email Error", e);
         }
 
