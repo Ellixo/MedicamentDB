@@ -34,7 +34,6 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@Ignore
 public class MedicamentManualTest {
 
     @Autowired
@@ -44,7 +43,7 @@ public class MedicamentManualTest {
     public void readMedicaments() {
         File dir = new File("/Users/Greg/Projects/MedicamentDB/src/main/resources/dataset");
 
-        List<Medicament> medicaments = service.readMedicaments(dir).getLeft();
+        List<Medicament> medicaments = service.readMedicaments(dir).get(0);
 
         medicaments.forEach(x -> {
             int count = 0;

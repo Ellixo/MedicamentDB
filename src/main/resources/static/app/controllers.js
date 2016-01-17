@@ -2,9 +2,76 @@
 
 var openMedicamentsControllers = angular.module('OpenMedicamentsControllers', []);
 
-openMedicamentsControllers.controller('FormSubmitController',[ '$scope', '$http', function($scope, $http) {
+openMedicamentsControllers.controller('MainController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
-    $scope.submitEmail = function() {
+    $rootScope.selectionMedicaments = [];
+    $rootScope.interactions = [];
+
+    $rootScope.select = function (medicament) {
+        var index = $rootScope.getIndexOf(medicament);
+        if (index > -1) {
+            return;
+        }
+
+        $rootScope.selectionMedicaments.push(medicament);
+
+        $rootScope.refreshInterations();
+    }
+
+    $rootScope.unselect = function (medicament) {
+        var index = $rootScope.getIndexOf(medicament);
+        if (index > -1) {
+            $rootScope.selectionMedicaments.splice(index, 1);
+        }
+
+        $rootScope.refreshInterations();
+    }
+
+    $rootScope.refreshInterations = function () {
+        if ($rootScope.selectionMedicaments.length > 1) {
+            var query = '';
+            for (var i = 0; i < $rootScope.selectionMedicaments.length; i++) {
+                if (i != 0) {
+                    query += '|';
+                }
+                query += $rootScope.selectionMedicaments[i].codeCIS;
+            }
+
+            $http.get('/api/v1/interactions', {params: {ids: query}}).then(function (resp) {
+                $rootScope.interactions = [];
+                for (var i = 0; i < resp.data.length; i++) {
+                    var interaction = resp.data[i];
+                    $rootScope.interactions.push(interaction);
+                }
+            });
+        } else {
+            $rootScope.interactions = [];
+        }
+    }
+
+    $rootScope.unselectAll = function () {
+        $rootScope.selectionMedicaments = [];
+        $rootScope.interactions = [];
+    }
+
+    $rootScope.getIndexOf = function (medicament) {
+        for (var i = 0; i < $rootScope.selectionMedicaments.length; i++) {
+            if (medicament.codeCIS == $rootScope.selectionMedicaments[i].codeCIS) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //$scope.select({"codeCIS": "68133651", "nom": "Previscan"});
+    //$scope.select({"codeCIS": "61173013", "nom": "Triflucan"});
+    //$scope.select({"codeCIS": "61009918", "nom": "Tegretol"});
+
+}]);
+
+openMedicamentsControllers.controller('FormSubmitController', ['$scope', '$http', function ($scope, $http) {
+
+    $scope.submitEmail = function () {
         console.log($scope.formData);
 
         if ($scope.formData.url && $scope.formData.url !== '') {
@@ -12,11 +79,11 @@ openMedicamentsControllers.controller('FormSubmitController',[ '$scope', '$http'
         }
 
         var formData = {
-                name: $scope.formData.name,
-                email: $scope.formData.email,
-                phone: $scope.formData.phone,
-                message: $scope.formData.message,
-                token: 'openmedicaments'
+            name: $scope.formData.name,
+            email: $scope.formData.email,
+            phone: $scope.formData.phone,
+            message: $scope.formData.message,
+            token: 'openmedicaments'
         };
 
         $http.post('/tools/email', formData);
@@ -26,11 +93,11 @@ openMedicamentsControllers.controller('FormSubmitController',[ '$scope', '$http'
 
 }]);
 
-openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
+openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function ($scope, $rootScope, $http, $routeParams, $location) {
 
     $rootScope.medicaments = [];
 
-    $scope.$on('$routeChangeStart', function(next, current) {
+    $scope.$on('$routeChangeStart', function (next, current) {
         $scope.headerSearch = (current.templateUrl !== "views/home.html");
 
         if (!$scope.headerSearch) {
@@ -46,12 +113,12 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
         }
     });
 
-    $scope.runQuery = function(query) {
+    $scope.runQuery = function (query) {
         $location.path("/search");
 
         $scope.query = query;
 
-        $http.get('/api/v1/medicaments', {params: {query: query, limit : 100}}).then(function(resp) {
+        $http.get('/api/v1/medicaments', {params: {query: query, limit: 100}}).then(function (resp) {
 
             $rootScope.medicaments = [];
 
@@ -61,7 +128,7 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
                 medicament.nom = resp.data[i].denomination;
                 var index = medicament.nom.lastIndexOf(",");
                 if (index != -1) {
-                    medicament.nom = medicament.nom.substring(0,index).trim() + " (" + medicament.nom.substring(index + 1).trim() + ")";
+                    medicament.nom = medicament.nom.substring(0, index).trim() + " (" + medicament.nom.substring(index + 1).trim() + ")";
                 }
                 $rootScope.medicaments.push(medicament);
             }
@@ -70,8 +137,8 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
 
 }]);
 
-openMedicamentsControllers.controller('HomeController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
-    $scope.search = function(query) {
+openMedicamentsControllers.controller('HomeController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function ($scope, $rootScope, $http, $routeParams, $location) {
+    $scope.search = function (query) {
         if (query && query.length != 0) {
             $rootScope.prefix = query;
             $rootScope.results = null;
@@ -80,18 +147,18 @@ openMedicamentsControllers.controller('HomeController', ['$scope', '$rootScope',
     }
 }]);
 
-openMedicamentsControllers.controller('SearchController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function($scope, $rootScope, $http, $routeParams, $location) {
-    $scope.display = function(codeCIS) {
+openMedicamentsControllers.controller('SearchController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function ($scope, $rootScope, $http, $routeParams, $location) {
+    $scope.display = function (codeCIS) {
         $location.path("/display/" + codeCIS);
     }
 
 }]);
 
-openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScope', '$http', '$routeParams', '$sce', '$location', 'formatUtils', function($scope, $rootScope, $http, $routeParams, $sce, $location, formatUtils) {
+openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScope', '$http', '$routeParams', '$sce', '$location', 'formatUtils', function ($scope, $rootScope, $http, $routeParams, $sce, $location, formatUtils) {
     $rootScope.results = null;
 
     if ($routeParams.codeCIS) {
-        $http.get('/api/v1/medicaments/' + $routeParams.codeCIS).then(function(resp) {
+        $http.get('/api/v1/medicaments/' + $routeParams.codeCIS).then(function (resp) {
             var medicament = resp.data;
 
             $scope.medicament = medicament;
@@ -100,8 +167,11 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
             $scope.nomMedicament = medicament.denomination;
             var index = $scope.nomMedicament.lastIndexOf(",");
             if (index != -1) {
-                $scope.nomMedicament = $scope.nomMedicament.substring(0,index).trim() + " (" + $scope.nomMedicament.substring(index + 1).trim() + ")";
+                $scope.nomMedicament = $scope.nomMedicament.substring(0, index).trim() + " (" + $scope.nomMedicament.substring(index + 1).trim() + ")";
             }
+
+            $rootScope.select({"codeCIS": medicament.codeCIS, "nom": $scope.nomMedicament});
+
             // voies administration
             $scope.voiesAdministration = "";
             for (var i = 0; i < medicament.voiesAdministration.length; i++) {
@@ -171,7 +241,7 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
                 presentation = {};
                 presentationTmp = medicament.presentations[i];
 
-                presentation.libelle = presentationTmp.libelle.replace("-","‑").trim();
+                presentation.libelle = presentationTmp.libelle.replace("-", "‑").trim();
                 presentation.codeCIP7 = presentationTmp.codeCIP7;
                 presentation.codeCIP13 = presentationTmp.codeCIP13;
                 presentation.etatCommercialisationAMM = presentationTmp.etatCommercialisationAMM;
@@ -214,9 +284,9 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
 
                 if (presentationTmp.statutAdministratif === "ABROGEE") {
                     index = presentationTmp.libelle.lastIndexOf("(");
-                    presentation.libelle = presentationTmp.libelle.substring(0,index).trim();
+                    presentation.libelle = presentationTmp.libelle.substring(0, index).trim();
                     index = presentationTmp.libelle.lastIndexOf("/");
-                    presentation.dateAbrogation = formatUtils.formatDate(presentationTmp.libelle.substring(index - 5,index + 5));
+                    presentation.dateAbrogation = formatUtils.formatDate(presentationTmp.libelle.substring(index - 5, index + 5));
                     presentation.warning = "Abrogée";
                 }
 
@@ -244,7 +314,7 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
             $scope.generiques = [];
             var generique;
             if (medicament.infosGenerique) {
-                for (var i = 0; i<medicament.infosGenerique.autresMedicamentsGroupe.length; i++) {
+                for (var i = 0; i < medicament.infosGenerique.autresMedicamentsGroupe.length; i++) {
                     generique = {};
                     generique.codeCIS = medicament.infosGenerique.autresMedicamentsGroupe[i].codeCIS;
                     generique.denomination = medicament.infosGenerique.autresMedicamentsGroupe[i].denomination;
@@ -254,7 +324,7 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
                     maxPrix = -1;
                     prixLibre = false;
                     var prix;
-                    for (var j=0 ; j<medicament.infosGenerique.autresMedicamentsGroupe[i].prix.length ; j++) {
+                    for (var j = 0; j < medicament.infosGenerique.autresMedicamentsGroupe[i].prix.length; j++) {
                         prix = medicament.infosGenerique.autresMedicamentsGroupe[i].prix[j];
                         if (prix == null) {
                             prixLibre = true;
@@ -338,16 +408,20 @@ openMedicamentsControllers.controller('DisplayController', ['$scope', '$rootScop
         $scope.medicament = {};
     }
 
-    $scope.display = function(codeCIS) {
+    $scope.display = function (codeCIS) {
         $location.path("/display/" + codeCIS);
     }
 
-    $scope.go = function(path) {
+    $scope.go = function (path) {
         var win = window.open(path, '_blank');
-        if(win){
+        if (win) {
             win.focus();
-        }else{
+        } else {
             alert('Please allow popups for this site');
         }
     }
+}]);
+
+openMedicamentsControllers.controller('InteractionsController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function ($scope, $rootScope, $http, $routeParams, $location) {
+
 }]);

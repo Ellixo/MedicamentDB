@@ -254,6 +254,25 @@ public class Medicament {
         return substanceActives;
     }
 
+    public Set<FractionTherapeutique> getFractionsTherapeutiques() {
+        Set<FractionTherapeutique> fractionTherapeutiques = new HashSet<>();
+        fractionTherapeutiques.addAll(getCompositions().stream()
+                .map(x -> x.getSubstancesActives())
+                .flatMap(y -> y.stream())
+                .map(z -> z.getFractionsTherapeutiques())
+                .flatMap(t -> t.stream())
+                .collect(Collectors.toSet()));
+        return fractionTherapeutiques;
+    }
+
+    public Set<Substance.Interaction> getInteractions() {
+        Set<Substance> substances = new HashSet<>();
+        substances.addAll(getSubstancesActives());
+        substances.addAll(getFractionsTherapeutiques());
+
+        return substances.stream().map(x -> x.getInteractions()).flatMap(y -> y.stream()).collect(Collectors.toSet());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

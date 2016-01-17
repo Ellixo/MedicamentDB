@@ -19,6 +19,9 @@
 package com.ellixo.healthcare.services;
 
 import com.ellixo.healthcare.Constants;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,30 +29,37 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Component
-@Profile({"prod","docker"})
+@Profile({"prod", "docker"})
 public class SchedulerService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerService.class);
 
-    @Value("${db.download.url}")
-    private String downloadURL;
+    @Value("${db.download.db.url}")
+    private String downloadDBURL;
+    @Value("${db.download.interactions.url}")
+    private String downloadInteractionsURL;
 
     @Autowired
     private MedicamentService medicamentService;
 
     @PostConstruct
     public void init() {
-        //Runnable task = () -> { updateDB(); };
-        //new Thread(task).start();
+        Runnable task = () -> {
+            updateDB();
+        };
+        new Thread(task).start();
     }
 
     @Scheduled(cron = "0 0 3 * * *")
@@ -57,15 +67,17 @@ public class SchedulerService {
         try {
             Path dir = Files.createTempDirectory("MedicamentDB");
 
-            downloadFile(dir, Constants.CIS_BDPM_FILE, TypePrefix.CODE_CIS);
-            downloadFile(dir, Constants.CIS_CIP_BDPM_FILE, TypePrefix.CODE_CIS);
-            downloadFile(dir, Constants.CIS_COMPO_BDPM_FILE, TypePrefix.CODE_CIS);
-            downloadFile(dir, Constants.CIS_HAS_SMR_BDPM_FILE, TypePrefix.CODE_CIS);
-            downloadFile(dir, Constants.CIS_HAS_ASMR_BDPM_FILE, TypePrefix.CODE_CIS);
-            downloadFile(dir, Constants.HAS_LIENS_PAGE_CT_BDPM_FILE, TypePrefix.CT);
-            downloadFile(dir, Constants.CIS_CPD_BDPM_FILE, TypePrefix.CODE_CIS);
-            downloadFile(dir, Constants.CIS_GENER_BDPM_FILE, TypePrefix.DIGIT);
-            downloadFile(dir, Constants.CIS_INFO_IMPORTANTES_FILE, TypePrefix.CODE_CIS);
+            downloadDBFile(dir, Constants.CIS_BDPM_FILE, TypePrefix.CODE_CIS);
+            downloadDBFile(dir, Constants.CIS_CIP_BDPM_FILE, TypePrefix.CODE_CIS);
+            downloadDBFile(dir, Constants.CIS_COMPO_BDPM_FILE, TypePrefix.CODE_CIS);
+            downloadDBFile(dir, Constants.CIS_HAS_SMR_BDPM_FILE, TypePrefix.CODE_CIS);
+            downloadDBFile(dir, Constants.CIS_HAS_ASMR_BDPM_FILE, TypePrefix.CODE_CIS);
+            downloadDBFile(dir, Constants.HAS_LIENS_PAGE_CT_BDPM_FILE, TypePrefix.CT);
+            downloadDBFile(dir, Constants.CIS_CPD_BDPM_FILE, TypePrefix.CODE_CIS);
+            downloadDBFile(dir, Constants.CIS_GENER_BDPM_FILE, TypePrefix.DIGIT);
+            downloadDBFile(dir, Constants.CIS_INFO_IMPORTANTES_FILE, TypePrefix.CODE_CIS);
+
+            downloadInteractions(dir);
 
             medicamentService.updateDB(dir.toFile());
         } catch (IOException e) {
@@ -73,15 +85,15 @@ public class SchedulerService {
         }
     }
 
-    private void downloadFile(Path dir, String file, TypePrefix type) throws IOException {
-        URL url = new URL(downloadURL + "?fichier=" + file);
+    private void downloadDBFile(Path dir, String file, TypePrefix type) throws IOException {
+        URL url = new URL(downloadDBURL + "?fichier=" + file);
 
         LOG.info("Download DB File {}", url);
 
-        downloadFile(url, new File(dir.toFile(), file), type);
+        downloadDBFile(url, new File(dir.toFile(), file), type);
     }
 
-    private void downloadFile(URL url, File file, TypePrefix type) throws IOException {
+    private void downloadDBFile(URL url, File file, TypePrefix type) throws IOException {
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         int responseCode = httpConn.getResponseCode();
 
@@ -124,6 +136,44 @@ public class SchedulerService {
         }
     }
 
+    private void downloadInteractions(Path dir) throws IOException {
+        LOG.info("Download Interactions Files");
+
+        Document doc = Jsoup.connect(downloadInteractionsURL).get();
+
+        Elements elements = doc.select("a:contains(Thesaurus)");
+        if (elements.size() == 0) {
+            LOG.error("cannot download interactions");
+        } else {
+            elements.forEach(x -> {
+                if (x.toString().contains("Référentiel national des interactions médicamenteuses")) {
+                    downloadInteraction(dir, "interactions.pdf", x.attr("href"));
+                } else if (x.toString().contains("Index des substances")) {
+                    downloadInteraction(dir, "thesaurus.pdf", x.attr("href"));
+                }
+            });
+        }
+    }
+
+    private void downloadInteraction(Path dir, String file, String urlStr) {
+        try {
+            URL urlRoot = new URL(downloadInteractionsURL);
+
+            UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromHttpUrl(urlRoot.getProtocol() + "://" + urlRoot.getHost());
+            urlBuilder.path(urlStr);
+
+            URL url = new URL(urlBuilder.toUriString());
+
+            try (ReadableByteChannel rbc = Channels.newChannel(url.openStream())) {
+                try (FileOutputStream fos = new FileOutputStream(new File(dir.toFile(), file))) {
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private boolean isInteger(String string) {
         try {
             Integer.parseInt(string);
@@ -133,7 +183,7 @@ public class SchedulerService {
         }
     }
 
-    private static enum TypePrefix {
+    private enum TypePrefix {
         CODE_CIS, CT, DIGIT
     }
 }

@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="medicaments">
+        <div class="row">
+            <panel class="container">
+                <button type="button" class="btn btn-warning pull-right" ng-click="unselectAll()">Tout Effacer</button>
+            </panel>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Médicaments</h3>
+                </div>
+                <div class="panel-body">
+                    <div ng-if="selectionMedicaments.length != 0" class="list-group">
+                        <span class="list-group-item medicament-item" data-ng-repeat="medicament in selectionMedicaments">
+                            <button title="Retirer de la liste des interactions" type="button" class="btn btn-default btn-xs" ng-click="unselect(medicament);$event.stopPropagation()"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                            <span>&nbsp;&nbsp;{{medicament.nom}}</span>
+                        </span>
+                    </div>
+                    <p ng-if="selectionMedicaments.length == 0">Aucun médicament sélectionné</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Interactions Médicamenteuses</h3>
+                </div>
+                <div class="panel-body">
+                    <div  ng-if="interactions.length != 0" class="interactionPanel" role="alert" data-ng-repeat="interaction in interactions">
+                        <span>
+                            <div class="interactionPresentation">
+                                <span class="interactionMedicaments"><span class="badge-medicament">{{interaction.nomMedicament1}}</span> et <span
+                                        class="badge-medicament">{{interaction.nomMedicament2}}</span></span>
+                                &nbsp;&nbsp;<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;&nbsp;
+                                <span class="interactionDescription">{{interaction.description}}</span>
+                            </div>
+                            <div class="interactionType"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> {{interaction.type}}</div>
+                            <div class="interactionConseil">{{interaction.conseil}}</div>
+                        </span>
+                    </div>
+                    <p ng-if="interactions.length == 0">Aucune interaction entre les médicaments
+                        sélectionnés</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,6 +14,7 @@ OpenMedicamentsApp.config(function ($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'views/home.html', controller: 'HomeController'});
     $routeProvider.when('/search', {templateUrl: 'views/search.html', controller: 'SearchController'});
     $routeProvider.when('/display/:codeCIS', {templateUrl: 'views/display.html', controller: 'DisplayController'});
+    $routeProvider.when('/interactions', {templateUrl: 'views/interactions.html', controller: 'InteractionsController'});
     $routeProvider.otherwise({redirectTo: '/home'});
 });
 

@@ -24,6 +24,7 @@ import com.ellixo.healthcare.domain.csv.*;
 import com.ellixo.healthcare.domain.util.ESMapper;
 import com.ellixo.healthcare.repository.GroupeGeneriqueRepository;
 import com.ellixo.healthcare.repository.InfoImportanteRepository;
+import com.ellixo.healthcare.repository.InteractionRepository;
 import com.ellixo.healthcare.repository.MedicamentRepository;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -31,7 +32,6 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.common.base.Strings;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,6 +65,11 @@ public class MedicamentService {
     private GroupeGeneriqueRepository repositoryGroupesGeneriques;
     @Autowired
     private InfoImportanteRepository repositoryInfosImportantes;
+    @Autowired
+    private InteractionRepository repositoryInteractions;
+
+    @Autowired
+    private InteractionService interactionService;
 
     @Autowired
     private ESMapper mapper;
@@ -77,7 +82,7 @@ public class MedicamentService {
         return updateDate;
     }
 
-    public Triple<List<Medicament>, List<GroupeGenerique>, List<InfoImportante>> readMedicaments(File dir) {
+    public List<List> readMedicaments(File dir) {
         try {
             LOG.info("référencement médicaments [START]");
             List<Medicament> medicaments = initMedicaments(dir);
@@ -87,8 +92,11 @@ public class MedicamentService {
             linkIndicationsTherapeutiques(medicaments);
 
             linkPresentations(dir, medicaments);
-            linkCompositions(dir, medicaments);
+
+            MedicamentInteraction interactions = interactionService.readInteractionMedicamenteuses(dir);
+            linkCompositions(dir, medicaments, interactions);
             linkFamillesComposition(medicaments);
+
             linkConditionsPrescriptionDelivrance(dir, medicaments);
 
             Map<String, String> urlsHAS = initUrlsHAS(dir);
@@ -101,7 +109,14 @@ public class MedicamentService {
 
             LOG.info("référencement médicaments [END]");
 
-            return Triple.of(medicaments, groupesGeneriques, infosImportantes);
+            List<List> list = new ArrayList<>();
+
+            list.add(medicaments);
+            list.add(groupesGeneriques);
+            list.add(infosImportantes);
+            list.add(interactions.getInteractions());
+
+            return list;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -110,12 +125,13 @@ public class MedicamentService {
     public void updateDB(File dir) {
         updateDate = LocalDateTime.now();
 
-        Triple<List<Medicament>, List<GroupeGenerique>, List<InfoImportante>> triple = readMedicaments(dir);
+        List<List> list = readMedicaments(dir);
 
         try {
-            repositoryMedicaments.save(triple.getLeft());
-            repositoryGroupesGeneriques.save(triple.getMiddle());
-            repositoryInfosImportantes.save(triple.getRight());
+            repositoryMedicaments.save(list.get(0));
+            repositoryGroupesGeneriques.save(list.get(1));
+            repositoryInfosImportantes.save(list.get(2));
+            repositoryInteractions.save(list.get(3));
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
@@ -396,7 +412,7 @@ public class MedicamentService {
         }
     }
 
-    private void linkCompositions(File dir, List<Medicament> medicaments) throws IOException {
+    private void linkCompositions(File dir, List<Medicament> medicaments, MedicamentInteraction interactions) throws IOException {
         LOG.info("liste compositions");
 
         CsvMapper csvMapper = new CsvMapper();
@@ -412,7 +428,7 @@ public class MedicamentService {
             LOG.debug("référencement composition médicament - CodeCIS : " + composition.getCodeCIS());
 
             if (previousCodeCIS != null && !composition.getCodeCIS().equals(previousCodeCIS)) {
-                linkCompositions(previousCodeCIS, compositions, medicaments);
+                linkCompositions(previousCodeCIS, compositions, medicaments, interactions);
 
                 compositions = new ArrayList<>();
             }
@@ -423,11 +439,11 @@ public class MedicamentService {
         }
 
         if (previousCodeCIS != null) {
-            linkCompositions(previousCodeCIS, compositions, medicaments);
+            linkCompositions(previousCodeCIS, compositions, medicaments, interactions);
         }
     }
 
-    private void linkCompositions(String codeCIS, List<CompositionCSV> compositions, List<Medicament> medicaments) {
+    private void linkCompositions(String codeCIS, List<CompositionCSV> compositions, List<Medicament> medicaments, MedicamentInteraction interactions) {
         Medicament medicament = medicaments.stream()
                 .filter(x -> x.getCodeCIS().equals(codeCIS))
                 .findFirst().orElse(null);
@@ -472,6 +488,8 @@ public class MedicamentService {
 
                 medicament.getCompositions().add(composition);
             }
+
+            interactions.updateInteractions(medicament);
         }
     }
 

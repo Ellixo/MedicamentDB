@@ -5,3 +5,5 @@
 60008845	GLUCOSE BIOSEDRA 15 POUR CENT, solution pour perfusion	solution pour perfusion	intraveineuse	Autorisation active	Procédure nationale	Commercialisée	05/03/1998			 FRESENIUS KABI FRANCE	Non
 61872344	CIMETIDINE TEVA 200 mg, comprimé	comprimé	orale	Autorisation active	Procédure nationale	Commercialisée	09/07/1997			 TEVA SANTE	Non
 67535309	CIMETIDINE MYLAN 200 mg, comprimé pelliculé	comprimé pelliculé	orale	Autorisation active	Procédure nationale	Commercialisée	08/11/1995			 MYLAN SAS	Non
+60814943	FRAKIDEX, collyre en solution	collyre en solution	ophtalmique	Autorisation active	Procédure nationale	Commercialisée	16/04/1997			 LABORATOIRE CHAUVIN	Non
+68879206	CLARITHROMYCINE ARROW 250 mg, comprimé pelliculé	comprimé pelliculé	orale	Autorisation active	Procédure nationale	Commercialisée	20/07/2007			 ARROW GENERIQUES	Non

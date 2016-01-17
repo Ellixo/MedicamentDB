@@ -26,7 +26,6 @@ p {
 .wrapper {
     min-height: 100%;
     height: auto !important;
-    height: 100%;
     margin: 0 auto -40px; /* the bottom margin is the negative value of the footer's height */
 }
 
@@ -51,7 +50,7 @@ p {
     background-color: #008576;
     color: white;
     padding: 10px 0;
-    text-align:center;
+    text-align: center;
 }
 
 @media (max-width: 992px) {
@@ -61,14 +60,14 @@ p {
 }
 
 .container-menu {
-    padding-right:15px;
+    padding-right: 15px;
 }
 
 .container-logo {
     padding-top: 10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .container-logo {
         visibility: hidden;
         width: 0px;
@@ -100,7 +99,7 @@ p {
 .logo-home {
     max-width: 100%;
     height: auto;
-    width: auto\9; /* ie8 */
+    width: auto \9; /* ie8 */
     margin-top: 50px;
     margin-bottom: 50px;
 }
@@ -119,36 +118,36 @@ p {
 .search-field {
     float: left;
     padding: 2px;
-    width : 600px;
+    width: 450px;
 }
 
 @media (max-width: 1100px) {
     .search-field {
-        width: 500px;
+        width: 350px;
     }
 }
 
 @media (max-width: 1000px) {
     .search-field {
-        width: 400px;
+        width: 250px;
     }
 }
 
 @media (max-width: 900px) {
     .search-field {
-        width: 300px;
+        width: 350px;
     }
 }
 
 @media (max-width: 800px) {
     .search-field {
-        width: 200px;
+        width: 350px;
     }
 }
 
 @media (max-width: 768px) {
     .search-field {
-        width: 400px;
+        width: 350px;
     }
 }
 
@@ -159,11 +158,11 @@ p {
 }
 
 .menu-item, .menu-item:focus, .menu-item:hover {
-    color: white  !important;
+    color: white !important;
     background-color: #008576 !important;
 }
 
-.panel-default>.panel-heading {
+.panel-default > .panel-heading {
     color: #008576;
     background-color: #FAFAFA;
 }
@@ -184,7 +183,7 @@ p {
 
 .header-medicament-parent {
     position: fixed;
-    top : 50px;
+    top: 50px;
     right: 0;
     left: 0;
     z-index: 1000;
@@ -206,8 +205,8 @@ p {
     font-size: 80%;
     display: inline-block;
     text-align: right;
-    padding-top:20px;
-    padding-right:10px;
+    padding-top: 20px;
+    padding-right: 10px;
 }
 
 .header-search-input, .header-search-input:focus, .header-search-input:hover {
@@ -335,7 +334,7 @@ p {
 }
 
 .medicaments {
-    padding-bottom:40px;
+    padding-bottom: 40px;
 }
 
 .medicament-item.active, .medicament-item.active:focus, .medicament-item.active:hover {
@@ -343,6 +342,7 @@ p {
     background-color: #505777;
     border: 1px solid #505777;
     margin-top: 0px;
+    cursor: pointer;
 }
 
 .medicament-item, .medicament-item:focus, .medicament-item:hover {
@@ -350,6 +350,11 @@ p {
     background-color: #D9DEF7;
     border: 1px solid #D9DEF7;
     margin-top: 10px;
+    cursor: pointer;
+}
+
+.medicament-btn {
+    float: right !important;
 }
 
 @media (max-width: 992px) {
@@ -373,13 +378,13 @@ p {
 }
 
 .contact-icon {
-  font-size: 50px;
-  color: #ffffff;
-  padding-top: 20px;
+    font-size: 50px;
+    color: #ffffff;
+    padding-top: 20px;
 }
 
 .contact-text {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 .contact {
@@ -432,15 +437,12 @@ p {
     white-space: pre-wrap !important;
 }
 
-
 @media screen and (max-width: 767px) {
     .table-cell {
         min-height: 25px;
         height: 75px;
     }
-}
 
-@media screen and (max-width: 767px) {
     .table-cell-text {
         min-height: 25px;
         height: 75px;
@@ -449,4 +451,62 @@ p {
 
 .antispam {
     display: none;
+}
+
+.interactionDescription {
+    font-weight: bold;
+}
+
+.interactionType {
+    font-weight: bold;
+    color: #A90000;
+}
+
+.interactionConseil {
+    font-style: italic;
+    color: #A90000;
+}
+
+.interactionMedicaments {
+}
+
+.interactionPresentation {
+    padding-bottom: 10px;
+}
+
+.interactionPanel {
+    border: 1px solid #505777;
+    padding: 10px;
+    margin: 5px;
+    background-color: #FBF7F7;
+}
+
+.badge-count-interactions {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    color: #008576;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.badge-medicament {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #008576;
+    border-radius: 10px;
 }

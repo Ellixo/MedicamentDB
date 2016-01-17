@@ -39,7 +39,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@Ignore
 public class MedicamentTest {
 
     @Autowired
@@ -49,9 +48,9 @@ public class MedicamentTest {
     public void readMedicaments() {
         File dir = new File(MedicamentTest.class.getClassLoader().getResource(".").getFile());
 
-        List<Medicament> medicaments = service.readMedicaments(dir).getLeft();
+        List<Medicament> medicaments = service.readMedicaments(dir).get(0);
 
-        assertEquals(medicaments.size(), 7);
+        assertEquals(medicaments.size(), 9);
         assertEquals(medicaments.get(0).getCodeCIS(), "61266250");
         assertEquals(medicaments.get(0).getDenomination(), "A 313 200 000 UI POUR CENT, pommade");
         assertEquals(medicaments.get(0).getDateAMM(), Date.from(LocalDate.of(1998, 3, 12).atStartOfDay(ZoneId.systemDefault()).toInstant()));

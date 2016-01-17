@@ -9,7 +9,10 @@
     <br>
     <div class="medicaments">
         <div class="list-group">
-            <a ng-href class="list-group-item medicament-item" data-ng-repeat="medicament in medicaments" style="cursor: pointer;" ng-click="display(medicament.codeCIS)">{{medicament.nom}}</a>
+            <span data-ng-repeat="medicament in medicaments" class="list-group-item medicament-item clearfix" ng-click="display(medicament.codeCIS)">
+                <button title="Ajouter à la liste des interactions"  type="button" class="btn btn-default btn-xs" ng-click="select(medicament);$event.stopPropagation()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <span>&nbsp;&nbsp;{{medicament.nom}}</span>
+            </span>
         </div>
     </div>
 </div>

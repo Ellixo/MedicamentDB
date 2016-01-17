@@ -51,6 +51,9 @@
         <div class="collapse navbar-collapse collapse-menu" id="nav-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
+                    <a href="#interactions" class="page-scroll menu-item fake-link" data-toggle="modal">Interactions <span class="badge-count-interactions">{{selectionMedicaments.length}}</span></a>
+                </li>
+                <li>
                     <a class="page-scroll menu-item fake-link" data-toggle="modal" data-target="#contactModal">Contact</a>
                 </li>
                 <li>
@@ -61,7 +64,7 @@
     </div>
 </nav>
 
-<div class="wrapper">
+<div class="wrapper" ng-controller="MainController">
     <div data-ng-view autoscroll="true"></div>
     <div class="push"></div>
 </div>

@@ -18,47 +18,7 @@
 
 package com.ellixo.healthcare.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-public class FractionTherapeutique {
-
-    private String codeSubstance;
-    private String denominationSubstance;
-    private String dosageSubstance;
-    @JsonIgnore
-    private Integer numero;
-
-    public String getCodeSubstance() {
-        return codeSubstance;
-    }
-
-    public void setCodeSubstance(String codeSubstance) {
-        this.codeSubstance = codeSubstance;
-    }
-
-    public String getDenominationSubstance() {
-        return denominationSubstance;
-    }
-
-    public void setDenominationSubstance(String denominationSubstance) {
-        this.denominationSubstance = denominationSubstance;
-    }
-
-    public String getDosageSubstance() {
-        return dosageSubstance;
-    }
-
-    public void setDosageSubstance(String dosageSubstance) {
-        this.dosageSubstance = dosageSubstance;
-    }
-
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
+public class FractionTherapeutique extends Substance {
 
     @Override
     public boolean equals(Object o) {
@@ -67,22 +27,22 @@ public class FractionTherapeutique {
 
         FractionTherapeutique that = (FractionTherapeutique) o;
 
-        return codeSubstance.equals(that.codeSubstance);
+        return getCodeSubstance().equals(that.getCodeSubstance());
 
     }
 
     @Override
     public int hashCode() {
-        return codeSubstance.hashCode();
+        return getCodeSubstance().hashCode();
     }
 
     @Override
     public String toString() {
         return "FractionTherapeutique{" +
-                "codeSubstance='" + codeSubstance + '\'' +
-                ", denominationSubstance='" + denominationSubstance + '\'' +
-                ", dosageSubstance='" + dosageSubstance + '\'' +
-                ", numero=" + numero +
+                "codeSubstance='" + getCodeSubstance() + '\'' +
+                ", denominationSubstance='" + getDenominationSubstance() + '\'' +
+                ", dosageSubstance='" + getDosageSubstance() + '\'' +
+                ", numero=" + getNumero() +
                 '}';
     }
 }
