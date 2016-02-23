@@ -48,8 +48,8 @@ public class SchedulerService {
 
     @PostConstruct
     public void init() {
-        //Runnable task = () -> { updateDB(); };
-        //new Thread(task).start();
+        Runnable task = () -> { updateDB(); };
+        new Thread(task).start();
     }
 
     @Scheduled(cron = "0 0 3 * * *")
