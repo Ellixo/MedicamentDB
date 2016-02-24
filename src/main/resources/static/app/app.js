@@ -2,9 +2,9 @@
 
 var OpenMedicamentsApp = angular.module('OpenMedicaments', ['OpenMedicamentsControllers', 'ngRoute']);
 
-OpenMedicamentsApp.run(function($rootScope, $location, $http) {
+OpenMedicamentsApp.run(function ($rootScope, $location, $http) {
 
-    $http.get('/api/v1/medicaments/info').then(function(resp) {
+    $http.get('/api/v1/medicaments/info').then(function (resp) {
         $rootScope.dateMiseAJour = resp.data.dateMiseAJour;
     });
 
@@ -14,21 +14,24 @@ OpenMedicamentsApp.config(function ($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'views/home.html', controller: 'HomeController'});
     $routeProvider.when('/search', {templateUrl: 'views/search.html', controller: 'SearchController'});
     $routeProvider.when('/display/:codeCIS', {templateUrl: 'views/display.html', controller: 'DisplayController'});
-    $routeProvider.when('/interactions', {templateUrl: 'views/interactions.html', controller: 'InteractionsController'});
+    $routeProvider.when('/interactions', {
+        templateUrl: 'views/interactions.html',
+        controller: 'InteractionsController'
+    });
     $routeProvider.otherwise({redirectTo: '/home'});
 });
 
 OpenMedicamentsApp.service("formatUtils", [
-    function() {
-        this.formatDate = function(date) {
+    function () {
+        this.formatDate = function (date) {
             if (!date) {
                 return '';
             }
 
-            return date.substring(8,10) + '/' + date.substring(5,7) + '/' + date.substring(0,4);
+            return date.substring(8, 10) + '/' + date.substring(5, 7) + '/' + date.substring(0, 4);
         }
 
-        this.formatPrix = function(prix) {
+        this.formatPrix = function (prix) {
             if (!prix) {
                 return '';
             }
@@ -38,21 +41,26 @@ OpenMedicamentsApp.service("formatUtils", [
     }
 ]);
 
-OpenMedicamentsApp.directive('showFocus', function($timeout) {
-  return function(scope, element, attrs) {
-    scope.$watch(attrs.showFocus,
-      function (newValue) {
-        $timeout(function() {
-            newValue && element.focus();
-        });
-      },true);
-  };
+OpenMedicamentsApp.directive('showFocus', function ($timeout) {
+    return function (scope, element, attrs) {
+        scope.$watch(attrs.showFocus,
+            function (newValue) {
+                $timeout(function () {
+                    element.focus();
+                    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                        var tmpStr = element.val();
+                        element.val('');
+                        element.val(tmpStr);
+                    }
+                }, (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) ? 10 : 0);
+            }, true);
+    };
 });
 
-OpenMedicamentsApp.directive('master',function () {
+OpenMedicamentsApp.directive('master', function () {
 
     function link(scope, element, attrs) {
-        scope.$watch( function() {
+        scope.$watch(function () {
             scope.masterStyle = {
                 height: element[0].offsetHeight + 'px'
             };
@@ -65,7 +73,7 @@ OpenMedicamentsApp.directive('master',function () {
     };
 });
 
-OpenMedicamentsApp.directive('resizeheader', function($window) {
+OpenMedicamentsApp.directive('resizeheader', function ($window) {
 
     function updateUI(scope, element) {
         scope.masterStyle = {
@@ -73,12 +81,12 @@ OpenMedicamentsApp.directive('resizeheader', function($window) {
         };
     }
 
-    return function(scope, element, attr) {
+    return function (scope, element, attr) {
         var w = angular.element($window);
 
         updateUI(scope, element[0]);
 
-        w.on('resize', function() {
+        w.on('resize', function () {
             updateUI(scope, element[0]);
             scope.$apply();
         });

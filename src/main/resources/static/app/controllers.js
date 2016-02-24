@@ -98,19 +98,19 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
     $rootScope.medicaments = [];
 
     $scope.$on('$routeChangeStart', function (next, current) {
-        $scope.headerSearch = (current.templateUrl !== "views/home.html");
-
-        if (!$scope.headerSearch) {
+        if (current.templateUrl === "views/home.html") {
             $scope.query = "";
         } else if (current.templateUrl === "views/search.html") {
             if ($rootScope.prefix) {
                 $scope.query = $rootScope.prefix;
-                $scope.runQuery($scope.query)
+                $scope.runQuery($scope.query);
                 $rootScope.prefix = null;
             }
         } else if (current.templateUrl === "views/display.html") {
             $scope.query = "";
         }
+
+        $scope.headerSearch = (current.templateUrl !== "views/home.html");
     });
 
     $scope.runQuery = function (query) {
@@ -135,7 +135,8 @@ openMedicamentsControllers.controller('HeaderController', ['$scope', '$rootScope
         });
     }
 
-}]);
+}])
+;
 
 openMedicamentsControllers.controller('HomeController', ['$scope', '$rootScope', '$http', '$routeParams', '$location', function ($scope, $rootScope, $http, $routeParams, $location) {
     $scope.search = function (query) {

@@ -34,6 +34,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
+@Ignore
 public class MedicamentManualTest {
 
     @Autowired
