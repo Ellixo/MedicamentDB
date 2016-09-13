@@ -7,3 +7,5 @@
 67535309	CIMETIDINE MYLAN 200 mg, comprimé pelliculé	comprimé pelliculé	orale	Autorisation active	Procédure nationale	Commercialisée	08/11/1995			 MYLAN SAS	Non
 60814943	FRAKIDEX, collyre en solution	collyre en solution	ophtalmique	Autorisation active	Procédure nationale	Commercialisée	16/04/1997			 LABORATOIRE CHAUVIN	Non
 68879206	CLARITHROMYCINE ARROW 250 mg, comprimé pelliculé	comprimé pelliculé	orale	Autorisation active	Procédure nationale	Commercialisée	20/07/2007			 ARROW GENERIQUES	Non
+68133651	PREVISCAN 20 mg, comprimé quadrisécable	comprimé quadrisécable	orale	Autorisation active	Procédure nationale	Commercialisée	12/10/1988			 MERCK SANTE	Non
+63012197	IMBRUVICA 140 mg, gélule	gélule	orale	Autorisation active	Procédure centralisée	Commercialisée	21/10/2014		EU/1/14/945	 JANSSEN CILAG INTERNATIONAL NV	Oui

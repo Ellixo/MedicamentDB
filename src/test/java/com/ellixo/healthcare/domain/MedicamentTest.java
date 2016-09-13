@@ -31,8 +31,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -49,6 +49,21 @@ public class MedicamentTest {
         File dir = new File(MedicamentTest.class.getClassLoader().getResource(".").getFile());
 
         List<Medicament> medicaments = service.readMedicaments(dir).get(0);
+
+        Medicament medicament1 = medicaments.get(9);
+        Medicament medicament2 = medicaments.get(10);
+
+        Set<Substance.Interaction> interactionsTmp = new HashSet<>();
+        List<InteractionEntreMedicaments> interactions = new ArrayList<>();
+
+        Set<Substance.Interaction> interactions1 = medicament1.getInteractions();
+        Set<Substance.Interaction> interactions2 = medicament2.getInteractions();
+
+        for (Substance.Interaction interaction2 : interactions2) {
+            interactionsTmp.addAll(interactions1.stream()
+                    .filter(x -> x.getIdFamille2().equals(interaction2.getIdFamille1()))
+                    .collect(Collectors.toSet()));
+        }
 
         assertEquals(medicaments.size(), 9);
         assertEquals(medicaments.get(0).getCodeCIS(), "61266250");
