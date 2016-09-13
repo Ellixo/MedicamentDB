@@ -87,11 +87,11 @@ public class MedicamentService {
             LOG.info("référencement médicaments [START]");
             List<Medicament> medicaments = initMedicaments(dir);
 
-            // initSitemap(medicaments);
+            initSitemap(medicaments);
 
-            // linkIndicationsTherapeutiques(medicaments);
+            linkIndicationsTherapeutiques(medicaments);
 
-            // linkPresentations(dir, medicaments);
+            linkPresentations(dir, medicaments);
 
             MedicamentInteraction interactions = interactionService.readInteractionMedicamenteuses(dir);
             linkCompositions(dir, medicaments, interactions);
